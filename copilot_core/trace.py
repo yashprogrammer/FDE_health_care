@@ -37,11 +37,13 @@ LAB_ALIASES = {"hemoglobin": "haemoglobin", "hb": "haemoglobin", "lp(a)": "lipop
                "leucocyte": "tlc", "tlc": "leucocyte", "echo": "lvef", "bnp": "nt-probnp"}
 
 NUM_RE = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)(?![\w])")
+# 2026-09-21 | 21/09/2026 | 21/09 (no year) | 21-09-26   (never '.', which is a decimal point)
+DATE_RE = re.compile(r"(?<![\d/.-])(?:(\d{4})-(\d{1,2})-(\d{1,2})|(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?|(\d{1,2})-(\d{1,2})-(\d{2,4}))(?![\d/.-])")
 
 
 class Finding(BaseModel):
     text: str
-    kind: Literal["drug", "lab", "number"]
+    kind: Literal["drug", "lab", "date", "number"]
     status: Literal["verified", "unverified", "hallucinated"]
     start: int
     end: int
@@ -81,6 +83,21 @@ def _numbers(text: str) -> set[float]:
     return out
 
 
+def _date_key(m: re.Match) -> tuple[int, int, int | None]:
+    if m.group(1):
+        return int(m.group(3)), int(m.group(2)), int(m.group(1))
+    d, mo, year = (m.group(4), m.group(5), m.group(6)) if m.group(4) else (m.group(7), m.group(8), m.group(9))
+    return int(d), int(mo), (int(year) + 2000 if year and len(year) == 2 else int(year) if year else None)
+
+
+def _source_dates(corpus: str) -> set[tuple[int, int, int | None]]:
+    out = set()
+    for m in DATE_RE.finditer(corpus):
+        d, mo, y = _date_key(m)
+        out |= {(d, mo, y), (d, mo, None)}
+    return out
+
+
 def trace(text: str, enc: Encounter) -> list[Finding]:
     corpus = _source_corpus(enc)
     corpus_l = corpus.lower()
@@ -105,6 +122,13 @@ def trace(text: str, enc: Encounter) -> list[Finding]:
             t = term.lower()
             ok = t in corpus_l or LAB_ALIASES.get(t, "~") in corpus_l
             add(m, "lab", "verified" if ok else "hallucinated")
+
+    # whole dates first: "09/09/2026" must match a real date in the record, not just contain known numbers
+    src_dates = _source_dates(corpus)
+    for m in DATE_RE.finditer(text):
+        d, mo, y = _date_key(m)
+        if 1 <= d <= 31 and 1 <= mo <= 12:
+            add(m, "date", "verified" if (d, mo, y) in src_dates else "unverified")
 
     for m in NUM_RE.finditer(text):
         v = float(m.group(1))

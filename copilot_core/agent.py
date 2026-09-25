@@ -25,7 +25,8 @@ Hard rules:
   (abbreviations like CAG, PTCA, DES, LVEF, TIMI are fine).
 - Follow-up and diet/activity: only what the notes say. If nothing is stated, write "As advised by treating consultant".
 - procedures_performed: list EVERY procedure in the data (one item each, with date and key findings). Empty only if none.
-- Write dates as DD/MM/YYYY. Do not state or predict a discharge date - the system adds it.
+- Dates in the data are already DD/MM/YYYY: copy them exactly, never convert, shift or infer a date.
+- Do not state or predict a discharge date - the system adds it.
 - Fill every field of the output schema.
 """
 

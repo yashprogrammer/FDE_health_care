@@ -3,11 +3,11 @@
   "draft": {
     "presenting_complaints": "Breathlessness and swelling of feet for 5 days",
     "hospital_course": [
-      "Admitted 18/08/26 with orthopnoea, pedal oedema, basal crepitations; started IV furosemide 40 mg BD and fluid restriction 1.5 L",
-      "NT‑proBNP 9200 pg/mL (elevated) and serum creatinine 1.8 mg/dL (high) on 18/08/26",
-      "2D Echo on 19/08/26 showed LVEF 32% (low) confirming HFrEF",
-      "Weight decreased by 3.8 kg by 21/08/26; creatinine stable at 1.7 mg/dL; started dapagliflozin and low‑dose spironolactone on 21/08/26",
-      "Daily weight chart explained to daughter on 22/08/26"
+      "18/08/2026 13:00 - Admitted with orthopnoea, pedal oedema, basal crepitations; started IV furosemide 40 mg BD and fluid restriction 1.5 L",
+      "18/08/2026 14:00 - NT‑proBNP 9200 pg/mL (H), Serum Creatinine 1.8 mg/dL (H)",
+      "19/08/2026 10:00 - 2D Echo LVEF 32% (L)",
+      "21/08/2026 10:00 - Weight down 3.8 kg, Creatinine stable 1.7 mg/dL; started dapagliflozin and low dose spironolactone",
+      "22/08/2026 20:00 - Daily weight chart explained to daughter"
     ],
     "procedures_performed": [],
     "key_investigations": [
@@ -19,17 +19,12 @@
       {
         "test": "Serum Creatinine",
         "result": "1.8 mg/dL",
-        "interpretation": "high"
+        "interpretation": "elevated"
       },
       {
         "test": "2D Echo LVEF",
-        "result": "32 %",
+        "result": "32%",
         "interpretation": "low"
-      },
-      {
-        "test": "Serum Potassium",
-        "result": "4.9 mmol/L",
-        "interpretation": "normal"
       }
     ],
     "condition_at_discharge": "Stable with improved weight and controlled fluid status",
@@ -37,14 +32,14 @@
       "As advised by treating consultant"
     ],
     "diet_and_activity": [
-      "Fluid restriction 1.5 L/day"
+      "Fluid restriction 1.5 L"
     ]
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 693,
-  "input_tokens": 1474,
-  "output_tokens": 429,
-  "cost_usd": 0.00023925000000000001,
+  "latency_ms": 822,
+  "input_tokens": 1491,
+  "output_tokens": 414,
+  "cost_usd": 0.00023602499999999998,
   "error": null
 }

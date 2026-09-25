@@ -3,13 +3,13 @@
   "draft": {
     "presenting_complaints": "Planned left total knee replacement for primary osteoarthritis, left knee.",
     "hospital_course": [
-      "Admitted 20/07/2026 for left TKR under spinal anaesthesia, tourniquet 70 min, uneventful.",
-      "Post-op day 1 (21/07/2026): Drain removed, physiotherapy twice, haemoglobin 10.8 g/dL (low).",
-      "Day 2 (22/07/2026): Patient ambulating with walker, knee flexion 80°, wound healthy.",
-      "Day 4 (24/07/2026): Knee flexion 95°, able to climb 2 steps, fit for discharge tomorrow."
+      "20/07/2026 10:00 – Left total knee arthroplasty performed under spinal anaesthesia, tourniquet 70 min, uneventful.",
+      "21/07/2026 – Drain removed, physiotherapy session done twice, haemoglobin 10.8 g/dL (low).",
+      "22/07/2026 – Patient walking with walker, knee flexion 80°, wound healthy.",
+      "24/07/2026 – Knee flexion 95°, climbing 2 steps, fit for discharge tomorrow."
     ],
     "procedures_performed": [
-      "27447 Left total knee arthroplasty on 20/07/2026 – implant in situ, good alignment"
+      "20/07/2026 – Left total knee arthroplasty (code 27447), implant in situ, good alignment"
     ],
     "key_investigations": [
       {
@@ -34,9 +34,9 @@
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 578,
-  "input_tokens": 1471,
-  "output_tokens": 302,
-  "cost_usd": 0.00020092500000000002,
+  "latency_ms": 690,
+  "input_tokens": 1488,
+  "output_tokens": 292,
+  "cost_usd": 0.0001992,
   "error": null
 }

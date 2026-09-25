@@ -1,41 +1,40 @@
 {
   "ip_no": "ENC-05",
   "draft": {
-    "presenting_complaints": "66M male presented with increased breathlessness and wheeze for 3 days.",
+    "presenting_complaints": "66M male with increased breathlessness and wheeze for 3 days",
     "hospital_course": [
-      "Admitted 11/08/2026 with SpO2 86% RA, pCO2 52 mmHg; started nebulisation Salbutamol + Ipratropium QID and IV Methylprednisolone 40 mg OD for 3 days.",
-      "Chest X‑ray 11/08/2026 showed hyperinflated lungs, no consolidation.",
-      "BiPAP used overnight; discontinued 13/08/2026 after SpO2 improved to 93% RA and wheeze reduced.",
-      "Doxycycline 100 mg BD started for possible infection.",
-      "Inhaler technique taught to patient and son on 14/08/2026."
+      "11/08/2026 05:30 – Admitted with acute COPD exacerbation, SpO2 86% RA, pCO2 52 mmHg. Started nebulisation (Salbutamol + Ipratropium 2.5 mg + 500 mcg QID) and IV methylprednisolone 40 mg OD for 3 days. Doxycycline 100 mg BD started for possible infection.",
+      "11/08/2026 06:00 – Labs: Arterial pCO2 52 mmHg (H), TLC 11800 /cumm (H). Chest X-ray: hyperinflated lungs, no consolidation.",
+      "13/08/2026 10:00 – Patient off BiPAP, SpO2 93% RA, wheeze reduced. Continued nebulisation and steroids.",
+      "14/08/2026 20:00 – Inhaler technique taught to patient and son. No new complications noted."
     ],
     "procedures_performed": [],
     "key_investigations": [
       {
         "test": "Arterial pCO2",
         "result": "52 mmHg",
-        "interpretation": "elevated"
+        "interpretation": "H"
       },
       {
         "test": "Total Leucocyte Count",
         "result": "11800 /cumm",
-        "interpretation": "elevated"
+        "interpretation": "H"
       },
       {
         "test": "Chest X-ray",
         "result": "Hyperinflated lungs, no consolidation",
-        "interpretation": "normal"
+        "interpretation": "Normal"
       }
     ],
-    "condition_at_discharge": "Stable COPD with acute exacerbation, improved oxygenation, no active infection.",
+    "condition_at_discharge": "Stable COPD exacerbation, improved",
     "follow_up_advice": [],
     "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 806,
-  "input_tokens": 1413,
-  "output_tokens": 300,
-  "cost_usd": 0.00019597499999999998,
+  "latency_ms": 1144,
+  "input_tokens": 3164,
+  "output_tokens": 631,
+  "cost_usd": 0.0004266,
   "error": null
 }

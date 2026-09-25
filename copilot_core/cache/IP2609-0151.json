@@ -1,14 +1,14 @@
 {
   "ip_no": "IP2609-0151",
   "draft": {
-    "presenting_complaints": "Chest tightness on exertion for 3 days, one episode at rest lasting 10 min",
+    "presenting_complaints": "Chest tightness on exertion worsening over 3 days, one episode at rest",
     "hospital_course": [
       "22/09/2026 21:15 – Admitted with unstable angina, started NTG infusion",
-      "22/09/2026 21:40 – Troponin I 0.02 ng/mL, ECG T‑inversion V4‑V6",
-      "23/09/2026 11:00 – Coronary angiography: LAD mid 60% non‑critical, LCx & RCA normal",
-      "23/09/2026 03:40 – Repeat Troponin I 0.03 ng/mL",
-      "24/09/2026 – No chest pain overnight, BG 140‑190 mg/dL",
-      "25/09/2026 09:50 – Symptom free 48 hrs, metformin up‑titrated, stress test planned after 4 weeks"
+      "22/09/2026 21:40 – Troponin I 0.02 ng/mL, repeat 0.03 ng/mL 23/09/2026 03:40",
+      "23/09/2026 11:00 – Coronary angiography: LAD mid 60% non‑critical lesion, LCx and RCA normal",
+      "23/09/2026 13:00 – Plan medical management, optimise risk factors",
+      "24/09/2026 08:00 – No chest pain overnight, BG 140‑190 mg/dL",
+      "25/09/2026 09:50 – Symptom free 48 hrs, metformin up‑titrated, discharge planned"
     ],
     "procedures_performed": [
       "23/09/2026 11:00 – Coronary angiography: LAD mid 60% non‑critical lesion, LCx and RCA normal"
@@ -33,19 +33,22 @@
         "test": "LDL Cholesterol",
         "result": "138 mg/dL",
         "interpretation": "high"
+      },
+      {
+        "test": "Serum Creatinine",
+        "result": "0.9 mg/dL",
+        "interpretation": "normal"
       }
     ],
-    "condition_at_discharge": "Stable, symptom free",
-    "follow_up_advice": [
-      "Stress test after 4 weeks"
-    ],
+    "condition_at_discharge": "Stable, symptom free, on optimized medical therapy",
+    "follow_up_advice": [],
     "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 804,
-  "input_tokens": 1770,
-  "output_tokens": 379,
-  "cost_usd": 0.00024645,
+  "latency_ms": 653,
+  "input_tokens": 1787,
+  "output_tokens": 399,
+  "cost_usd": 0.000253725,
   "error": null
 }
