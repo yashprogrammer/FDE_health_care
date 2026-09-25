@@ -63,7 +63,7 @@ MediTrack (primary DB, untouched)
 replica.db (read-only) ──► adapter (copilot/service/app.py) watches STS='DA'
                               │  copilot_core: Encounter → Pydantic AI draft → trace → TPA rules
                               ▼
-                        copilot.db (Copilot's own store) ──► React review UI (:8002)
+                        copilot.db (Copilot's own store) ──► "AI Discharge Draft" tab (served by :8002)
                                                                 │ doctor edits + signs
                                                                 ▼
              signed PDF ──► MediTrack import hot-folder ──► patient's Documents tab
@@ -71,10 +71,9 @@ Entry point: MediTrack Admin → External Links → Display "Patient file tab"
              → http://localhost:8002/#/embed/review/{IP_NO}   (renders inside MediTrack)
 ```
 
-- **AI Discharge Draft tab (for doctors)**: the review screen embedded *inside* MediTrack's patient file, in MediTrack's classic look (`#/embed/review/{IP_NO}`). No new app, minimal retraining.
-- **Worklist** (for the pilot team): drafts appear seconds after "Discharge Advised" is clicked in MediTrack
-- **Review**: editable AI sections; 🔒 locked diagnoses, pharmacy medications and pending reports; a **live TPA-readiness** panel re-read from the replica, so a document uploaded in MediTrack flips a check within seconds; the source-trace guardrail; PDF preview; sign and send
-- **Monitor**: baseline from the MIS replica vs pilot metrics, the activity feed, and a Logfire link
+- **One new feature, same UI**: the only user-facing change is an **AI Discharge Draft** tab in MediTrack's patient file. It uses MediTrack's own stylesheet (`copilot/ui/src/index.css` is copied from MediTrack), and its fields follow the order of MediTrack's paper form (MRD/DS/07). The Copilot has no separate app for users.
+- **Inside the tab**: editable AI-drafted sections; LOCKED diagnoses and pharmacy medications; auto-listed pending reports; a **TPA Readiness Check** that re-reads the replica, so a document uploaded in the Documents tab counts within seconds; **Source Verification** (guardrail); Print Preview; Sign Discharge Summary
+- MediTrack auto-sizes embedded tabs to their content (`postMessage` height), so there's no nested scrollbar
 - Every draft is traced in Logfire as `adapter.process_discharge` → `discharge_copilot.generate_draft` → agent run, plus `writeback.hotfolder`
 
 See **[DEMO_RUNBOOK.md](DEMO_RUNBOOK.md)** for the live-demo click path.

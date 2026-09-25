@@ -6,7 +6,7 @@
 2. `git checkout part-3-integrated` (contains all three parts).
 3. `./run.sh warm`: generates and caches live drafts for every patient. If Wi-Fi or Groq fails on stage, the Copilot silently serves these cached drafts.
 4. `./run.sh reset`: fresh golden state.
-5. Open tabs: MediTrack `localhost:8001`, POC `localhost:8501` (`./run.sh poc` in a second terminal), Copilot `localhost:8002`, Logfire.
+5. Open tabs: MediTrack `localhost:8001`, POC `localhost:8501` (`./run.sh poc` in a second terminal), Logfire. (The Copilot on `:8002` has no screens of its own. It appears only as the MediTrack tab.)
 6. Keep `demo_assets/IP2609-0142_stent_implant_sticker.pdf` handy for the upload.
 
 Start everything: terminal 1 `./run.sh integrated`, terminal 2 `./run.sh poc`.
@@ -43,9 +43,9 @@ Start everything: terminal 1 `./run.sh integrated`, terminal 2 `./run.sh poc`.
 | TPA panel shows ❌ **Implant sticker missing** (71%) | "This is the #1 reason insurers bounced claims last quarter. Caught *before* submission." |
 | Back in MediTrack → **Documents** → upload the stent sticker PDF as `IMPLANT_STKR` | "The cath lab uploads it the old way…" |
 | Back to **AI Discharge Draft** tab → TPA panel now **86%** | "…and the Copilot sees it within seconds, via the replica." |
-| Edit a hospital-course line → **Sign & send to MediTrack** | "The doctor stays in charge. Nothing is sent without their signature." |
+| Edit a hospital-course line → **Sign Discharge Summary** | "The doctor stays in charge. Nothing is sent without their signature." |
 | **Documents** tab → yellow `DSCHSUMM … BATCH_IMPORT` row → open PDF | "Delivered through MediTrack's 2013 scanner import folder." |
-| Switch to the Copilot app `localhost:8002` → **Worklist**, then **Monitor** | "Doctors never see this app. It's for the pilot team and management: baseline 6.3 h and 38% vs the pilot, plus Logfire traces." |
+| Logfire → the trace for IP2609-0142 | "Behind that one tab: replica read → agent → guardrail → PDF write-back, every step observable." |
 
 ## If something breaks
 
