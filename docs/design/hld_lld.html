@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CityCare Discharge Copilot - HLD &amp; LLD</title>
+<script src="node_modules/mermaid/dist/mermaid.min.js"></script>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 15mm 16mm 15mm;
+    @bottom-left { content: "CityCare Discharge Copilot - HLD & LLD v1.0"; font: 8px Helvetica, Arial, sans-serif; color: #64748b; }
+    @bottom-right { content: "Page " counter(page); font: 8px Helvetica, Arial, sans-serif; color: #64748b; }
+  }
+  @page :first { @bottom-left { content: none; } @bottom-right { content: none; } }
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --brand:#0f766e; --brand2:#134e4a; --soft:#f0fdfa; }
+  * { box-sizing: border-box; }
+  body { font: 10pt/1.5 Helvetica, Arial, sans-serif; color: var(--ink); margin: 0; }
+  h1 { font-size: 20pt; color: var(--brand2); margin: 0 0 4mm; padding-bottom: 2mm; border-bottom: 2px solid var(--brand); break-before: page; }
+  h2 { font-size: 13pt; color: var(--brand2); margin: 6mm 0 2mm; break-after: avoid; }
+  h3 { font-size: 11pt; color: var(--ink); margin: 4mm 0 1.5mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 5mm; }
+  li { margin-bottom: 1mm; }
+  td.mono { font-family: Menlo, Consolas, monospace; background: #fff; padding: 1.4mm 2mm; border-radius: 0; font-size: 8.3pt; }
+  tr:nth-child(even) td.mono { background: #f8fafc; }
+  code, span.mono { font-family: Menlo, Consolas, monospace; font-size: 8.5pt; background: #f1f5f9; padding: 0 3px; border-radius: 3px; }
+  pre.code { font: 8pt/1.45 Menlo, Consolas, monospace; background: #0f172a; color: #e2e8f0; padding: 3mm 4mm; border-radius: 4px; white-space: pre-wrap; break-inside: avoid; margin: 0 0 3mm; }
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0 4mm; font-size: 8.8pt; break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  th { background: var(--brand2); color: #fff; text-align: left; padding: 1.6mm 2mm; font-weight: 600; }
+  td { padding: 1.4mm 2mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  figure { margin: 2mm 0 5mm; padding: 3mm; border: 1px solid var(--line); border-radius: 6px; break-inside: avoid; background: #fff; }
+  figure .mermaid { display: block; width: 100%; margin: 0; }
+  figure .mermaid svg { display: block; margin: 0 auto; }
+  figcaption { font-size: 8.5pt; color: var(--muted); margin-top: 2mm; text-align: center; }
+  figcaption b { color: var(--ink); }
+  .callout { border-left: 4px solid var(--brand); background: var(--soft); padding: 2.5mm 4mm; margin: 2mm 0 4mm; break-inside: avoid; }
+  .callout.warn { border-color: #d97706; background: #fffbeb; }
+  .callout.info { border-color: #2563eb; background: #eff6ff; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 2mm 0 4mm; }
+  .kpi { border: 1px solid var(--line); border-radius: 6px; padding: 2.5mm 3mm; }
+  .kpi b { display: block; font-size: 15pt; color: var(--brand2); }
+  .kpi span { font-size: 8pt; color: var(--muted); }
+  .tag { display: inline-block; font-size: 7.5pt; font-weight: 700; padding: 0 5px; border-radius: 3px; }
+  .t-legacy { background: #f1efe8; color: #5b5242; border: 1px solid #8a8170; }
+  .t-copilot { background: #e0f2f1; color: #0f766e; border: 1px solid #0f766e; }
+  .t-ai { background: #ede9fe; color: #6d28d9; border: 1px solid #7c3aed; }
+  .t-ext { background: #e0f2fe; color: #0369a1; border: 1px solid #0369a1; }
+  .t-human { background: #fef3c7; color: #92400e; border: 1px solid #b45309; }
+  .t-lock { background: #e0e7ff; color: #3730a3; border: 1px solid #6366f1; }
+
+  /* cover */
+  .cover { height: 262mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover .band { background: linear-gradient(135deg, #134e4a, #0f766e 60%, #14b8a6); color: #fff; border-radius: 8px; padding: 16mm 12mm; }
+  .cover .band small { letter-spacing: .2em; text-transform: uppercase; opacity: .85; font-size: 8.5pt; }
+  .cover .band h0 { display: block; font-size: 28pt; font-weight: 800; line-height: 1.15; margin: 5mm 0 3mm; }
+  .cover .band p { font-size: 12pt; opacity: .95; margin: 0; }
+  .cover table td:first-child { width: 42mm; font-weight: 600; color: var(--muted); }
+  .toc { columns: 2; column-gap: 8mm; font-size: 9.5pt; }
+  .toc div { break-inside: avoid; margin-bottom: 1mm; }
+  .toc .l1 { font-weight: 700; margin-top: 2mm; color: var(--brand2); }
+  .toc .l2 { padding-left: 5mm; color: #334155; }
+  .legend span { margin-right: 3mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ COVER -->
+<section class="cover">
+  <div class="band">
+    <small>CityCare Hospitals, Pune · Forward Deployed Engineering</small>
+    <h0>Discharge Copilot<br>High-Level &amp; Low-Level Design</h0>
+    <p>Legacy system (MediTrack HMS v3.2) · Streamlit POC · Integrated pilot</p>
+  </div>
+  <div>
+    <table>
+      <tr><td>Document</td><td>HLD &amp; LLD: legacy as-is, POC, integrated system</td></tr>
+      <tr><td>Version</td><td>1.0 · 25 September 2026</td></tr>
+      <tr><td>Status</td><td>Approved for Cardiology Ward 4B pilot</td></tr>
+      <tr><td>Prepared by</td><td>Forward Deployed Engineering team (FDE + AI Engineer)</td></tr>
+      <tr><td>Reviewed with</td><td>Hospital IT (S. Pawar), Medical Superintendent, TPA desk, Cardiology (Dr. A. Mehta)</td></tr>
+      <tr><td>Code</td><td>Branches <span class="mono">part-1-legacy</span> → <span class="mono">part-2-poc</span> → <span class="mono">part-3-integrated</span></td></tr>
+      <tr><td>Diagram legend</td><td class="legend">
+        <span class="tag t-legacy">Legacy / MediTrack</span>
+        <span class="tag t-copilot">Copilot (new)</span>
+        <span class="tag t-ai">AI / LLM</span>
+        <span class="tag t-ext">External service</span>
+        <span class="tag t-human">People</span>
+        <span class="tag t-lock">Deterministic data</span></td></tr>
+    </table>
+    <div class="callout warn"><b>Note:</b> CityCare Hospitals, all patients, doctors, TPAs and figures are fictional and exist for teaching. In the story MediTrack runs on Oracle; the demo implementation uses SQLite with the same schema.</div>
+  </div>
+</section>
+
+<!-- ============================================================ TOC -->
+<h1 style="break-before: page">Contents</h1>
+<div class="toc">
+  <div class="l1">1. Introduction</div><div class="l2">1.1 Purpose &amp; scope · 1.2 Audience · 1.3 Glossary</div>
+  <div class="l1">2. Business context</div><div class="l2">2.1 In-patient discharge cycle · 2.2 Problem statement · 2.3 Goals &amp; success criteria · 2.4 Stakeholders</div>
+  <div class="l1">3. Legacy system: MediTrack HMS v3.2 (as-is)</div><div class="l2">3.1 Overview &amp; constraints · 3.2 As-is architecture · 3.3 As-is discharge process · 3.4 Data model · 3.5 Table dictionary · 3.6 Internal endpoints · 3.7 Extension points · 3.8 Baseline metrics</div>
+  <div class="l1">4. POC: High-Level Design</div><div class="l2">4.1 Objectives &amp; non-goals · 4.2 Architecture · 4.3 AI vs deterministic split · 4.4 Tech stack · 4.5 Evaluation strategy</div>
+  <div class="l1">5. POC: Low-Level Design</div><div class="l2">5.1 Modules · 5.2 Data contracts · 5.3 Draft generation &amp; fallback · 5.4 Agent configuration · 5.5 Source-trace guardrail · 5.6 TPA-readiness rules · 5.7 Eval harness · 5.8 Streamlit UI · 5.9 De-identified export · 5.10 Results</div>
+  <div class="l1">6. Integrated system: High-Level Design</div><div class="l2">6.1 Design principles · 6.2 Architecture · 6.3 End-to-end flow · 6.4 Deployment view · 6.5 Security &amp; compliance · 6.6 Non-functional requirements</div>
+  <div class="l1">7. Integrated system: Low-Level Design</div><div class="l2">7.1 Components · 7.2 Replica sync · 7.3 Adapter &amp; draft lifecycle · 7.4 Copilot datastore · 7.5 REST API · 7.6 Embedded review UI · 7.7 Sign &amp; write-back · 7.8 Metrics · 7.9 Observability · 7.10 Failure modes · 7.11 Configuration</div>
+  <div class="l1">8. Rollout plan</div>
+  <div class="l1">Appendix A: Repository map &amp; run commands</div>
+</div>
+
+<!-- ============================================================ 1 INTRO -->
+<h1>1. Introduction</h1>
+<h2>1.1 Purpose &amp; scope</h2>
+<p>This document describes the design of the <b>CityCare Discharge Copilot</b>, an AI-assisted discharge-summary system added to CityCare Hospitals' 2011-era Hospital Management System, <b>MediTrack HMS v3.2</b>. It covers three stages:</p>
+<table>
+  <thead><tr><th style="width:22%">Stage</th><th>What it is</th><th style="width:26%">Where in this document</th></tr></thead>
+  <tr><td><b>Legacy (as-is)</b></td><td>MediTrack as it exists: architecture, data model, process, constraints and hidden extension points</td><td>Section 3</td></tr>
+  <tr><td><b>POC</b></td><td>A standalone Streamlit application that proves the AI can draft summaries safely on de-identified historic data</td><td>Sections 4 (HLD) and 5 (LLD)</td></tr>
+  <tr><td><b>Integrated</b></td><td>The pilot system that runs next to MediTrack, reads its replica, appears as a MediTrack tab and writes back signed PDFs</td><td>Sections 6 (HLD) and 7 (LLD)</td></tr>
+</table>
+<h2>1.2 Audience</h2>
+<p>Hospital IT, clinical leadership, compliance, and the engineering team. Sections 2, 4 and 6 are readable by non-engineers; Sections 3.4–3.6, 5 and 7 are for engineers.</p>
+<h2>1.3 Glossary</h2>
+<table>
+  <thead><tr><th style="width:22%">Term</th><th>Meaning</th></tr></thead>
+  <tr><td>IPD / OPD</td><td>In-patient (admitted to a bed) / out-patient department</td></tr>
+  <tr><td>UHID · IP No</td><td>Lifelong hospital patient ID · ID of one admission</td></tr>
+  <tr><td>Consultant · RMO</td><td>Senior treating doctor · Resident Medical Officer (junior doctor who writes most summaries)</td></tr>
+  <tr><td>ICD-10 · CPT</td><td>Diagnosis codes (e.g. I21.0 anterior STEMI) · procedure codes (e.g. 92928 coronary stent)</td></tr>
+  <tr><td>Provisional / final diagnosis</td><td>Working diagnosis at admission / confirmed diagnosis at discharge; insurers compare them</td></tr>
+  <tr><td>LIS · HL7 v2</td><td>Lab Information System · message standard used by the lab to send results</td></tr>
+  <tr><td>Cash · Cashless</td><td>Patient pays directly · insurer pays the hospital, requiring pre-authorization and final approval</td></tr>
+  <tr><td>TPA</td><td>Third-Party Administrator: processes cashless claims on behalf of the insurer</td></tr>
+  <tr><td>Pre-auth · Final approval · Query</td><td>Approval at admission · approval of the final bill at discharge · insurer pushback asking for missing information</td></tr>
+  <tr><td>Implant sticker</td><td>Label from a stent / joint package (brand, size, lot); insurers require it for implant procedures</td></tr>
+  <tr><td>Discharge TAT</td><td>Turnaround time from "discharge advised" to "patient leaves"</td></tr>
+  <tr><td>MRD · MIS</td><td>Medical Records Department · Management Information System (reporting)</td></tr>
+  <tr><td>ARPOB</td><td>Average Revenue Per Occupied Bed per day</td></tr>
+  <tr><td>NABH · DPDP Act</td><td>Indian hospital accreditation body · Digital Personal Data Protection Act, 2023</td></tr>
+</table>
+
+<!-- ============================================================ 2 BUSINESS -->
+<h1>2. Business context</h1>
+<h2>2.1 The in-patient discharge cycle</h2>
+<p>Every admitted patient passes through the cycle below. For <b>cashless</b> (insured) patients, the hospital cannot release the patient until the insurer, via the TPA, approves the final bill. That approval requires a complete discharge summary and supporting documents.</p>
+<figure><pre class="mermaid">
+flowchart TB
+  subgraph R1["During the stay"]
+    direction LR
+    A["1 Admission<br/>ER or planned<br/>UHID + IP No"]:::legacy --> B{"Insured?"}
+    B -->|"cashless"| C["2 Pre-authorization<br/>via TPA"]:::ext
+    B -->|"cash"| D
+    C --> D["3 Treatment<br/>notes, labs, pharmacy,<br/>procedures, implants"]:::legacy
+    D --> E["4 Discharge advised<br/>consultant rounds ~10 AM"]:::human
+  end
+  subgraph R2["Discharge day: the clock is running"]
+    direction LR
+    F["5 Discharge summary<br/>typed by RMO<br/>35-45 min"]:::bad --> G["6 Pharmacy<br/>reconciliation"]:::legacy
+    G --> H["7 Final bill"]:::legacy
+    H --> I{"Cashless?"}
+    I -->|"no"| L["9 Patient leaves"]:::human
+    I -->|"yes"| J["8 TPA final approval<br/>bill + summary + documents"]:::ext
+    J -->|"approved"| L
+    J -->|"QUERY 38%<br/>+2-4 h"| K["Fix summary /<br/>attach documents"]:::bad
+    K --> J
+    L --> M["10 Bed cleaned,<br/>next patient admitted"]:::legacy
+  end
+  E --> F
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef ext fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+  classDef human fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 1.</b> In-patient discharge cycle. Red steps are where the time is lost.</figcaption></figure>
+
+<h2>2.2 Problem statement</h2>
+<div class="callout"><b>Stated problem (CEO):</b> "Doctors are drowning in paperwork. Build us a ChatGPT for discharge summaries."<br>
+<b>Real problem (from data):</b> Insured patients wait <b>~6.3 hours</b> to go home after discharge is advised (vs ~2.5 h for cash patients) because discharge summaries are <b>slow to write</b> and often <b>incomplete for insurers</b>: 38% of TPA submissions come back with a query. This blocks beds and is the top patient complaint.</div>
+<div class="kpis">
+  <div class="kpi"><b>2.5 h</b><span>Cash discharge TAT</span></div>
+  <div class="kpi"><b>6.3 h</b><span>Cashless discharge TAT</span></div>
+  <div class="kpi"><b>38.1%</b><span>TPA submissions queried</span></div>
+  <div class="kpi"><b>35-45 min</b><span>RMO time per summary</span></div>
+</div>
+<h2>2.3 Goals &amp; success criteria (pilot, Cardiology Ward 4B, 4 weeks)</h2>
+<table>
+  <thead><tr><th>Goal</th><th>Metric</th><th>Baseline</th><th>Pilot target</th></tr></thead>
+  <tr><td>Faster summaries</td><td>Discharge advised → draft ready</td><td>35-45 min of typing</td><td>&lt; 1 minute</td></tr>
+  <tr><td>Fewer insurer queries</td><td>TPA query rate</td><td>38%</td><td>&lt; 15%</td></tr>
+  <tr><td>Faster discharge</td><td>Cashless discharge TAT</td><td>6.3 h</td><td>&lt; 3.5 h</td></tr>
+  <tr><td>Clinical safety</td><td>Hallucinated drugs / tests in drafts</td><td>n/a</td><td>0 (and 100% doctor sign-off)</td></tr>
+  <tr><td>Adoption</td><td>Share of pilot discharges signed via Copilot</td><td>0%</td><td>&gt; 80%</td></tr>
+  <tr><td>Zero disruption</td><td>Changes to MediTrack code / DB writes</td><td>n/a</td><td>None (configuration only)</td></tr>
+</table>
+<h2>2.4 Stakeholders</h2>
+<table>
+  <thead><tr><th style="width:28%">Stakeholder</th><th>Interest</th><th style="width:30%">Touchpoint</th></tr></thead>
+  <tr><td>Consultants, RMOs</td><td>Less clerical work; clinical accuracy; signing responsibility</td><td>AI Discharge Draft tab in MediTrack</td></tr>
+  <tr><td>TPA desk</td><td>Complete first-time submissions</td><td>TPA-readiness checklist</td></tr>
+  <tr><td>Hospital IT (Suresh)</td><td>No risk to MediTrack; security</td><td>Replica, External Links config, hot-folder</td></tr>
+  <tr><td>CEO / CFO</td><td>Bed turnover, revenue, complaints</td><td>Copilot Monitor</td></tr>
+  <tr><td>Compliance</td><td>DPDP Act, NABH documentation, audit trail</td><td>PII minimisation, audit events, Logfire</td></tr>
+</table>
+
+<!-- ============================================================ 3 LEGACY -->
+<h1>3. Legacy system: MediTrack HMS v3.2 (as-is)</h1>
+<h2>3.1 Overview &amp; constraints</h2>
+<table>
+  <thead><tr><th style="width:26%">Attribute</th><th>Value</th></tr></thead>
+  <tr><td>Product</td><td>MediTrack HMS v3.2.1 (Medisoft Solutions Pvt. Ltd., 2011). Vendor no longer trading; no source support.</td></tr>
+  <tr><td>Demo implementation</td><td>FastAPI application server + SQLite (<span class="mono">meditrack.db</span>) + React UI styled as 2011; port <b>8001</b></td></tr>
+  <tr><td>Production (story)</td><td>Java monolith on Oracle, 400+ tables, read-only MIS reporting replica maintained by IT</td></tr>
+  <tr><td>Knowledge holder</td><td>S. Pawar ("Suresh"), Hospital IT: the only person who understands the schema</td></tr>
+  <tr><td>APIs</td><td><span class="mono">/int/*</span> endpoints exist <b>only for MediTrack's own UI</b>: undocumented, no third-party auth; IT policy forbids external use</td></tr>
+  <tr><td>Integrations</td><td>LIS → lab results over HL7 v2; MRD scanner → batch document import hot-folder; PACS viewer via External Link</td></tr>
+  <tr><td>Hard constraints</td><td>No code changes; no writes to the primary database; no downtime; users (300+ doctors and nurses) must not be retrained on a new application</td></tr>
+</table>
+
+<h2>3.2 As-is architecture</h2>
+<figure><pre class="mermaid">
+flowchart TB
+  subgraph Users["Hospital users"]
+    U1["Doctors / RMOs"]:::human
+    U2["Nurses"]:::human
+    U3["MRD staff"]:::human
+    U4["TPA desk"]:::human
+    U5["IT admin"]:::human
+  end
+  subgraph MT["MediTrack HMS v3.2 (port 8001)"]
+    UI["Browser UI<br/>(classic 2011 look)"]:::legacy
+    APP["Application server<br/>/int/* internal endpoints"]:::legacy
+    IMP["Batch Document Import<br/>(importer thread, every 3 s)"]:::legacy
+    DB[("meditrack.db<br/>primary database")]:::store
+    DOCS[("documents/<br/>scanned PDFs")]:::store
+    HF[/"import_hotfolder/<br/>IPNO_DOCTYPE_TS.pdf"/]:::legacy
+  end
+  LIS["Lab Information System"]:::ext
+  SCAN["MRD scanner"]:::ext
+  PACS["PACS image viewer"]:::ext
+  MIS[("MIS reporting replica<br/>(read-only, owned by IT)")]:::store
+  U1 & U2 & U4 & U5 --> UI
+  UI -->|"HTTP JSON"| APP
+  APP --> DB
+  LIS -->|"HL7 v2 ORU^R01"| DB
+  U3 --> SCAN --> HF
+  HF --> IMP --> DOCS
+  IMP -->|"insert PT_DOC"| DB
+  UI -.->|"External Link"| PACS
+  DB -.->|"replication"| MIS
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef ext fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+  classDef human fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+</pre><figcaption><b>Figure 2.</b> MediTrack as-is architecture.</figcaption></figure>
+
+<h2>3.3 As-is discharge process</h2>
+<figure><pre class="mermaid">
+flowchart TD
+  S(["Consultant rounds<br/>~10:00"]):::human --> A["Click Discharge Advised<br/>STS = DA"]:::legacy
+  A --> B["RMO opens 6 tabs: Diagnosis, Procedures,<br/>Lab Results, Pharmacy, Clinical Notes, Documents"]:::legacy
+  B --> C["Download Word template MRD/DS/07<br/>copy-paste, type"]:::bad
+  C --> D["Consultant reviews and signs paper copy"]:::human
+  D --> E["Final bill prepared"]:::legacy
+  E --> F{"Cashless?"}
+  F -->|"no"| Z(["Patient leaves<br/>avg 2.5 h after advice"]):::human
+  F -->|"yes"| G["TPA desk submits bill +<br/>summary + documents"]:::legacy
+  G --> H{"Insurer decision"}
+  H -->|"approved 62%"| Z2(["Patient leaves<br/>avg 6.3 h after advice"]):::human
+  H -->|"query 38%"| Q["Query: stent sticker missing,<br/>OT notes missing, dx mismatch,<br/>pending report not stated..."]:::bad
+  Q --> R["Chase document / rewrite summary"]:::bad
+  R --> G
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef human fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 3.</b> As-is discharge process in MediTrack, with the delay loop.</figcaption></figure>
+
+<h2>3.4 Data model</h2>
+<figure data-maxh="900"><pre class="mermaid">
+erDiagram
+  direction LR
+  PT_MST ||--o{ IP_ADM_DTL : "has admissions"
+  DR_MST ||--o{ IP_ADM_DTL : "treats"
+  IP_ADM_DTL ||--o{ IP_DIAG_DTL : "diagnoses"
+  IP_ADM_DTL ||--o{ IP_PROC_DTL : "procedures"
+  IP_ADM_DTL ||--o{ LAB_RSLT : "lab results"
+  IP_ADM_DTL ||--o{ PHR_ISS_DTL : "pharmacy issues"
+  IP_ADM_DTL ||--o{ CLN_NOTE : "clinical notes"
+  IP_ADM_DTL ||--o{ PT_DOC : "documents"
+  IP_ADM_DTL ||--o| IP_DSCH_SUMM : "summary"
+  IP_ADM_DTL ||--o{ TPA_CLM_DTL : "TPA claims"
+  PT_MST {
+    INTEGER PT_ID PK
+    TEXT UHID UK
+    TEXT PT_NM
+    INTEGER PT_AGE
+    TEXT PT_SEX
+  }
+  DR_MST {
+    TEXT DR_ID PK
+    TEXT DR_NM
+    TEXT DR_SPCL
+    TEXT DR_REG_NO
+  }
+  IP_ADM_DTL {
+    TEXT IP_NO PK
+    INTEGER PT_ID FK
+    TEXT DR_ID FK
+    TEXT ADM_DT
+    TEXT WRD_CD
+    TEXT PAY_MODE "CASH or CASHLESS"
+    TEXT TPA_NM
+    TEXT POL_NO
+    TEXT STS "ADM, DA, DSCH"
+    TEXT DSCH_ADV_DT
+    TEXT DSCH_DT
+  }
+  IP_DIAG_DTL {
+    TEXT IP_NO FK
+    TEXT ICD_CD
+    TEXT DIAG_DESC
+    TEXT DIAG_TYP "PROV or FINAL"
+  }
+  IP_PROC_DTL {
+    TEXT IP_NO FK
+    TEXT PROC_CD "CPT"
+    TEXT PROC_DESC
+    TEXT PROC_DT
+  }
+  LAB_RSLT {
+    TEXT IP_NO FK
+    TEXT TST_NM
+    TEXT RSLT_VAL
+    TEXT FLG "H or L"
+    TEXT STS "FINAL or PENDING"
+  }
+  PHR_ISS_DTL {
+    TEXT IP_NO FK
+    TEXT DRUG_NM
+    TEXT DOSE
+    TEXT FREQ
+    TEXT DUR
+    TEXT ISS_TYP "INPATIENT or DISCHARGE"
+  }
+  CLN_NOTE {
+    TEXT IP_NO FK
+    TEXT NOTE_DT
+    TEXT NOTE_TYP "DR or NRS"
+    TEXT NOTE_TXT
+  }
+  PT_DOC {
+    INTEGER DOC_ID PK
+    TEXT IP_NO FK
+    TEXT DOC_TYP
+    TEXT FILE_NM
+    TEXT UPL_BY
+  }
+  IP_DSCH_SUMM {
+    TEXT IP_NO PK
+    TEXT SUMM_TXT
+  }
+  TPA_CLM_DTL {
+    TEXT IP_NO FK
+    TEXT CLM_STS "APPROVED or QUERY"
+    TEXT QRY_RSN
+  }
+</pre><figcaption><b>Figure 4.</b> MediTrack data model (clinical core). System tables <span class="mono">SYS_EXT_LNK</span> and <span class="mono">SYS_AUDIT</span> are described in 3.5.</figcaption></figure>
+
+<h2>3.5 Table dictionary</h2>
+<table>
+  <thead><tr><th style="width:18%">Table</th><th style="width:30%">Holds</th><th>Key columns / notes</th></tr></thead>
+  <tr><td class="mono">PT_MST</td><td>Patient master</td><td>UHID unique; name, age, sex, mobile, address</td></tr>
+  <tr><td class="mono">DR_MST</td><td>Doctor master</td><td>DR_REG_NO (medical council registration) is required by insurers</td></tr>
+  <tr><td class="mono">IP_ADM_DTL</td><td>One row per admission</td><td>STS lifecycle <b>ADM → DA → DSCH</b>; DSCH_ADV_DT starts the discharge clock</td></tr>
+  <tr><td class="mono">IP_DIAG_DTL</td><td>Diagnoses</td><td>DIAG_TYP PROV vs FINAL. A FINAL diagnosis is required for TPA approval.</td></tr>
+  <tr><td class="mono">IP_PROC_DTL</td><td>Procedures</td><td>CPT code drives the required documents (see 5.6)</td></tr>
+  <tr><td class="mono">LAB_RSLT</td><td>Lab results fed by LIS (HL7)</td><td>STS PENDING = sent out, not yet reported</td></tr>
+  <tr><td class="mono">PHR_ISS_DTL</td><td>Pharmacy issues</td><td>ISS_TYP DISCHARGE = the discharge prescription (source of truth for meds)</td></tr>
+  <tr><td class="mono">CLN_NOTE</td><td>Free-text doctor and nursing notes</td><td>The main input the LLM summarises</td></tr>
+  <tr><td class="mono">PT_DOC</td><td>Scanned / uploaded documents</td><td>DOC_TYP: CATH_RPT, IMPLANT_STKR, OT_NOTE, CONSENT, ID_PROOF, DSCHSUMM…; UPL_BY BATCH_IMPORT for hot-folder imports</td></tr>
+  <tr><td class="mono">IP_DSCH_SUMM</td><td>Manually typed summaries</td><td>Historic ground truth for POC evaluation</td></tr>
+  <tr><td class="mono">TPA_CLM_DTL</td><td>Insurer final-approval submissions</td><td>CLM_STS APPROVED / QUERY with QRY_RSN; source of the 38% baseline</td></tr>
+  <tr><td class="mono">SYS_EXT_LNK</td><td>Admin-configurable External Links (v3.1, 2016)</td><td>LNK_URL with <span class="mono">{IP_NO}</span>/<span class="mono">{UHID}</span> placeholders; <b>DISP_MD</b> LINK (new window) or <b>TAB</b> (embedded patient-file tab)</td></tr>
+  <tr><td class="mono">SYS_AUDIT</td><td>Audit trail</td><td>User, action, reference</td></tr>
+</table>
+
+<h2>3.6 Internal endpoints (MediTrack UI only, not for integration)</h2>
+<table>
+  <thead><tr><th style="width:10%">Method</th><th style="width:38%">Path</th><th>Purpose</th></tr></thead>
+  <tr><td>GET</td><td class="mono">/int/census</td><td>Current in-patients (STS ADM, DA)</td></tr>
+  <tr><td>GET</td><td class="mono">/int/discharged</td><td>Last 60 discharged patients</td></tr>
+  <tr><td>GET</td><td class="mono">/int/ip/{ip_no}</td><td>Full patient file: admission, diagnoses, procedures, labs, meds, notes, docs, summary, claims, active links</td></tr>
+  <tr><td>POST</td><td class="mono">/int/ip/{ip_no}/discharge-advise</td><td>ADM → DA, stamps DSCH_ADV_DT</td></tr>
+  <tr><td>POST</td><td class="mono">/int/ip/{ip_no}/discharge</td><td>DA → DSCH (final discharge)</td></tr>
+  <tr><td>POST</td><td class="mono">/int/ip/{ip_no}/manual-summary</td><td>Save typed summary</td></tr>
+  <tr><td>GET</td><td class="mono">/int/ip/{ip_no}/summary-template</td><td>Download Word template (.doc)</td></tr>
+  <tr><td>POST · GET</td><td class="mono">/int/ip/{ip_no}/docs · /int/docs/{doc_id}</td><td>Upload / view documents</td></tr>
+  <tr><td>GET · POST</td><td class="mono">/int/admin/extlinks[/{id}/toggle]</td><td>List / add / enable-disable External Links</td></tr>
+  <tr><td>GET</td><td class="mono">/int/mis/discharge-tat · /int/audit</td><td>MIS discharge TAT report · audit trail</td></tr>
+</table>
+
+<h2>3.7 Extension points (discovered with Hospital IT)</h2>
+<table>
+  <thead><tr><th style="width:24%">Extension point</th><th style="width:26%">Originally built for</th><th>How the Copilot uses it</th></tr></thead>
+  <tr><td><b>MIS reporting replica</b></td><td>Monthly management reports</td><td><b>Read</b>: all patient data is read from the replica, never from the primary DB</td></tr>
+  <tr><td><b>External Links, display = TAB</b></td><td>PACS image viewer (2016)</td><td><b>Entry point</b>: one configuration row adds the "AI Discharge Draft" tab to every patient file</td></tr>
+  <tr><td><b>Batch document import hot-folder</b></td><td>MRD scanner (2013)</td><td><b>Write-back</b>: the signed summary PDF is dropped here and filed by MediTrack itself</td></tr>
+</table>
+
+<h2>3.8 Baseline metrics (from the MIS replica, last quarter)</h2>
+<table>
+  <thead><tr><th>Measure</th><th>Value</th><th>Source</th></tr></thead>
+  <tr><td>Discharges analysed</td><td>151 (67 cash, 84 cashless)</td><td><span class="mono">IP_ADM_DTL</span> where STS = DSCH</td></tr>
+  <tr><td>Avg discharge TAT: cash / cashless</td><td>2.5 h / 6.3 h</td><td>DSCH_DT − DSCH_ADV_DT</td></tr>
+  <tr><td>TPA query rate</td><td>38.1% (32 of 84)</td><td><span class="mono">TPA_CLM_DTL</span></td></tr>
+  <tr><td>Top query reason</td><td>Stent implant sticker / invoice not attached (9)</td><td>QRY_RSN</td></tr>
+</table>
+
+<!-- ============================================================ 4 POC HLD -->
+<h1>4. POC: High-Level Design</h1>
+<h2>4.1 Objectives &amp; non-goals</h2>
+<div class="grid2">
+<div><h3>Objectives</h3><ul>
+  <li>Prove an LLM can draft discharge-summary narrative <b>without inventing facts</b></li>
+  <li>Measure quality against doctors' own summaries (evals)</li>
+  <li>Prove latency and cost are acceptable</li>
+  <li>Get clinician and TPA-desk feedback (business verification)</li>
+  <li>Validate the TPA-readiness rules against real query reasons</li>
+</ul></div>
+<div><h3>Non-goals</h3><ul>
+  <li>No connection to MediTrack or any live hospital system</li>
+  <li>No identifiable patient data (de-identified export only)</li>
+  <li>No signing, write-back, or production hardening</li>
+  <li>No UI polish; Streamlit is deliberately throwaway</li>
+</ul></div>
+</div>
+
+<h2>4.2 Architecture</h2>
+<figure data-maxh="560"><pre class="mermaid">
+flowchart TB
+  subgraph H["Inside hospital network"]
+    MT[("MediTrack DB<br/>read-only")]:::legacy
+    EXP["export_deidentified.py<br/>run with Hospital IT"]:::copilot
+  end
+  JSON[/"deidentified_encounters.json<br/>11 past discharges +<br/>doctor-written summaries"/]:::store
+  subgraph POC["Streamlit POC (port 8501)"]
+    UI["4 tabs: Generate, Source trace,<br/>Eval, Clinician feedback"]:::copilot
+    CORE["copilot_core<br/>Encounter, agent, trace,<br/>rules, assemble"]:::copilot
+    EV["evaluation.py"]:::copilot
+    FB[/"feedback.jsonl<br/>eval_results.json"/]:::store
+  end
+  LLM["Groq API<br/>openai/gpt-oss-20b"]:::ext
+  LF["Logfire<br/>traces"]:::ext
+  MT --> EXP -->|"mask name, hash UHID,<br/>hide policy"| JSON --> UI
+  UI --> CORE
+  UI --> EV --> CORE
+  CORE -->|"clinical facts only"| LLM
+  CORE -.->|"OpenTelemetry"| LF
+  UI --> FB
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ext fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+</pre><figcaption><b>Figure 5.</b> POC context and architecture. The only contact with MediTrack is a one-off, read-only, de-identified export.</figcaption></figure>
+
+<h2>4.3 What the AI writes vs what is deterministic</h2>
+<table>
+  <thead><tr><th style="width:34%">Summary section</th><th style="width:20%">Produced by</th><th>Rationale</th></tr></thead>
+  <tr><td>Final diagnosis + ICD-10</td><td><span class="tag t-lock">MediTrack data</span></td><td>Legal and insurance fact; already coded</td></tr>
+  <tr><td>Discharge medications</td><td><span class="tag t-lock">Pharmacy data</span></td><td>A hallucinated drug or dose is a patient-safety event</td></tr>
+  <tr><td>Reports pending at discharge</td><td><span class="tag t-lock">Lab data</span></td><td>Frequent TPA query when omitted</td></tr>
+  <tr><td>TPA-readiness checklist</td><td><span class="tag t-lock">Rules engine</span></td><td>Insurer rules are known, so code them</td></tr>
+  <tr><td>Presenting complaints, hospital course, procedure findings, key investigations, condition at discharge, follow-up, diet &amp; activity</td><td><span class="tag t-ai">LLM draft</span></td><td>Turning scattered free-text notes into a coherent narrative is where LLMs add value. Always doctor-editable.</td></tr>
+</table>
+<div class="callout"><b>Design principle:</b> the best AI solution here is roughly 30% AI and 70% deterministic engineering. The LLM is used only where no source of truth exists.</div>
+
+<h2>4.4 Technology stack</h2>
+<table>
+  <thead><tr><th style="width:26%">Concern</th><th>Choice</th><th style="width:36%">Why</th></tr></thead>
+  <tr><td>UI</td><td>Streamlit 1.64</td><td>Fast to build, disposable, familiar to data teams</td></tr>
+  <tr><td>Agent framework</td><td>Pydantic AI 2.50</td><td>Typed, validated structured output; native Logfire instrumentation</td></tr>
+  <tr><td>Model</td><td><span class="mono">groq:openai/gpt-oss-20b</span></td><td>Open-weight, very fast on Groq, low cost</td></tr>
+  <tr><td>Structured output</td><td><span class="mono">NativeOutput(SummaryDraft)</span></td><td>Provider-enforced JSON schema (Groq rejects gpt-oss tool-call output)</td></tr>
+  <tr><td>Observability</td><td>Logfire (OpenTelemetry)</td><td>Prompt, output, tokens, latency per run</td></tr>
+  <tr><td>Data</td><td>JSON export; pandas for eval tables</td><td>No database needed</td></tr>
+</table>
+
+<h2>4.5 Evaluation strategy</h2>
+<p>Each of the 11 historic encounters is drafted by the AI and scored automatically against the patient's source data and the doctor's original summary. Clinicians and the TPA desk then score a sample by hand (Clinician feedback tab). Automatic metrics are defined in 5.7.</p>
+
+<!-- ============================================================ 5 POC LLD -->
+<h1>5. POC: Low-Level Design</h1>
+<h2>5.1 Modules</h2>
+<table>
+  <thead><tr><th style="width:30%">Module</th><th>Responsibility</th></tr></thead>
+  <tr><td class="mono">copilot_core/models.py</td><td>Pydantic contracts: <span class="mono">Encounter</span> (input), <span class="mono">SummaryDraft</span> (LLM output), <span class="mono">DraftResult</span> (run metadata)</td></tr>
+  <tr><td class="mono">copilot_core/encounter.py</td><td>The only module that knows MediTrack's schema: SQL → <span class="mono">Encounter</span>; <span class="mono">deidentify()</span></td></tr>
+  <tr><td class="mono">copilot_core/agent.py</td><td>Pydantic AI agent, prompt, model settings, retry, fallback chain, cache</td></tr>
+  <tr><td class="mono">copilot_core/trace.py</td><td>Source-trace guardrail and highlighting</td></tr>
+  <tr><td class="mono">copilot_core/rules.py</td><td>TPA-readiness checklist and score</td></tr>
+  <tr><td class="mono">copilot_core/assemble.py</td><td>Final summary = deterministic facts + AI narrative</td></tr>
+  <tr><td class="mono">copilot_core/observability.py · config.py</td><td>Logfire setup (only if token present) · environment configuration</td></tr>
+  <tr><td class="mono">poc/export_deidentified.py</td><td>Read-only export of past discharges with summaries</td></tr>
+  <tr><td class="mono">poc/evaluation.py · poc/app.py</td><td>Eval metrics · Streamlit UI</td></tr>
+  <tr><td class="mono">scripts/warm_cache.py</td><td>Pre-generates live drafts for every patient (offline fallback)</td></tr>
+</table>
+
+<h2>5.2 Data contracts</h2>
+<figure><pre class="mermaid">
+classDiagram
+  direction LR
+  class Encounter {
+    +str ip_no
+    +str uhid
+    +str patient_name
+    +int age
+    +str sex
+    +str admission_date
+    +str discharge_advised_date
+    +str consultant
+    +str consultant_reg_no
+    +str pay_mode
+    +str tpa_name
+    +str policy_no
+    +str reason_for_admission
+    +List~str~ documents
+    +str reference_summary
+    +final_diagnoses() List
+    +pending_labs() List
+    +for_llm() dict
+  }
+  class Diagnosis {
+    +str icd10
+    +str description
+    +str type
+  }
+  class Procedure {
+    +str code
+    +str description
+    +str date
+    +str surgeon
+  }
+  class LabResult {
+    +str test
+    +str value
+    +str unit
+    +str flag
+    +str date
+    +str status
+  }
+  class Medication {
+    +str drug
+    +str dose
+    +str frequency
+    +str route
+    +str duration
+  }
+  class ClinicalNote {
+    +str datetime
+    +str type
+    +str author
+    +str text
+  }
+  class SummaryDraft {
+    +str presenting_complaints
+    +List~str~ hospital_course
+    +List~str~ procedures_performed
+    +List~KeyInvestigation~ key_investigations
+    +str condition_at_discharge
+    +List~str~ follow_up_advice
+    +List~str~ diet_and_activity
+  }
+  class KeyInvestigation {
+    +str test
+    +str result
+    +str interpretation
+  }
+  class DraftResult {
+    +str ip_no
+    +SummaryDraft draft
+    +str source
+    +str model
+    +int latency_ms
+    +int input_tokens
+    +int output_tokens
+    +float cost_usd
+    +str error
+  }
+  Encounter "1" *-- "many" Diagnosis
+  Encounter "1" *-- "many" Procedure
+  Encounter "1" *-- "many" LabResult
+  Encounter "1" *-- "many" Medication : inpatient and discharge
+  Encounter "1" *-- "many" ClinicalNote
+  SummaryDraft "1" *-- "many" KeyInvestigation
+  DraftResult --> SummaryDraft
+</pre><figcaption><b>Figure 6.</b> Data contracts. <span class="mono">for_llm()</span> excludes ip_no, uhid, patient_name, policy_no, tpa_name, consultant_reg_no, documents, discharge_meds and reference_summary.</figcaption></figure>
+
+<h2>5.3 Draft generation &amp; fallback chain</h2>
+<figure><pre class="mermaid">
+flowchart TD
+  IN(["generate_draft(encounter)"]):::copilot --> SP["Open Logfire span<br/>discharge_copilot.generate_draft"]:::copilot
+  SP --> CF{"use_cache_first<br/>and cache exists?"}
+  CF -->|"yes"| RC["Return cached draft"]:::store
+  CF -->|"no"| OFF{"Offline?<br/>no GROQ_API_KEY or<br/>COPILOT_OFFLINE=1"}
+  OFF -->|"no"| PR["Build prompt:<br/>INSTRUCTIONS + Encounter.for_llm() JSON"]:::copilot
+  PR --> RUN["agent.run_sync<br/>gpt-oss-20b, NativeOutput schema"]:::ai
+  RUN --> OK{"Valid SummaryDraft?"}
+  OK -->|"yes"| RES["DraftResult source=live<br/>latency, tokens, cost"]:::ai
+  RES --> WC{"WRITE_CACHE?<br/>(warm script only)"}
+  WC -->|"yes"| SV["Save to copilot_core/cache"]:::store
+  WC -->|"no"| RET
+  SV --> RET(["Return result"]):::copilot
+  OK -->|"HTTP 400 / network /<br/>validation error"| AT{"Attempt less than 2?"}
+  AT -->|"yes, retry"| RUN
+  AT -->|"no"| FB
+  OFF -->|"yes"| FB{"Cached draft exists?"}
+  FB -->|"yes"| CA["DraftResult source=cached<br/>+ error reason"]:::store
+  FB -->|"no"| TP["template_draft():<br/>built directly from notes and labs<br/>source=template"]:::lock
+  CA --> RET
+  TP --> RET
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+  classDef lock fill:#e0e7ff,stroke:#6366f1,color:#1e1b4b
+</pre><figcaption><b>Figure 7.</b> Draft generation with the three-level fallback: live LLM → cached draft → template. A demo or a ward never gets an empty screen.</figcaption></figure>
+
+<h2>5.4 Agent configuration</h2>
+<table>
+  <thead><tr><th style="width:28%">Setting</th><th>Value</th></tr></thead>
+  <tr><td>Model</td><td><span class="mono">groq:openai/gpt-oss-20b</span> (env <span class="mono">COPILOT_MODEL</span>)</td></tr>
+  <tr><td>Output</td><td><span class="mono">NativeOutput(SummaryDraft)</span>: JSON schema enforced by the provider; list fields default to empty so partial outputs are not rejected</td></tr>
+  <tr><td>Model settings</td><td><span class="mono">max_tokens=6000, temperature=0.2, groq_reasoning_effort="low"</span> (caps reasoning so it cannot exhaust the budget)</td></tr>
+  <tr><td>Retries</td><td>Agent validation retries = 2; plus 2 attempts around provider errors (HTTP 400 schema rejections are not retried by the framework)</td></tr>
+  <tr><td>Pricing (config)</td><td>USD 0.075 / 1M input tokens, 0.30 / 1M output tokens; INR at 88/USD</td></tr>
+</table>
+<h3>Prompt rules (INSTRUCTIONS)</h3>
+<ul>
+  <li>Use ONLY facts in the encounter data; never invent drugs, doses, lab values, dates, diagnoses or procedures.</li>
+  <li>Copy numbers exactly (values, units, LVEF, stent sizes). Dates as DD/MM/YYYY; never predict a discharge date.</li>
+  <li>Do not write a discharge medication list (added from pharmacy). Mention PENDING reports as awaited.</li>
+  <li>Hospital course: 4–7 chronological bullets in Indian clinical style (CAG, PTCA, DES, LVEF, TIMI allowed).</li>
+  <li>List every procedure. Follow-up / diet only if stated; otherwise "As advised by treating consultant". Fill every schema field.</li>
+</ul>
+
+<h2>5.5 Source-trace guardrail</h2>
+<figure><pre class="mermaid">
+flowchart LR
+  D["Draft text<br/>(or doctor-edited text)"]:::ai --> X1["Scan drug names<br/>(~75-drug formulary)"]:::copilot
+  D --> X2["Scan lab-test terms<br/>(~40 terms + aliases)"]:::copilot
+  D --> X3["Scan numbers<br/>regex, incl. 48k = 48000"]:::copilot
+  S[("Patient source corpus:<br/>diagnoses, CPT codes, labs,<br/>meds, notes, dates")]:::lock
+  X1 --> C1{"Drug in patient's<br/>in-patient or<br/>discharge meds?"}
+  X2 --> C2{"Test in patient's<br/>labs or notes?"}
+  X3 --> C3{"Number in source?<br/>(2026 also allows 26)"}
+  S -.-> C1 & C2 & C3
+  C1 -->|"yes"| V["verified"]:::ok
+  C1 -->|"no"| HX["hallucinated"]:::bad
+  C2 -->|"yes"| V
+  C2 -->|"no"| HX
+  C3 -->|"yes"| V
+  C3 -->|"no"| U["unverified number"]:::warn
+  V & HX & U --> OUT["Findings with spans:<br/>highlighted HTML, counts,<br/>faithfulness %"]:::copilot
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef lock fill:#e0e7ff,stroke:#6366f1,color:#1e1b4b
+  classDef ok fill:#dcfce7,stroke:#16a34a,color:#14532d
+  classDef warn fill:#fef3c7,stroke:#d97706,color:#78350f
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 8.</b> Source-trace algorithm. Longest matches win; overlapping spans are counted once.</figcaption></figure>
+
+<h2>5.6 TPA-readiness rules</h2>
+<table>
+  <thead><tr><th style="width:18%">Check id</th><th style="width:34%">Rule</th><th style="width:12%">Result</th><th>Prevents TPA query</th></tr></thead>
+  <tr><td class="mono">final_dx</td><td>At least one FINAL diagnosis with ICD-10</td><td>pass / fail</td><td>Final diagnosis does not match provisional at pre-auth</td></tr>
+  <tr><td class="mono">dx_proc_match</td><td>Each procedure's CPT is justified by a diagnosis family (table below)</td><td>pass / fail / na</td><td>Diagnosis–procedure mismatch</td></tr>
+  <tr><td class="mono">required_docs</td><td>Documents required by each procedure are in <span class="mono">PT_DOC</span></td><td>pass / fail / na</td><td>Stent implant sticker not attached; operation notes not attached</td></tr>
+  <tr><td class="mono">pending_reports</td><td>PENDING labs are listed in the summary (auto)</td><td>warn / pass</td><td>Pending report status not mentioned</td></tr>
+  <tr><td class="mono">doctor_reg</td><td>Consultant name and registration number present</td><td>pass / fail</td><td>Treating doctor registration number missing</td></tr>
+  <tr><td class="mono">discharge_meds</td><td>Discharge meds exist, each with dose, frequency, duration</td><td>pass / warn / fail</td><td>n/a (safety)</td></tr>
+  <tr><td class="mono">policy</td><td>Cashless: TPA name and policy number present</td><td>pass / fail / na</td><td>n/a</td></tr>
+</table>
+<table>
+  <thead><tr><th>CPT</th><th>Procedure</th><th>Justifying ICD-10 families</th><th>Required documents</th></tr></thead>
+  <tr><td>92928</td><td>PTCA + stent</td><td>I20, I21, I22, I24, I25</td><td>CATH_RPT, IMPLANT_STKR</td></tr>
+  <tr><td>93458</td><td>Coronary angiography</td><td>I20, I21, I22, I24, I25</td><td>CATH_RPT</td></tr>
+  <tr><td>27447</td><td>Total knee arthroplasty</td><td>M17</td><td>OT_NOTE, IMPLANT_STKR</td></tr>
+  <tr><td>27125</td><td>Hip hemiarthroplasty</td><td>S72, M16, M87</td><td>OT_NOTE, IMPLANT_STKR</td></tr>
+  <tr><td>47562</td><td>Laparoscopic cholecystectomy</td><td>K80, K81, K82</td><td>OT_NOTE</td></tr>
+  <tr><td>44970</td><td>Laparoscopic appendectomy</td><td>K35, K36, K37</td><td>OT_NOTE</td></tr>
+</table>
+<p><b>Readiness score</b> = passed checks ÷ applicable checks (checks with status <i>na</i> excluded). Example: golden patient Ramesh Kulkarni scores 71% (implant sticker missing, one pending report) and 86% once the sticker is uploaded.</p>
+
+<h2>5.7 Eval harness</h2>
+<figure><pre class="mermaid">
+flowchart LR
+  E[/"11 encounters"/]:::store --> G["generate_draft<br/>(or cached)"]:::ai --> T["draft_to_text"]:::copilot
+  T --> M1["Completeness<br/>required sections present"]:::copilot
+  T --> M2["Trace: hallucinated,<br/>unverified, faithfulness"]:::copilot
+  T --> M3["Key-fact recall vs<br/>doctor summary"]:::copilot
+  E --> M4["TPA readiness"]:::lock
+  G --> M5["Latency, tokens, cost"]:::copilot
+  M1 & M2 & M3 & M4 & M5 --> R[/"eval_results.json<br/>+ scorecard"/]:::store
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef lock fill:#e0e7ff,stroke:#6366f1,color:#1e1b4b
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+</pre><figcaption><b>Figure 9.</b> Eval harness.</figcaption></figure>
+<table>
+  <thead><tr><th style="width:22%">Metric</th><th>Definition</th></tr></thead>
+  <tr><td>Completeness %</td><td>Required sections present: presenting complaints, ≥3 hospital-course bullets, key investigations, condition at discharge, follow-up, and procedures (if the patient had any)</td></tr>
+  <tr><td>Hallucinated</td><td>Drugs or lab tests mentioned in the draft that are not in the patient's record</td></tr>
+  <tr><td>Unverified numbers</td><td>Numbers not found in the patient's source data</td></tr>
+  <tr><td>Faithfulness %</td><td>Verified entities ÷ all traced entities</td></tr>
+  <tr><td>Key-fact recall %</td><td>Share of drugs, tests and numbers in the doctor's summary (excluding the medication line) that also appear in the draft</td></tr>
+  <tr><td>Latency, tokens, cost</td><td>Per draft, from the agent run usage</td></tr>
+</table>
+
+<h2>5.8 Streamlit UI</h2>
+<table>
+  <thead><tr><th style="width:18%">Tab</th><th>Behaviour</th></tr></thead>
+  <tr><td>Generate</td><td>Encounter picker (sidebar) → source-data expander → Generate → metric strip (source, latency, tokens, ₹ cost, TPA %) → assembled summary with 🔒 sections + TPA checklist</td></tr>
+  <tr><td>Source trace</td><td>Editable draft text re-traced on every edit; colour legend; highlighted text; table of non-verified findings (add "Warfarin 5 mg OD" to demo)</td></tr>
+  <tr><td>Eval</td><td>Run all encounters (optionally reuse cache) with progress bar; KPIs + per-encounter table; persisted to <span class="mono">poc/data/eval_results.json</span></td></tr>
+  <tr><td>Clinician feedback</td><td>AI draft vs doctor original side-by-side; reviewer, three 1–5 ratings, "would sign?", comments → <span class="mono">feedback.jsonl</span>; aggregate KPIs</td></tr>
+</table>
+<p>Drafts are kept in <span class="mono">st.session_state["drafts"]</span> and pre-loaded from the last eval run, so every tab works without a new LLM call.</p>
+
+<h2>5.9 De-identified export</h2>
+<p><span class="mono">poc/export_deidentified.py</span> opens MediTrack read-only (<span class="mono">mode=ro</span>), selects discharged admissions that have a typed summary, builds each <span class="mono">Encounter</span>, then applies <span class="mono">deidentify()</span>: IP No → <span class="mono">ENC-nn</span>, name → <span class="mono">Patient ENC-nn</span>, UHID → SHA-256 prefix, policy → XXXX. Clinical content is preserved.</p>
+
+<h2>5.10 Results (live model, 11 encounters)</h2>
+<div class="kpis">
+  <div class="kpi"><b>0</b><span>Hallucinated drugs / tests</span></div>
+  <div class="kpi"><b>99%</b><span>Faithfulness</span></div>
+  <div class="kpi"><b>74%</b><span>Key-fact recall</span></div>
+  <div class="kpi"><b>87%</b><span>Completeness</span></div>
+  <div class="kpi"><b>0.6 s</b><span>Median latency</span></div>
+  <div class="kpi"><b>$0.0002</b><span>Cost per summary (~₹0.02)</span></div>
+  <div class="kpi"><b>19 / 19</b><span>Live drafts after fixes</span></div>
+  <div class="kpi"><b>58 / 58</b><span>Golden draft entities verified</span></div>
+</div>
+<table>
+  <thead><tr><th style="width:30%">Finding</th><th>Resolution</th></tr></thead>
+  <tr><td>Groq rejected gpt-oss tool-call output; all drafts silently fell back to template</td><td>Switched to <span class="mono">NativeOutput</span>. Lesson: test with the real provider, not just the framework.</td></tr>
+  <tr><td>Some drafts failed schema validation (missing list fields) or exhausted tokens reasoning</td><td>Optional list fields, reasoning effort "low", max_tokens 6000, provider-error retry: 16/19 → 19/19 live</td></tr>
+  <tr><td>ENC-01: model wrote wrong dates</td><td>Caught by guardrail as unverified numbers; doctor corrects before signing</td></tr>
+  <tr><td>Follow-up often missing</td><td>Not a model bug: the follow-up plan is not written in notes. Process fix: a follow-up line in the final ward note.</td></tr>
+</table>
+
+<!-- ============================================================ 6 INTEGRATED HLD -->
+<h1>6. Integrated system: High-Level Design</h1>
+<h2>6.1 Design principles</h2>
+<table>
+  <thead><tr><th style="width:30%">Principle</th><th>How it is realised</th></tr></thead>
+  <tr><td>Do not touch the legacy core</td><td>Read only from the MIS replica; write back only through MediTrack's own import hot-folder; entry point via configuration</td></tr>
+  <tr><td>Human in the loop</td><td>AI drafts; the treating doctor edits and signs. Nothing is sent without a signature.</td></tr>
+  <tr><td>Adoption over novelty</td><td>Doctors never leave MediTrack: the review screen is a patient-file tab in MediTrack's classic look</td></tr>
+  <tr><td>Deterministic where possible</td><td>Diagnoses, meds, pending reports and TPA rules come from data and code, not the LLM</td></tr>
+  <tr><td>Always available</td><td>Fallback chain (live → cached → template); doctors can always use the old Word template</td></tr>
+  <tr><td>Observable and auditable</td><td>Logfire traces for every step; audit events in the Copilot store</td></tr>
+</table>
+
+<h2>6.2 Architecture</h2>
+<figure data-maxh="900"><pre class="mermaid">
+%%{init: {"themeVariables": {"fontSize": "15px"}, "flowchart": {"nodeSpacing": 22, "rankSpacing": 34}}}%%
+flowchart TB
+  DR["Doctor / RMO"]:::human
+  PT["Pilot team, management"]:::human
+  subgraph MT["MediTrack HMS - code unchanged (port 8001)"]
+    PF["Patient file<br/>Discharge Advised button"]:::legacy
+    TAB["AI Discharge Draft tab<br/>(External Link, DISP_MD = TAB)"]:::legacy
+    PDB[("meditrack.db<br/>primary")]:::store
+    HF[/"import_hotfolder"/]:::legacy
+    IMP["Batch Document Import"]:::legacy
+    DOC["Documents tab"]:::legacy
+  end
+  subgraph IT["Hospital IT"]
+    RS["replica_sync<br/>every 3 s"]:::legacy
+    REP[("replica.db<br/>READ-ONLY")]:::store
+  end
+  subgraph CP["Discharge Copilot service (port 8002)"]
+    AD["Adapter<br/>polls every 2 s"]:::copilot
+    CORE["copilot_core<br/>agent, trace, rules, assemble"]:::copilot
+    API["REST API<br/>/api/*"]:::copilot
+    CDB[("copilot.db<br/>drafts + audit events")]:::store
+    EMB["Embedded review UI<br/>#/embed/review/IP_NO<br/>classic skin"]:::copilot
+    WL["Worklist + Monitor<br/>modern UI"]:::copilot
+    PDF["PDF renderer"]:::copilot
+  end
+  LLM["Groq<br/>gpt-oss-20b"]:::ext
+  LF["Logfire"]:::ext
+  DR --> PF -->|"STS = DA"| PDB
+  PDB --> RS --> REP
+  REP -->|"read"| AD --> CORE -->|"clinical facts"| LLM
+  CORE --> CDB
+  REP -->|"live TPA checks"| API
+  API <--> CDB
+  DR --> TAB -->|"iframe"| EMB <--> API
+  PT --> WL <--> API
+  API -->|"sign"| PDF -->|"IPNO_DSCHSUMM_ts.pdf"| HF --> IMP --> DOC
+  IMP -->|"PT_DOC"| PDB
+  CP -.->|"traces"| LF
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ext fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+  classDef human fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+</pre><figcaption><b>Figure 10.</b> Integrated architecture. The Copilot touches MediTrack only through three pre-existing doors: replica (read), External Link tab (entry), hot-folder (write).</figcaption></figure>
+
+<h2>6.3 End-to-end flow</h2>
+<figure><pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor Doc as Doctor
+  participant MT as MediTrack
+  participant REP as Replica
+  participant AD as Copilot adapter
+  participant AI as Agent + Groq
+  participant TAB as AI Discharge Draft tab
+  participant HF as Hot-folder importer
+  Doc->>MT: Click Discharge Advised
+  MT->>MT: Set STS = DA and advised time
+  MT-->>REP: replica_sync copies DB (within 3 s)
+  AD->>REP: Poll for STS = DA (every 2 s)
+  AD->>AD: New patient - create draft row GENERATING
+  AD->>REP: load_encounter (read-only SQL)
+  AD->>AI: Encounter.for_llm() JSON
+  AI-->>AD: SummaryDraft (about 1 s, 3.4k tokens)
+  AD->>AD: Trace guardrail, store draft READY
+  Doc->>TAB: Open AI Discharge Draft tab
+  TAB->>AD: GET draft, checks, trace (polls while waiting)
+  Note over TAB: TPA readiness 71 percent - implant sticker missing
+  Doc->>MT: Documents tab - upload stent sticker
+  MT-->>REP: Replicated within 3 s
+  TAB->>AD: GET checks (every 3 s) - now 86 percent
+  Doc->>TAB: Edit text, Sign and send
+  TAB->>AD: POST sign
+  AD->>HF: Write .part file, rename to IPNO_DSCHSUMM_ts.pdf
+  HF->>MT: Importer files PDF (within 3 s), PT_DOC row BATCH_IMPORT
+  Doc->>MT: Documents tab shows signed summary
+</pre><figcaption><b>Figure 11.</b> Golden-path sequence for patient IP2609-0142. Draft is ready about 5–7 s after "Discharge Advised".</figcaption></figure>
+
+<h2>6.4 Deployment view</h2>
+<table>
+  <thead><tr><th style="width:24%">Process</th><th style="width:26%">Pilot (demo)</th><th>Production equivalent</th></tr></thead>
+  <tr><td>MediTrack</td><td>uvicorn :8001 (FastAPI + SQLite)</td><td>Existing MediTrack Java/Oracle servers (unchanged)</td></tr>
+  <tr><td>Replica</td><td><span class="mono">copilot.replica_sync</span> (SQLite backup API, atomic swap)</td><td>Oracle Data Guard / MIS reporting replica owned by IT</td></tr>
+  <tr><td>Copilot service</td><td>uvicorn :8002 (API + adapter thread + built React UI)</td><td>Container in hospital VPC / on-prem VM; health-checked</td></tr>
+  <tr><td>Copilot store</td><td>SQLite <span class="mono">copilot/data/copilot.db</span></td><td>PostgreSQL with backups</td></tr>
+  <tr><td>LLM</td><td>Groq API</td><td>Zero-data-retention endpoint or approved in-region host</td></tr>
+  <tr><td>Observability</td><td>Logfire (if token set)</td><td>Logfire / hospital OpenTelemetry collector</td></tr>
+  <tr><td>Launch</td><td><span class="mono">./run.sh integrated</span> (starts all three)</td><td>systemd / Kubernetes</td></tr>
+</table>
+
+<h2>6.5 Security &amp; compliance</h2>
+<table>
+  <thead><tr><th style="width:30%">Concern</th><th>Control</th></tr></thead>
+  <tr><td>Legacy integrity</td><td>No writes to MediTrack DB; replica opened with <span class="mono">mode=ro</span>; write-back via MediTrack's own importer</td></tr>
+  <tr><td>Data minimisation (DPDP)</td><td><span class="mono">Encounter.for_llm()</span> strips name, UHID, policy number, TPA, registration number, documents, discharge meds</td></tr>
+  <tr><td>Clinical safety</td><td>Deterministic 🔒 sections; guardrail; mandatory doctor signature; sign dialog warns about failing TPA checks</td></tr>
+  <tr><td>Audit</td><td><span class="mono">event</span> table: detection, draft ready, edits (% changed), signature with signer and file name</td></tr>
+  <tr><td>Secrets</td><td>API keys only in <span class="mono">.env</span> (git-ignored)</td></tr>
+  <tr><td>Observability data</td><td>Logfire scrubbing disabled for synthetic demo data only; enabled in production</td></tr>
+</table>
+
+<h2>6.6 Non-functional requirements</h2>
+<table>
+  <thead><tr><th>Requirement</th><th>Target</th><th>Measured in pilot</th></tr></thead>
+  <tr><td>Draft ready after "Discharge Advised"</td><td>&lt; 60 s</td><td>~5–7 s (replica ≤3 s + poll ≤2 s + LLM ~1 s)</td></tr>
+  <tr><td>TPA check refresh after document upload</td><td>&lt; 10 s</td><td>≤6 s (replica 3 s + UI poll 3 s)</td></tr>
+  <tr><td>Signed PDF visible in MediTrack</td><td>&lt; 10 s</td><td>≤3 s (importer interval)</td></tr>
+  <tr><td>Availability when LLM is down</td><td>Always a draft</td><td>Cached → template fallback</td></tr>
+  <tr><td>Cost per summary</td><td>&lt; ₹1</td><td>~₹0.02</td></tr>
+</table>
+
+<!-- ============================================================ 7 INTEGRATED LLD -->
+<h1>7. Integrated system: Low-Level Design</h1>
+<h2>7.1 Components</h2>
+<table>
+  <thead><tr><th style="width:30%">Component (file)</th><th>Responsibility</th></tr></thead>
+  <tr><td class="mono">copilot/replica_sync.py</td><td>Copies <span class="mono">meditrack.db</span> → <span class="mono">replica.db.tmp</span> via SQLite backup API, then <span class="mono">os.replace</span> (atomic) every 3 s</td></tr>
+  <tr><td class="mono">copilot/service/app.py</td><td>FastAPI app: adapter thread, REST API, metrics, static UI</td></tr>
+  <tr><td class="mono">copilot/service/store.py</td><td>Copilot's own SQLite store (<span class="mono">draft</span>, <span class="mono">event</span>), read-only replica connection</td></tr>
+  <tr><td class="mono">copilot/service/pdf.py</td><td>Signed summary PDF (fpdf2), Latin-1 safe</td></tr>
+  <tr><td class="mono">copilot/ui</td><td>React SPA: <span class="mono">#/embed/review/:ip</span> (classic skin, in MediTrack), <span class="mono">#/review/:ip</span>, <span class="mono">#/</span> worklist, <span class="mono">#/monitor</span></td></tr>
+  <tr><td class="mono">copilot_core/*</td><td>Shared with the POC (Section 5)</td></tr>
+</table>
+
+<h2>7.2 Replica sync</h2>
+<figure><pre class="mermaid">
+flowchart LR
+  A(["every 3 s"]):::legacy --> B["open meditrack.db<br/>mode=ro"]:::legacy --> C["SQLite backup API<br/>to replica.db.tmp"]:::legacy --> D["os.replace<br/>tmp to replica.db"]:::legacy --> E(["readers never see<br/>a half-written file"]):::store
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+</pre><figcaption><b>Figure 12.</b> Replica sync (stands in for IT's Oracle Data Guard replica).</figcaption></figure>
+
+<h2>7.3 Adapter &amp; draft lifecycle</h2>
+<figure data-maxh="520"><pre class="mermaid">
+flowchart TD
+  L(["loop every 2 s"]):::copilot --> Q["SELECT IP_NO, DSCH_ADV_DT<br/>FROM IP_ADM_DTL<br/>WHERE STS = DA (replica)"]:::copilot
+  Q --> K{"ip_no already<br/>in draft table?"}
+  K -->|"yes"| L
+  K -->|"no"| I["INSERT draft<br/>status GENERATING<br/>event DETECTED"]:::copilot
+  I --> P["process_discharge:<br/>load_encounter, generate_draft,<br/>trace summary"]:::ai
+  P -->|"ok"| R["UPDATE READY + draft_json,<br/>source, latency, tokens, cost<br/>event DRAFT_READY"]:::copilot
+  P -->|"exception"| E["UPDATE ERROR + message"]:::bad
+  R --> L
+  E --> L
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 13.</b> Adapter loop.</figcaption></figure>
+<figure data-maxh="380"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  [*] --> GENERATING : STS = DA detected
+  GENERATING --> READY : draft stored
+  GENERATING --> ERROR : exception
+  READY --> READY : doctor edits (PUT)
+  READY --> GENERATING : regenerate
+  READY --> SIGNED : sign, PDF to hot-folder
+  SIGNED --> [*]
+</pre><figcaption><b>Figure 14.</b> Draft lifecycle.</figcaption></figure>
+
+<h2>7.4 Copilot datastore</h2>
+<figure><pre class="mermaid">
+erDiagram
+  draft ||--o{ event : "audited by"
+  draft {
+    TEXT ip_no PK
+    TEXT status "GENERATING, READY, SIGNED, ERROR"
+    TEXT advised_at
+    TEXT ready_at
+    TEXT signed_at
+    TEXT signed_by
+    TEXT source "live, cached, template"
+    TEXT model
+    INT latency_ms
+    INT input_tokens
+    INT output_tokens
+    REAL cost_usd
+    TEXT draft_json "AI original"
+    TEXT edited_json "doctor edits"
+    REAL edit_pct
+    INT tpa_score_at_sign
+    INT trace_flags
+    TEXT pdf_file
+    TEXT error
+  }
+  event {
+    INTEGER id PK
+    TEXT ts
+    TEXT ip_no FK
+    TEXT actor
+    TEXT action
+    TEXT detail
+  }
+</pre><figcaption><b>Figure 15.</b> Copilot store. The AI original and the doctor's edits are both kept, which gives an edit-distance metric and a full audit trail.</figcaption></figure>
+
+<h2>7.5 REST API</h2>
+<table>
+  <thead><tr><th style="width:9%">Method</th><th style="width:31%">Path</th><th>Behaviour</th></tr></thead>
+  <tr><td>GET</td><td class="mono">/api/drafts</td><td>Worklist: drafts joined with patient, ward, consultant, payment from the replica</td></tr>
+  <tr><td>GET</td><td class="mono">/api/drafts/{ip_no}</td><td>Meta, fresh Encounter (replica), current draft (edited if any), TPA checks + readiness, trace summary + flags. 404 until discharge advised.</td></tr>
+  <tr><td>GET</td><td class="mono">/api/drafts/{ip_no}/checks</td><td>TPA checks re-evaluated from the replica on every call</td></tr>
+  <tr><td>PUT</td><td class="mono">/api/drafts/{ip_no}</td><td>Save doctor edits (<span class="mono">{draft: SummaryDraft}</span>); computes edit % with difflib; returns new trace. 409 if signed.</td></tr>
+  <tr><td>POST</td><td class="mono">/api/drafts/{ip_no}/regenerate</td><td>Discard edits, re-run the pipeline</td></tr>
+  <tr><td>POST</td><td class="mono">/api/drafts/{ip_no}/sign</td><td><span class="mono">{signed_by}</span> → render PDF → hot-folder → status SIGNED, readiness at sign stored</td></tr>
+  <tr><td>GET</td><td class="mono">/api/drafts/{ip_no}/pdf</td><td>Unsigned PDF preview</td></tr>
+  <tr><td>GET</td><td class="mono">/api/metrics</td><td>Baseline (replica) + pilot metrics + last 25 events + Logfire URL</td></tr>
+</table>
+
+<h2>7.6 Embedded review UI (the AI Discharge Draft tab)</h2>
+<table>
+  <thead><tr><th style="width:30%">Aspect</th><th>Design</th></tr></thead>
+  <tr><td>Entry</td><td>MediTrack External Link: label <span class="mono">AI Discharge Draft</span>, URL <span class="mono">http://localhost:8002/#/embed/review/{IP_NO}</span>, display <b>Patient file tab</b> → rendered in an iframe inside the patient file</td></tr>
+  <tr><td>Look</td><td><span class="mono">.classic</span> skin: Tahoma 11px, grey #ece9d8 panels, groove borders, bevelled buttons, so it looks native and needs minimal training</td></tr>
+  <tr><td>Before discharge advised</td><td>Waiting message; polls every 2 s until the draft exists</td></tr>
+  <tr><td>Editing</td><td>AI sections as textareas (lists: one item per line; investigations "test: result (interpretation)"); 🔒 diagnoses, pending reports, discharge meds are read-only</td></tr>
+  <tr><td>Live panels</td><td>TPA readiness re-polled every 3 s (flashes on change); source-trace counts and flags</td></tr>
+  <tr><td>Actions</td><td>Save edits · Regenerate · Preview PDF · <b>Sign &amp; send to MediTrack</b></td></tr>
+  <tr><td>MediTrack side</td><td>Every tab click refreshes patient data (classic round-trip), so the signed PDF appears in Documents without a page reload</td></tr>
+</table>
+
+<h2>7.7 Sign &amp; write-back</h2>
+<figure><pre class="mermaid">
+flowchart TD
+  S(["Doctor clicks Sign and send"]):::human --> W{"Any TPA check failing?"}
+  W -->|"yes"| CF["Confirm dialog lists failures:<br/>insurer likely to query"]:::human
+  W -->|"no"| SV
+  CF -->|"sign anyway"| SV["Save unsaved edits (PUT)"]:::copilot
+  SV --> SG["POST /sign"]:::copilot
+  SG --> R["Render PDF: header, patient table,<br/>locked + AI sections, signature line"]:::copilot
+  R --> T["Write .IPNO_DSCHSUMM_ts.pdf.part<br/>(ignored by importer)"]:::copilot
+  T --> MV["Atomic rename to<br/>IPNO_DSCHSUMM_yyyymmddhhmmss.pdf"]:::copilot
+  MV --> DB["draft: SIGNED, signed_by, signed_at,<br/>tpa_score_at_sign, pdf_file<br/>event SIGNED"]:::store
+  MV --> IMP["MediTrack importer (every 3 s):<br/>regex match IP No + doc type + timestamp"]:::legacy
+  IMP --> OK{"Valid name and<br/>IP No exists?"}
+  OK -->|"yes"| F["Move to documents/<br/>INSERT PT_DOC (BATCH_IMPORT)<br/>audit DOC_IMPORTED"]:::legacy
+  OK -->|"no"| RJ["Move to rejected/"]:::bad
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef legacy fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef human fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef store fill:#ffffff,stroke:#475569,color:#0f172a
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 16.</b> Sign and write-back through MediTrack's own importer. Filename regex: <span class="mono">^(IP\d{4}-\d{4})_([A-Z_]+?)_(\d{14})\.pdf$</span></figcaption></figure>
+
+<h2>7.8 Metrics</h2>
+<table>
+  <thead><tr><th style="width:32%">Metric</th><th>Computation</th></tr></thead>
+  <tr><td>Baseline TAT (cash / cashless)</td><td>AVG(DSCH_DT − DSCH_ADV_DT) in hours from the replica, by PAY_MODE</td></tr>
+  <tr><td>Baseline TPA query %</td><td>QUERY ÷ all rows in <span class="mono">TPA_CLM_DTL</span></td></tr>
+  <tr><td>Draft ready (s)</td><td>Median LLM latency of drafted rows</td></tr>
+  <tr><td>Advised → signed (min)</td><td>Median(signed_at − advised_at)</td></tr>
+  <tr><td>TPA readiness at sign</td><td>Mean of <span class="mono">tpa_score_at_sign</span></td></tr>
+  <tr><td>Doctor edit %</td><td>Mean of <span class="mono">edit_pct</span> (1 − difflib ratio of AI vs edited text)</td></tr>
+  <tr><td>Guardrail flags · AI cost · sources</td><td>Sum of trace flags · sum of cost_usd · count by live / cached / template</td></tr>
+</table>
+
+<h2>7.9 Observability</h2>
+<figure><pre class="mermaid">
+flowchart LR
+  A["adapter.process_discharge<br/>ip_no"]:::copilot --> B["discharge_copilot.generate_draft<br/>ip_no, pay_mode, speciality"]:::copilot --> C["agent run: discharge_copilot<br/>(auto-instrumented by Pydantic AI)"]:::ai --> D["chat openai/gpt-oss-20b<br/>prompt, output, tokens, latency"]:::ext
+  S["writeback.hotfolder<br/>ip_no, file"]:::copilot
+  W["warn: LLM attempt failed /<br/>falling back"]:::bad
+  B -.-> W
+  classDef copilot fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef ext fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption><b>Figure 17.</b> Logfire span hierarchy. Services: discharge-copilot-service, discharge-copilot-poc, discharge-copilot-warm-cache.</figcaption></figure>
+
+<h2>7.10 Failure modes</h2>
+<table>
+  <thead><tr><th style="width:30%">Failure</th><th style="width:36%">Behaviour</th><th>Recovery</th></tr></thead>
+  <tr><td>Groq down / network loss</td><td>Cached draft served (source = cached) or template</td><td>Automatic; <span class="mono">./run.sh warm</span> keeps cache fresh</td></tr>
+  <tr><td>Schema rejection (HTTP 400)</td><td>One retry, then fallback</td><td>Logged as Logfire warning</td></tr>
+  <tr><td>Replica stale / missing</td><td>Adapter waits; API returns 404 for unknown patients</td><td>Sync recreates replica within 3 s</td></tr>
+  <tr><td>Pipeline exception</td><td>Draft status ERROR with message</td><td>Regenerate from UI</td></tr>
+  <tr><td>Hot-folder file invalid</td><td>MediTrack moves it to <span class="mono">rejected/</span></td><td>Filename convention enforced by Copilot</td></tr>
+  <tr><td>Partial PDF picked up</td><td>Prevented: <span class="mono">.part</span> temp name + atomic rename</td><td>n/a</td></tr>
+  <tr><td>Copilot service down</td><td>Tab shows an error; MediTrack is unaffected</td><td>Doctors use the Word template as before</td></tr>
+</table>
+
+<h2>7.11 Configuration</h2>
+<table>
+  <thead><tr><th style="width:34%">Setting</th><th>Purpose</th></tr></thead>
+  <tr><td class="mono">GROQ_API_KEY, LOGFIRE_TOKEN</td><td>LLM access; tracing (optional)</td></tr>
+  <tr><td class="mono">COPILOT_MODEL</td><td>Default <span class="mono">groq:openai/gpt-oss-20b</span></td></tr>
+  <tr><td class="mono">PRICE_INPUT_PER_M, PRICE_OUTPUT_PER_M, USD_INR</td><td>Cost reporting</td></tr>
+  <tr><td class="mono">COPILOT_OFFLINE=1</td><td>Never call the LLM (cache / template only)</td></tr>
+  <tr><td class="mono">LOGFIRE_PROJECT_URL</td><td>Link from the Monitor page</td></tr>
+  <tr><td>MediTrack <span class="mono">SYS_EXT_LNK</span> row</td><td>AI Discharge Draft · <span class="mono">http://localhost:8002/#/embed/review/{IP_NO}</span> · TAB</td></tr>
+  <tr><td>Intervals</td><td>Replica 3 s · adapter 2 s · importer 3 s · UI checks 3 s · worklist / waiting 2 s</td></tr>
+</table>
+
+<!-- ============================================================ 8 ROLLOUT -->
+<h1>8. Rollout plan</h1>
+<figure><pre class="mermaid">
+gantt
+  dateFormat YYYY-MM-DD
+  axisFormat %d %b
+  tickInterval 1week
+  todayMarker off
+  title FDE engagement - CityCare Discharge Copilot
+  section Discover
+  Domain immersion and ward shadowing   :a1, 2026-07-27, 7d
+  Legacy archaeology with Hospital IT    :a2, 2026-07-30, 10d
+  Data analysis and problem reframe      :a3, 2026-08-04, 5d
+  section Design
+  Options, HLD and LLD                   :b1, 2026-08-10, 5d
+  IT and business proposal meetings      :milestone, b2, 2026-08-14, 0d
+  section POC
+  Build copilot_core and Streamlit POC   :c1, 2026-08-17, 7d
+  Evals, clinician and TPA verification  :c2, 2026-08-21, 7d
+  Go / no-go                             :milestone, c3, 2026-08-28, 0d
+  section Integrate
+  Replica, adapter, tab, write-back      :d1, 2026-08-31, 7d
+  Shadow mode, drafts not shown          :d2, 2026-09-07, 7d
+  Pilot Cardiology 4B                    :d3, 2026-09-14, 28d
+  Hospital-wide rollout decision         :milestone, d4, 2026-10-12, 0d
+</pre><figcaption><b>Figure 18.</b> Engagement timeline (illustrative).</figcaption></figure>
+<table>
+  <thead><tr><th style="width:20%">Phase</th><th>Exit criteria</th></tr></thead>
+  <tr><td>Shadow mode</td><td>Drafts generated for every discharge but hidden; 0 hallucinations; readiness scores agree with TPA outcomes</td></tr>
+  <tr><td>Pilot (Ward 4B)</td><td>&gt;80% of discharges signed via the tab; cashless TAT &lt;3.5 h; TPA query rate &lt;15%; 20-minute training delivered</td></tr>
+  <tr><td>Expansion</td><td>Hospital-wide rollout; next use case: pre-authorization at admission (same Encounter + rules pattern)</td></tr>
+</table>
+
+<!-- ============================================================ APPENDIX -->
+<h1>Appendix A: Repository map &amp; run commands</h1>
+<pre class="code">Live_session/
+├── legacy_meditrack/            Part 1 - MediTrack HMS v3.2
+│   ├── backend/  app.py  db.py  schema.sql  seed.py  seed_data.py
+│   └── ui/       React (classic 2011 look)
+├── copilot_core/                Part 2 - AI core (shared)
+│   ├── models.py  encounter.py  agent.py  trace.py  rules.py  assemble.py
+│   ├── observability.py  config.py
+│   └── cache/                   warm-cache fallback drafts
+├── poc/                         Part 2 - Streamlit POC
+│   ├── app.py  evaluation.py  export_deidentified.py
+│   └── data/deidentified_encounters.json  eval_results.json
+├── copilot/                     Part 3 - Integrated service
+│   ├── replica_sync.py
+│   ├── service/  app.py  store.py  pdf.py
+│   └── ui/       React (worklist, monitor, embedded classic review)
+├── scripts/warm_cache.py
+├── demo_assets/IP2609-0142_stent_implant_sticker.pdf
+├── webinar/  webinar-content.md  system-explainer.md
+├── docs/design/  hld_lld.html  (this document's source)
+├── run.sh  README.md  DEMO_RUNBOOK.md  .env.example</pre>
+<table>
+  <thead><tr><th style="width:34%">Command</th><th>Effect</th></tr></thead>
+  <tr><td class="mono">./run.sh setup</td><td>Create venv, install Python and npm dependencies, seed data</td></tr>
+  <tr><td class="mono">./run.sh legacy</td><td>MediTrack only → http://localhost:8001</td></tr>
+  <tr><td class="mono">./run.sh poc</td><td>Streamlit POC → http://localhost:8501</td></tr>
+  <tr><td class="mono">./run.sh integrated</td><td>MediTrack :8001 + replica sync + Copilot :8002</td></tr>
+  <tr><td class="mono">./run.sh warm</td><td>Generate and cache live drafts for all patients</td></tr>
+  <tr><td class="mono">./run.sh reset</td><td>Reseed MediTrack and clear Copilot state (golden demo state)</td></tr>
+</table>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: false, theme: 'base', securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Helvetica, Arial, sans-serif', fontSize: '13px',
+      primaryColor: '#e0f2f1', primaryBorderColor: '#0f766e', primaryTextColor: '#0f172a',
+      secondaryColor: '#f1f5f9', tertiaryColor: '#f8fafc', lineColor: '#475569',
+      clusterBkg: '#f8fafc', clusterBorder: '#cbd5e1', edgeLabelBackground: '#ffffff',
+      actorBkg: '#e0f2f1', actorBorder: '#0f766e', actorTextColor: '#0f172a',
+      signalColor: '#334155', signalTextColor: '#0f172a', labelBoxBkgColor: '#e0f2f1',
+      noteBkgColor: '#fff7ed', noteBorderColor: '#f59e0b', noteTextColor: '#78350f',
+      sequenceNumberColor: '#ffffff'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: true, nodeSpacing: 28, rankSpacing: 38, padding: 10 },
+    sequence: { useMaxWidth: true, mirrorActors: false, wrap: true, width: 118, actorMargin: 28, messageMargin: 30, messageFontSize: 13, actorFontSize: 13, noteFontSize: 12 },
+    er: { useMaxWidth: true, fontSize: 11 },
+    class: { useMaxWidth: true },
+    state: { useMaxWidth: true },
+    gantt: { useMaxWidth: true, barHeight: 18, fontSize: 11, sectionFontSize: 12, leftPadding: 190 }
+  });
+  // Size every diagram explicitly: fit page width, cap height, limited upscaling.
+  function fit() {
+    document.querySelectorAll('figure .mermaid svg').forEach((svg) => {
+      const vb = svg.viewBox.baseVal
+      if (!vb || !vb.width) return
+      const fig = svg.closest('figure')
+      const availW = fig.clientWidth - 24
+      const maxH = fig.dataset.maxh ? +fig.dataset.maxh : 820
+      const scale = Math.min(availW / vb.width, maxH / vb.height, 1.4)
+      svg.removeAttribute('style')
+      svg.setAttribute('width', Math.round(vb.width * scale))
+      svg.setAttribute('height', Math.round(vb.height * scale))
+    })
+  }
+  mermaid.run().then(() => { fit(); document.body.setAttribute('data-rendered', '1') })
+    .catch((e) => { document.body.insertAdjacentHTML('afterbegin', '<pre style="color:red">' + e + '</pre>') });
+</script>
+</body>
+</html>
