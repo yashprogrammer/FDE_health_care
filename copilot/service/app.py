@@ -1,7 +1,7 @@
 """Discharge Copilot service (Part 3): integrated with MediTrack without changing MediTrack's code.
 
   read   : MIS reporting replica (read-only)       -> adapter builds Encounter JSON
-  entry  : MediTrack "External Links" config        -> opens /#/review/{IP_NO}
+  entry  : MediTrack "External Links" config (TAB) -> /#/embed/review/{IP_NO} shown as a patient-file tab
   write  : MediTrack batch-import hot-folder (PDF)  -> appears in patient's Documents tab
 """
 import difflib
@@ -257,4 +257,4 @@ if UI_DIST.exists():
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
-        return FileResponse(UI_DIST / "index.html")
+        return FileResponse(UI_DIST / "index.html", headers={"Cache-Control": "no-cache"})
