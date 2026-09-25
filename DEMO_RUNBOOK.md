@@ -36,15 +36,16 @@ Start everything: terminal 1 `./run.sh integrated`, terminal 2 `./run.sh poc`.
 
 | Click | Say |
 |---|---|
-| MediTrack → **External Links** → add label `Discharge Copilot`, URL `http://localhost:8002/#/review/{IP_NO}` | "The Suresh moment: integration by *configuration*, not code." |
-| Open **IP2609-0142** → **Discharge Advised** | "The doctor does exactly what they did yesterday." |
-| Click **[Discharge Copilot]** link | "Replica → adapter → agent. A draft in seconds." |
+| MediTrack → **External Links** → Label `AI Discharge Draft`, URL `http://localhost:8002/#/embed/review/{IP_NO}`, Display **Patient file tab** → Add | "The Suresh moment: integration by *configuration*, not code. And no new app for doctors to learn, just one more tab." |
+| Open **IP2609-0142** → point at the new **AI Discharge Draft** tab → click it | "It looks like every other MediTrack screen: same fonts, same buttons. Training for 300 doctors and nurses: about 5 minutes." |
+| Click **Discharge Advised** (top of the patient file) | "The doctor does exactly what they did yesterday." |
+| Watch the tab: *Waiting* → draft appears | "Replica → adapter → agent. A draft in seconds." |
 | TPA panel shows ❌ **Implant sticker missing** (71%) | "This is the #1 reason insurers bounced claims last quarter. Caught *before* submission." |
 | Back in MediTrack → **Documents** → upload the stent sticker PDF as `IMPLANT_STKR` | "The cath lab uploads it the old way…" |
-| Copilot TPA panel flashes → **86%** | "…and the Copilot sees it within seconds, via the replica." |
-| Edit a hospital-course bullet → **Sign & send to MediTrack** | "The doctor stays in charge. Nothing is sent without their signature." |
-| MediTrack → **Documents** tab → yellow `DSCHSUMM … BATCH_IMPORT` row → open PDF | "Delivered through MediTrack's 2013 scanner import folder. Zero changes to MediTrack." |
-| Copilot → **Monitor** | "Baseline 6.3 h and 38%, versus the pilot. And the Logfire traces." |
+| Back to **AI Discharge Draft** tab → TPA panel now **86%** | "…and the Copilot sees it within seconds, via the replica." |
+| Edit a hospital-course line → **Sign & send to MediTrack** | "The doctor stays in charge. Nothing is sent without their signature." |
+| **Documents** tab → yellow `DSCHSUMM … BATCH_IMPORT` row → open PDF | "Delivered through MediTrack's 2013 scanner import folder." |
+| Switch to the Copilot app `localhost:8002` → **Worklist**, then **Monitor** | "Doctors never see this app. It's for the pilot team and management: baseline 6.3 h and 38% vs the pilot, plus Logfire traces." |
 
 ## If something breaks
 

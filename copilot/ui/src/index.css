@@ -121,3 +121,38 @@ table.list tr:last-child td { border-bottom: none; }
   .kpis { grid-template-columns: 1fr 1fr; }
   .side { position: static; }
 }
+
+/* ---------------------------------------------------------------------------
+   Classic skin: used when embedded as a tab inside MediTrack, so doctors see
+   the same fonts, colours and buttons they have used since 2011.
+   --------------------------------------------------------------------------- */
+.classic { font: 11px Tahoma, Verdana, sans-serif; color: #000; background: #ece9d8; min-height: 100vh; }
+.classic .page { max-width: none; padding: 6px 8px 20px; }
+.classic .embed-head { background: #fff; border: 2px inset #fff; padding: 4px 6px; margin-bottom: 6px; }
+.classic .hint { color: #555; font-style: italic; }
+.classic .card { background: #ece9d8; border: 2px groove #fff; border-radius: 0; box-shadow: none; padding: 6px 8px; }
+.classic .card + .card { margin-top: 6px; }
+.classic .card h3 { font-size: 11px; color: #0a246a; margin: 0 0 6px; }
+.classic .review { gap: 6px; grid-template-columns: minmax(0, 1fr) 300px; }
+.classic .side { top: 0; }
+.classic .sec { margin-bottom: 6px; }
+.classic .sec label { font-size: 11px; color: #0a246a; letter-spacing: 0; margin-bottom: 2px; }
+.classic .sec textarea { border: 2px inset #fff; border-radius: 0; font: 11px Tahoma, sans-serif; padding: 3px; }
+.classic .sec textarea:focus { outline: none; background: #ffffe1; }
+.classic .locked { background: #fff; border: 2px inset #fff; border-radius: 0; padding: 3px 6px; }
+.classic .tag { border-radius: 0; font-size: 9px; padding: 0 4px; border: 1px solid #808080; background: #d4d0c8; color: #000; }
+.classic .tag.lock { background: #ccccff; }
+.classic .tag.ai { background: #ccffcc; }
+.classic .tag.pending { background: #ffcc66; }
+.classic .chip { border-radius: 0; font-size: 10px; padding: 0 4px; border: 1px solid #808080; }
+.classic .btn { background: #d4d0c8; border: 2px outset #fff; border-radius: 0; padding: 2px 10px; font: bold 11px Tahoma, sans-serif; color: #000; }
+.classic .btn:active { border-style: inset; }
+.classic .btn.primary { background: #d4d0c8; color: #000; border: 2px outset #fff; outline: 1px solid #000; }
+.classic .score .num { font-size: 20px; }
+.classic .bar { border-radius: 0; border: 1px solid #808080; background: #fff; height: 12px; }
+.classic .bar > div { border-radius: 0; }
+.classic .check { font-size: 11px; padding: 3px 0; border-top: 1px solid #c0c0c0; }
+.classic .tr-counts div { border-radius: 0; border: 1px solid #808080; font-size: 10px; padding: 2px 0; }
+.classic .tr-counts b { font-size: 14px; }
+.classic .banner { border-radius: 0; border: 1px solid #808080; padding: 4px 6px; margin-bottom: 6px; font-weight: bold; }
+.classic .empty { padding: 20px 0; color: #000; }

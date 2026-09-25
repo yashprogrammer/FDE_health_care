@@ -94,7 +94,7 @@ const fromForm = (f) => ({
   }),
 })
 
-function Review({ ip }) {
+function Review({ ip, embed = false }) {
   const [data, setData] = useState(null)
   const [waiting, setWaiting] = useState(false)
   const [form, setForm] = useState(null)
@@ -171,7 +171,9 @@ function Review({ ip }) {
       if (dirty) await send('PUT', `/api/drafts/${ip}`, { draft: fromForm(form) })
       const r = await send('POST', `/api/drafts/${ip}/sign`, { signed_by: data.encounter.consultant })
       await load()
-      setMsg({ kind: 'ok', text: `Signed ✓  ${r.file} dropped into MediTrack's document import folder. It will appear in the patient's Documents tab within seconds.` })
+      setMsg({ kind: 'ok', text: embed
+        ? `Signed ✓  The discharge summary PDF will appear in this patient's Documents tab within seconds.`
+        : `Signed ✓  ${r.file} dropped into MediTrack's document import folder. It will appear in the patient's Documents tab within seconds.` })
     } catch (e) { setMsg({ kind: 'err', text: e.message }) }
     setBusy('')
   }
@@ -181,7 +183,9 @@ function Review({ ip }) {
       <div className="page">
         <div className="card empty">
           <span className="chip GENERATING"><span className="spin" />Waiting</span>
-          <p>No draft for <b className="mono">{ip}</b> yet. Mark the patient <b>Discharge Advised</b> in MediTrack. The draft appears here automatically.</p>
+          {embed
+            ? <p>No AI draft yet. Click <b>Discharge Advised</b> above when the patient is ready to go home. A draft discharge summary will appear in this tab within seconds.</p>
+            : <p>No draft for <b className="mono">{ip}</b> yet. Mark the patient <b>Discharge Advised</b> in MediTrack. The draft appears here automatically.</p>}
         </div>
       </div>
     )
@@ -207,6 +211,13 @@ function Review({ ip }) {
   return (
     <div className="page">
       {msg && <div className={`banner ${msg.kind}`}>{msg.text}</div>}
+      {embed ? (
+        <div className="embed-head">
+          <b>AI Discharge Draft</b> · <Chip s={meta.status} /> <SrcChip s={meta.source} />
+          {meta.latency_ms > 0 && <span> drafted in {(meta.latency_ms / 1000).toFixed(1)}s</span>}
+          <span className="hint"> · Review, edit and sign. Nothing reaches the patient or insurer without your signature.</span>
+        </div>
+      ) : (
       <div className="card" style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16, flexWrap: 'wrap' }}>
           <div>
@@ -229,6 +240,7 @@ function Review({ ip }) {
           </div>
         </div>
       </div>
+      )}
 
       {meta.status === 'GENERATING' || !form ? (
         <div className="card empty"><span className="chip GENERATING"><span className="spin" />Drafting with AI…</span></div>
@@ -265,7 +277,7 @@ function Review({ ip }) {
                 <button className="btn primary" disabled={!!busy} onClick={signNow}>{busy === 'sign' ? 'Signing…' : '✍ Sign & send to MediTrack'}</button>
               </div>
             )}
-            {signed && <div className="banner ok" style={{ margin: 0 }}>Signed by {meta.signed_by} at {meta.signed_at} · <span className="mono">{meta.pdf_file}</span> sent to MediTrack · <a href={`${MEDITRACK}/#/ip/${ip}`} target="meditrack">view in MediTrack ↗</a></div>}
+            {signed && <div className="banner ok" style={{ margin: 0 }}>Signed by {meta.signed_by} at {meta.signed_at} · <span className="mono">{meta.pdf_file}</span> {embed ? 'is in the Documents tab' : <>sent to MediTrack · <a href={`${MEDITRACK}/#/ip/${ip}`} target="meditrack">view in MediTrack ↗</a></>}</div>}
           </div>
 
           <div className="side">
@@ -343,6 +355,9 @@ function Monitor() {
 export default function App() {
   const h = useHash()
   const rev = h.match(/^#\/review\/(.+)$/)
+  const emb = h.match(/^#\/embed\/review\/(.+)$/)
+  // Embedded in MediTrack's patient-file tab: classic look, no Copilot chrome
+  if (emb) return <div className="classic"><Review ip={decodeURIComponent(emb[1])} embed key={emb[1]} /></div>
   return (
     <>
       <div className="top">
