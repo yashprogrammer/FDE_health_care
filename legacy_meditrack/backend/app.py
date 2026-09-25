@@ -234,4 +234,4 @@ if UI_DIST.exists():
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
-        return FileResponse(UI_DIST / "index.html")
+        return FileResponse(UI_DIST / "index.html", headers={"Cache-Control": "no-cache"})
