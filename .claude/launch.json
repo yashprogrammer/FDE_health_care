@@ -16,6 +16,14 @@
         "poc"
       ],
       "port": 8501
+    },
+    {
+      "name": "integrated",
+      "runtimeExecutable": "./run.sh",
+      "runtimeArgs": [
+        "integrated"
+      ],
+      "port": 8002
     }
   ]
 }

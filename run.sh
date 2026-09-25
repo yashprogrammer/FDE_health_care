@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CityCare demo launcher.  Usage: ./run.sh {setup|reset|legacy|poc|warm}
+# CityCare demo launcher.  Usage: ./run.sh {setup|reset|legacy|poc|integrated|warm}
 set -euo pipefail
 cd "$(dirname "$0")"
 PY=.venv/bin/python
@@ -13,12 +13,13 @@ case "${1:-}" in
   setup)
     [ -d .venv ] || uv venv -q .venv --python 3.13
     uv pip install -q -r requirements.txt --python $PY
-    for ui in legacy_meditrack/ui; do (cd "$ui" && npm install --silent); done
+    for ui in legacy_meditrack/ui copilot/ui; do (cd "$ui" && npm install --silent); done
     $PY -m legacy_meditrack.backend.seed
     ;;
   reset)
     $PY -m legacy_meditrack.backend.seed
-    rm -f poc/data/feedback.jsonl
+    rm -rf copilot/data poc/data/feedback.jsonl
+    echo "Demo state reset (MediTrack reseeded, Copilot drafts cleared)"
     ;;
   legacy)
     [ -f legacy_meditrack/data/meditrack.db ] || $PY -m legacy_meditrack.backend.seed
@@ -32,10 +33,21 @@ case "${1:-}" in
     echo "Discharge Copilot POC -> http://localhost:8501"
     exec $PY -m streamlit run poc/app.py --server.port 8501 --server.headless true --browser.gatherUsageStats false
     ;;
+  integrated)
+    [ -f legacy_meditrack/data/meditrack.db ] || $PY -m legacy_meditrack.backend.seed
+    build_ui legacy_meditrack/ui
+    build_ui copilot/ui
+    trap 'kill 0' EXIT INT TERM
+    $PY -m uvicorn legacy_meditrack.backend.app:app --port 8001 --log-level warning &
+    $PY -m copilot.replica_sync &
+    echo "MediTrack HMS     -> http://localhost:8001"
+    echo "Discharge Copilot -> http://localhost:8002"
+    $PY -m uvicorn copilot.service.app:app --port 8002 --log-level warning
+    ;;
   warm)
     # pre-generate live LLM drafts for every patient so the demo has an offline fallback
     $PY -m scripts.warm_cache
     ;;
   *)
-    echo "Usage: ./run.sh {setup|reset|legacy|poc|warm}"; exit 1 ;;
+    echo "Usage: ./run.sh {setup|reset|legacy|poc|integrated|warm}"; exit 1 ;;
 esac

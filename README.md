@@ -47,3 +47,32 @@ cp .env.example .env   # add GROQ_API_KEY and LOGFIRE_TOKEN
   - `assemble.py`: final summary. Diagnoses, discharge meds and pending reports are pulled deterministically (🔒).
   - `observability.py`: Logfire tracing of every agent run (only if `LOGFIRE_TOKEN` is set).
 - Tabs: **Generate** · **Source trace** (edit the draft, e.g. add "Warfarin 5 mg OD", to watch the guardrail fire) · **Eval** (completeness, hallucinations, faithfulness, key-fact recall vs the doctor's summary, latency, cost) · **Clinician feedback**
+
+## Part 3 — Integrated Discharge Copilot
+
+```bash
+./run.sh integrated    # MediTrack :8001 + replica sync + Copilot :8002
+```
+
+MediTrack's code is **not changed**. Integration goes through three extension points the FDE found:
+
+```
+MediTrack (primary DB, untouched)
+   │  copilot/replica_sync.py (stands in for IT's MIS replica, every 3 s)
+   ▼
+replica.db (read-only) ──► adapter (copilot/service/app.py) watches STS='DA'
+                              │  copilot_core: Encounter → Pydantic AI draft → trace → TPA rules
+                              ▼
+                        copilot.db (Copilot's own store) ──► React review UI (:8002)
+                                                                │ doctor edits + signs
+                                                                ▼
+             signed PDF ──► MediTrack import hot-folder ──► patient's Documents tab
+Entry point: MediTrack Admin → External Links → http://localhost:8002/#/review/{IP_NO}
+```
+
+- **Worklist**: drafts appear seconds after "Discharge Advised" is clicked in MediTrack
+- **Review**: editable AI sections; 🔒 locked diagnoses, pharmacy medications and pending reports; a **live TPA-readiness** panel re-read from the replica, so a document uploaded in MediTrack flips a check within seconds; the source-trace guardrail; PDF preview; sign and send
+- **Monitor**: baseline from the MIS replica vs pilot metrics, the activity feed, and a Logfire link
+- Every draft is traced in Logfire as `adapter.process_discharge` → `discharge_copilot.generate_draft` → agent run, plus `writeback.hotfolder`
+
+See **[DEMO_RUNBOOK.md](DEMO_RUNBOOK.md)** for the live-demo click path.
