@@ -104,7 +104,8 @@ def generate_draft(enc: Encounter, use_cache_first: bool = False) -> DraftResult
                     input_tokens=usage.input_tokens or 0, output_tokens=usage.output_tokens or 0,
                     cost_usd=_cost(usage.input_tokens or 0, usage.output_tokens or 0),
                 )
-                save_cache(result)
+                if config.WRITE_CACHE:
+                    save_cache(result)
                 return result
             except Exception as e:  # network / rate limit / validation - fall through to cache
                 error = f"{type(e).__name__}: {e}"[:300]

@@ -95,6 +95,10 @@ function Patient({ ip }) {
   if (err) return <div className="err">{err}</div>
   if (!d) return <div>Loading patient file...</div>
   const a = d.adm
+  const linkItems = d.links.filter((l) => l.DISP_MD !== 'TAB')
+  const customTabs = d.links.filter((l) => l.DISP_MD === 'TAB')
+  const openTab = (t) => { setTab(t); reload() }   // every tab click is a fresh server round-trip, like 2011
+  const custom = customTabs.find((l) => l.LNK_LBL === tab)
   return (
     <>
       <fieldset>
@@ -115,16 +119,17 @@ function Patient({ ip }) {
           <button onClick={() => window.print()}>Print</button>
           {msg && <span className="err">{msg}</span>}
         </div>
-        {d.links.length > 0 && (
+        {linkItems.length > 0 && (
           <div className="links">
             <b>External Links:</b>{' '}
-            {d.links.map((l) => <a key={l.LNK_ID} href={l.HREF} target="_blank" rel="noreferrer" style={{ marginRight: 12 }}>[{l.LNK_LBL}]</a>)}
+            {linkItems.map((l) => <a key={l.LNK_ID} href={l.HREF} target="_blank" rel="noreferrer" style={{ marginRight: 12 }}>[{l.LNK_LBL}]</a>)}
           </div>
         )}
       </fieldset>
 
       <div className="tabs">
-        {TABS.map((t) => <button key={t} className={t === tab ? 'cur' : ''} onClick={() => setTab(t)}>{t}</button>)}
+        {TABS.map((t) => <button key={t} className={t === tab ? 'cur' : ''} onClick={() => openTab(t)}>{t}</button>)}
+        {customTabs.map((l) => <button key={l.LNK_ID} className={l.LNK_LBL === tab ? 'cur' : ''} onClick={() => openTab(l.LNK_LBL)}>{l.LNK_LBL}</button>)}
       </div>
       <div className="tabbody">
         {tab === 'Diagnosis' && <Grid rows={d.diags} cols={[['DIAG_TYP', 'Type'], ['ICD_CD', 'ICD-10'], ['DIAG_DESC', 'Description']]} />}
@@ -134,6 +139,7 @@ function Patient({ ip }) {
         {tab === 'Clinical Notes' && <Grid rows={d.notes} cols={[['NOTE_DT', 'Date/Time'], ['NOTE_TYP', 'Type'], ['AUTH', 'Author'], ['NOTE_TXT', 'Note']]} />}
         {tab === 'Documents' && <Documents ip={ip} docs={d.docs} reload={reload} />}
         {tab === 'Discharge Summary' && <SummaryTab ip={ip} summary={d.summary} reload={reload} />}
+        {custom && <iframe title={custom.LNK_LBL} src={custom.HREF} style={{ width: '100%', height: 620, border: '2px inset #fff', background: '#fff' }} />}
         {tab === 'TPA' && <Grid rows={d.claims} cols={[['SUBM_DT', 'Submitted'], ['CLM_STS', 'Status'], ['QRY_RSN', 'Query Reason'], ['APPR_DT', 'Approved']]} />}
       </div>
     </>
@@ -235,18 +241,19 @@ function ExtLinks() {
   const [data, , reload] = useLoad(() => api('/int/admin/extlinks'), [])
   const [label, setLabel] = useState('')
   const [url, setUrl] = useState('')
-  const add = async () => { await post('/int/admin/extlinks', { label, url }); setLabel(''); setUrl(''); reload() }
+  const [mode, setMode] = useState('LINK')
+  const add = async () => { await post('/int/admin/extlinks', { label, url, mode }); setLabel(''); setUrl(''); setMode('LINK'); reload() }
   const toggle = async (id) => { await post(`/int/admin/extlinks/${id}/toggle`); reload() }
   return (
     <fieldset>
       <legend>System Admin - External Links (Patient File)</legend>
-      <p className="hint">Links configured here appear on every patient file. Placeholders: {'{IP_NO}'}, {'{UHID}'}</p>
+      <p className="hint">Links configured here appear on every patient file, either as a link or as an extra tab. Placeholders: {'{IP_NO}'}, {'{UHID}'}</p>
       <table className="grid">
-        <thead><tr><th>ID</th><th>Label</th><th>URL</th><th>Active</th><th>Created By</th><th>Created</th><th></th></tr></thead>
+        <thead><tr><th>ID</th><th>Label</th><th>URL</th><th>Display</th><th>Active</th><th>Created By</th><th>Created</th><th></th></tr></thead>
         <tbody>
           {data?.map((l) => (
             <tr key={l.LNK_ID}>
-              <td>{l.LNK_ID}</td><td>{l.LNK_LBL}</td><td>{l.LNK_URL}</td><td>{l.IS_ACTV ? 'Y' : 'N'}</td>
+              <td>{l.LNK_ID}</td><td>{l.LNK_LBL}</td><td>{l.LNK_URL}</td><td>{l.DISP_MD === 'TAB' ? 'Patient file tab' : 'New window'}</td><td>{l.IS_ACTV ? 'Y' : 'N'}</td>
               <td>{l.CRT_BY}</td><td>{l.CRT_DT}</td><td><button onClick={() => toggle(l.LNK_ID)}>{l.IS_ACTV ? 'Disable' : 'Enable'}</button></td>
             </tr>
           ))}
@@ -255,7 +262,8 @@ function ExtLinks() {
       <fieldset style={{ marginTop: 8 }}>
         <legend>Add New Link</legend>
         Label: <input type="text" size={24} value={label} onChange={(e) => setLabel(e.target.value)} />{' '}
-        URL: <input type="text" size={60} value={url} onChange={(e) => setUrl(e.target.value)} />{' '}
+        URL: <input type="text" size={52} value={url} onChange={(e) => setUrl(e.target.value)} />{' '}
+        Display: <select value={mode} onChange={(e) => setMode(e.target.value)}><option value="LINK">New window</option><option value="TAB">Patient file tab</option></select>{' '}
         <button disabled={!label || !url} onClick={add}>Add</button>
       </fieldset>
     </fieldset>

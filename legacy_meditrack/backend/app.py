@@ -8,6 +8,7 @@ import shutil
 import threading
 import time
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, PlainTextResponse
@@ -181,6 +182,7 @@ def start_importer():
 class ExtLink(BaseModel):
     label: str
     url: str
+    mode: Literal["LINK", "TAB"] = "LINK"
 
 
 @app.get("/int/admin/extlinks")
@@ -192,8 +194,8 @@ def list_links():
 @app.post("/int/admin/extlinks")
 def add_link(body: ExtLink):
     with connect() as c:
-        c.execute("INSERT INTO SYS_EXT_LNK (LNK_LBL, LNK_URL, IS_ACTV, CRT_BY, CRT_DT) VALUES (?,?,1,?,?)",
-                  (body.label, body.url, "it.suresh", now()))
+        c.execute("INSERT INTO SYS_EXT_LNK (LNK_LBL, LNK_URL, DISP_MD, IS_ACTV, CRT_BY, CRT_DT) VALUES (?,?,?,1,?,?)",
+                  (body.label, body.url, body.mode, "it.suresh", now()))
         audit(c, "it.suresh", "EXT_LINK_ADDED", body.label)
     return {"ok": True}
 
