@@ -6,7 +6,8 @@ import json
 import time
 
 import logfire
-from pydantic_ai import Agent
+from pydantic_ai import Agent, NativeOutput
+from pydantic_ai.models.groq import GroqModelSettings
 
 from . import config
 from .models import DraftResult, Encounter, KeyInvestigation, SummaryDraft
@@ -23,16 +24,24 @@ Hard rules:
 - Hospital course: 4-7 short chronological bullets in the clinical style Indian doctors use
   (abbreviations like CAG, PTCA, DES, LVEF, TIMI are fine).
 - Follow-up and diet/activity: only what the notes say. If nothing is stated, write "As advised by treating consultant".
+- procedures_performed: list EVERY procedure in the data (one item each, with date and key findings). Empty only if none.
+- Write dates as DD/MM/YYYY. Do not state or predict a discharge date - the system adds it.
+- Fill every field of the output schema.
 """
 
+# NativeOutput = provider-enforced JSON schema. Groq rejects gpt-oss tool-call output
+# ("output_parse_failed"), but its native structured outputs work reliably.
 agent = Agent(
     config.MODEL,
-    output_type=SummaryDraft,
+    output_type=NativeOutput(SummaryDraft),
     instructions=INSTRUCTIONS,
     name="discharge_copilot",
     retries=2,
     defer_model_check=True,
+    # gpt-oss is a reasoning model: cap reasoning so it can't burn the whole token budget
+    model_settings=GroqModelSettings(max_tokens=6000, temperature=0.2, groq_reasoning_effort="low"),
 )
+LLM_ATTEMPTS = 2   # provider-side schema rejections (HTTP 400) are not retried by the agent itself
 
 
 def _cost(inp: int, out: int) -> float:
@@ -80,7 +89,14 @@ def generate_draft(enc: Encounter, use_cache_first: bool = False) -> DraftResult
             t0 = time.perf_counter()
             try:
                 prompt = "Encounter data (JSON):\n" + json.dumps(enc.for_llm(), indent=1)
-                run = agent.run_sync(prompt)
+                for attempt in range(1, LLM_ATTEMPTS + 1):
+                    try:
+                        run = agent.run_sync(prompt)
+                        break
+                    except Exception as e:
+                        if attempt == LLM_ATTEMPTS:
+                            raise
+                        logfire.warn("LLM attempt failed, retrying", attempt=attempt, error=str(e)[:200])
                 usage = run.usage() if callable(run.usage) else run.usage
                 result = DraftResult(
                     ip_no=enc.ip_no, draft=run.output, source="live", model=config.MODEL,

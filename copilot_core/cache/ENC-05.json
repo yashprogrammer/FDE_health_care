@@ -1,0 +1,41 @@
+{
+  "ip_no": "ENC-05",
+  "draft": {
+    "presenting_complaints": "66M male presented with increased breathlessness and wheeze for 3 days.",
+    "hospital_course": [
+      "Admitted 11/08/2026 with SpO2 86% RA, pCO2 52 mmHg; started nebulisation Salbutamol + Ipratropium QID and IV Methylprednisolone 40 mg OD for 3 days.",
+      "Chest X‑ray 11/08/2026 showed hyperinflated lungs, no consolidation.",
+      "BiPAP used overnight; discontinued 13/08/2026 after SpO2 improved to 93% RA and wheeze reduced.",
+      "Doxycycline 100 mg BD started for possible infection.",
+      "Inhaler technique taught to patient and son on 14/08/2026."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "Arterial pCO2",
+        "result": "52 mmHg",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Total Leucocyte Count",
+        "result": "11800 /cumm",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Chest X-ray",
+        "result": "Hyperinflated lungs, no consolidation",
+        "interpretation": "normal"
+      }
+    ],
+    "condition_at_discharge": "Stable COPD with acute exacerbation, improved oxygenation, no active infection.",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 806,
+  "input_tokens": 1413,
+  "output_tokens": 300,
+  "cost_usd": 0.00019597499999999998,
+  "error": null
+}

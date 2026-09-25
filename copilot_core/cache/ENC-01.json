@@ -1,0 +1,27 @@
+{
+  "ip_no": "ENC-01",
+  "draft": {
+    "presenting_complaints": "Chest heaviness for 6 hours",
+    "hospital_course": [
+      "23/07/2026 23:10 – Admitted with chest heaviness, ECG ST depression II, III, aVF, Troponin I 2.8 ng/mL.",
+      "24/07/2026 12:00 – CAG performed; RCA 90% mid lesion noted. 24/07/2026 12:40 – PTCA with drug‑eluting stent placed in RCA.",
+      "25/07/2026 10:00 – 2D Echo shows LVEF 50%.",
+      "26/07/2026 20:00 – Femoral site clean, no bleed, vitals stable. 26/07/2026 10:00 – Patient stable, ambulant, plan discharge tomorrow."
+    ],
+    "procedures_performed": [
+      "09/07/2026 – Coronary angiography: RCA 90% mid lesion.",
+      "09/07/2026 – PTCA with drug‑eluting stent to RCA."
+    ],
+    "key_investigations": [],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 1088,
+  "input_tokens": 3568,
+  "output_tokens": 491,
+  "cost_usd": 0.0004149,
+  "error": null
+}

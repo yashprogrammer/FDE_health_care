@@ -1,0 +1,638 @@
+{
+ "run_at": "2026-09-25 18:50",
+ "rows": [
+  {
+   "encounter": "ENC-01",
+   "diagnosis": "Non-ST elevation myocardial infarction",
+   "source": "live",
+   "completeness_%": 67,
+   "hallucinated": 0,
+   "unverified_numbers": 3,
+   "faithfulness_%": 93,
+   "key_fact_recall_%": 56,
+   "tpa_readiness_%": 86,
+   "latency_s": 1.1,
+   "tokens": 4059,
+   "cost_usd": 0.00041
+  },
+  {
+   "encounter": "ENC-02",
+   "diagnosis": "Infectious gastroenteritis and colitis",
+   "source": "live",
+   "completeness_%": 80,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 80,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.6,
+   "tokens": 1799,
+   "cost_usd": 0.00021
+  },
+  {
+   "encounter": "ENC-03",
+   "diagnosis": "Primary osteoarthritis, left knee",
+   "source": "live",
+   "completeness_%": 83,
+   "hallucinated": 0,
+   "unverified_numbers": 1,
+   "faithfulness_%": 97,
+   "key_fact_recall_%": 73,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.6,
+   "tokens": 1773,
+   "cost_usd": 0.0002
+  },
+  {
+   "encounter": "ENC-04",
+   "diagnosis": "Acute appendicitis, other and unspecifie",
+   "source": "live",
+   "completeness_%": 83,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 64,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.6,
+   "tokens": 1688,
+   "cost_usd": 0.0002
+  },
+  {
+   "encounter": "ENC-05",
+   "diagnosis": "COPD with acute exacerbation",
+   "source": "live",
+   "completeness_%": 80,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 67,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.8,
+   "tokens": 1713,
+   "cost_usd": 0.0002
+  },
+  {
+   "encounter": "ENC-06",
+   "diagnosis": "Heart failure with reduced ejection frac",
+   "source": "live",
+   "completeness_%": 100,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 83,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.7,
+   "tokens": 1903,
+   "cost_usd": 0.00024
+  },
+  {
+   "encounter": "ENC-07",
+   "diagnosis": "Acute pyelonephritis",
+   "source": "live",
+   "completeness_%": 100,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 80,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.7,
+   "tokens": 1734,
+   "cost_usd": 0.00021
+  },
+  {
+   "encounter": "ENC-08",
+   "diagnosis": "Calculus of gallbladder without cholecys",
+   "source": "live",
+   "completeness_%": 100,
+   "hallucinated": 0,
+   "unverified_numbers": 1,
+   "faithfulness_%": 97,
+   "key_fact_recall_%": 56,
+   "tpa_readiness_%": 71,
+   "latency_s": 0.6,
+   "tokens": 1715,
+   "cost_usd": 0.00021
+  },
+  {
+   "encounter": "ENC-09",
+   "diagnosis": "Fracture of neck of femur, right",
+   "source": "live",
+   "completeness_%": 83,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 78,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.6,
+   "tokens": 1888,
+   "cost_usd": 0.00021
+  },
+  {
+   "encounter": "ENC-10",
+   "diagnosis": "Dengue without warning signs",
+   "source": "live",
+   "completeness_%": 80,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 80,
+   "tpa_readiness_%": 100,
+   "latency_s": 0.6,
+   "tokens": 1699,
+   "cost_usd": 0.0002
+  },
+  {
+   "encounter": "ENC-11",
+   "diagnosis": "Acute ST-elevation myocardial infarction",
+   "source": "live",
+   "completeness_%": 100,
+   "hallucinated": 0,
+   "unverified_numbers": 0,
+   "faithfulness_%": 100,
+   "key_fact_recall_%": 92,
+   "tpa_readiness_%": 86,
+   "latency_s": 0.7,
+   "tokens": 2049,
+   "cost_usd": 0.00024
+  }
+ ],
+ "drafts": {
+  "ENC-01": {
+   "ip_no": "ENC-01",
+   "draft": {
+    "presenting_complaints": "Chest heaviness for 6 hours",
+    "hospital_course": [
+     "23/07/2026 23:10 \u2013 Admitted with chest heaviness, ECG ST depression II, III, aVF, Troponin I 2.8 ng/mL.",
+     "24/07/2026 12:00 \u2013 CAG performed; RCA 90% mid lesion noted. 24/07/2026 12:40 \u2013 PTCA with drug\u2011eluting stent placed in RCA.",
+     "25/07/2026 10:00 \u2013 2D Echo shows LVEF 50%.",
+     "26/07/2026 20:00 \u2013 Femoral site clean, no bleed, vitals stable. 26/07/2026 10:00 \u2013 Patient stable, ambulant, plan discharge tomorrow."
+    ],
+    "procedures_performed": [
+     "09/07/2026 \u2013 Coronary angiography: RCA 90% mid lesion.",
+     "09/07/2026 \u2013 PTCA with drug\u2011eluting stent to RCA."
+    ],
+    "key_investigations": [],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 1088,
+   "input_tokens": 3568,
+   "output_tokens": 491,
+   "cost_usd": 0.0004149,
+   "error": null
+  },
+  "ENC-02": {
+   "ip_no": "ENC-02",
+   "draft": {
+    "presenting_complaints": "Loose motions and vomiting for 2 days",
+    "hospital_course": [
+     "Admitted 15/07/2026 with 12-14 loose stools/day, vomiting, dry tongue, tachycardia; diagnosed with prerenal AKI and started on IV fluids (Ringer lactate 100 ml/hr) and Ondansetron 4 mg TDS",
+     "Serum electrolytes on 15/07/2026 showed hyponatraemia (131 mmol/L) and hypokalaemia (3.1 mmol/L); serum creatinine elevated (1.4 mg/dL) indicating AKI",
+     "Stools reduced to 3/day by 16/07/2026; patient tolerating oral intake; repeat creatinine 0.9 mg/dL on 16/07/2026 06:30",
+     "No vomiting reported on 16/07/2026 21:00; patient accepting soft diet"
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+     {
+      "test": "Serum Sodium",
+      "result": "131 mmol/L",
+      "interpretation": "low"
+     },
+     {
+      "test": "Serum Potassium",
+      "result": "3.1 mmol/L",
+      "interpretation": "low"
+     },
+     {
+      "test": "Serum Creatinine",
+      "result": "1.4 mg/dL",
+      "interpretation": "high"
+     },
+     {
+      "test": "Serum Creatinine (repeat)",
+      "result": "0.9 mg/dL",
+      "interpretation": "normal"
+     }
+    ],
+    "condition_at_discharge": "Stable, tolerating oral intake, no vomiting, stools reduced",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 586,
+   "input_tokens": 1457,
+   "output_tokens": 342,
+   "cost_usd": 0.000211875,
+   "error": null
+  },
+  "ENC-03": {
+   "ip_no": "ENC-03",
+   "draft": {
+    "presenting_complaints": "Planned left total knee replacement for primary osteoarthritis, left knee.",
+    "hospital_course": [
+     "Admitted 20/07/2026 for left TKR under spinal anaesthesia, tourniquet 70 min, uneventful.",
+     "Post-op day 1 (21/07/2026): Drain removed, physiotherapy twice, haemoglobin 10.8 g/dL (low).",
+     "Day 2 (22/07/2026): Patient ambulating with walker, knee flexion 80\u00b0, wound healthy.",
+     "Day 4 (24/07/2026): Knee flexion 95\u00b0, able to climb 2 steps, fit for discharge tomorrow."
+    ],
+    "procedures_performed": [
+     "27447 Left total knee arthroplasty on 20/07/2026 \u2013 implant in situ, good alignment"
+    ],
+    "key_investigations": [
+     {
+      "test": "Haemoglobin",
+      "result": "10.8 g/dL",
+      "interpretation": "low"
+     },
+     {
+      "test": "Serum Creatinine",
+      "result": "0.9 mg/dL",
+      "interpretation": "normal"
+     },
+     {
+      "test": "X-ray left knee (post-op)",
+      "result": "Implant in situ, good alignment",
+      "interpretation": "normal"
+     }
+    ],
+    "condition_at_discharge": "Stable, wound healing, adequate pain control, mobilised with walker.",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 578,
+   "input_tokens": 1471,
+   "output_tokens": 302,
+   "cost_usd": 0.00020092500000000002,
+   "error": null
+  },
+  "ENC-04": {
+   "ip_no": "ENC-04",
+   "draft": {
+    "presenting_complaints": "Pain right lower abdomen for 1 day with vomiting",
+    "hospital_course": [
+     "22/08/2026 22:20 \u2013 RIF pain, McBurney tenderness, TLC 14.8k, USG confirmed appendicitis \u2013 surgery planned",
+     "03/08/2026 01:30 \u2013 Laparoscopic appendectomy performed, inflamed appendix, no perforation",
+     "03/08/2026 02:30 \u2013 Post\u2011op stable, started on Ceftriaxone 1\u202fg BD IV and Metronidazole 500\u202fmg TDS IV",
+     "03/08/2026 18:00 \u2013 Patient passed flatus, started liquids"
+    ],
+    "procedures_performed": [
+     "03/08/2026 01:30 \u2013 Laparoscopic appendectomy \u2013 inflamed appendix, no perforation"
+    ],
+    "key_investigations": [
+     {
+      "test": "Total Leucocyte Count",
+      "result": "14800 /cumm",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "USG Abdomen",
+      "result": "Inflamed appendix 9 mm, no collection",
+      "interpretation": "positive for appendicitis"
+     },
+     {
+      "test": "Histopathology - appendix",
+      "result": "Acute suppurative appendicitis",
+      "interpretation": "confirmatory"
+     }
+    ],
+    "condition_at_discharge": "Stable, pain controlled, no complications",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 568,
+   "input_tokens": 1380,
+   "output_tokens": 308,
+   "cost_usd": 0.0001959,
+   "error": null
+  },
+  "ENC-05": {
+   "ip_no": "ENC-05",
+   "draft": {
+    "presenting_complaints": "66M male presented with increased breathlessness and wheeze for 3 days.",
+    "hospital_course": [
+     "Admitted 11/08/2026 with SpO2 86% RA, pCO2 52 mmHg; started nebulisation Salbutamol + Ipratropium QID and IV Methylprednisolone 40 mg OD for 3 days.",
+     "Chest X\u2011ray 11/08/2026 showed hyperinflated lungs, no consolidation.",
+     "BiPAP used overnight; discontinued 13/08/2026 after SpO2 improved to 93% RA and wheeze reduced.",
+     "Doxycycline 100 mg BD started for possible infection.",
+     "Inhaler technique taught to patient and son on 14/08/2026."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+     {
+      "test": "Arterial pCO2",
+      "result": "52 mmHg",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Total Leucocyte Count",
+      "result": "11800 /cumm",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Chest X-ray",
+      "result": "Hyperinflated lungs, no consolidation",
+      "interpretation": "normal"
+     }
+    ],
+    "condition_at_discharge": "Stable COPD with acute exacerbation, improved oxygenation, no active infection.",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 806,
+   "input_tokens": 1413,
+   "output_tokens": 300,
+   "cost_usd": 0.00019597499999999998,
+   "error": null
+  },
+  "ENC-06": {
+   "ip_no": "ENC-06",
+   "draft": {
+    "presenting_complaints": "Breathlessness and swelling of feet for 5 days",
+    "hospital_course": [
+     "Admitted 18/08/26 with orthopnoea, pedal oedema, basal crepitations; started IV furosemide 40 mg BD and fluid restriction 1.5 L",
+     "NT\u2011proBNP 9200 pg/mL (elevated) and serum creatinine 1.8 mg/dL (high) on 18/08/26",
+     "2D Echo on 19/08/26 showed LVEF 32% (low) confirming HFrEF",
+     "Weight decreased by 3.8 kg by 21/08/26; creatinine stable at 1.7 mg/dL; started dapagliflozin and low\u2011dose spironolactone on 21/08/26",
+     "Daily weight chart explained to daughter on 22/08/26"
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+     {
+      "test": "NT-proBNP",
+      "result": "9200 pg/mL",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Serum Creatinine",
+      "result": "1.8 mg/dL",
+      "interpretation": "high"
+     },
+     {
+      "test": "2D Echo LVEF",
+      "result": "32 %",
+      "interpretation": "low"
+     },
+     {
+      "test": "Serum Potassium",
+      "result": "4.9 mmol/L",
+      "interpretation": "normal"
+     }
+    ],
+    "condition_at_discharge": "Stable with improved weight and controlled fluid status",
+    "follow_up_advice": [
+     "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+     "Fluid restriction 1.5 L/day"
+    ]
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 693,
+   "input_tokens": 1474,
+   "output_tokens": 429,
+   "cost_usd": 0.00023925000000000001,
+   "error": null
+  },
+  "ENC-07": {
+   "ip_no": "ENC-07",
+   "draft": {
+    "presenting_complaints": "Fever with chills and burning micturition for 3 days, right flank pain",
+    "hospital_course": [
+     "24/08/2026 \u2013 Admitted with fever, chills, right flank pain; urine routine shows pus cells 40-50/hpf, TLC 15200/cumm; started IV ceftriaxone 1\u202fg BD",
+     "25/08/2026 \u2013 Patient afebrile; encouraged oral fluids >3\u202fL/day",
+     "26/08/2026 \u2013 Urine culture positive for E.\u202fcoli sensitive to ceftriaxone, nitrofurantoin; plan oral step\u2011down therapy; patient remains afebrile"
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+     {
+      "test": "Urine routine",
+      "result": "Pus cells 40-50/hpf",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Total Leucocyte Count",
+      "result": "15200 /cumm",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Urine culture",
+      "result": "E. coli, sensitive to ceftriaxone, nitrofurantoin",
+      "interpretation": "positive culture"
+     }
+    ],
+    "condition_at_discharge": "Afebrile, stable, no residual flank pain",
+    "follow_up_advice": [
+     "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+     "Encouraged oral fluids >3\u202fL/day"
+    ]
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 746,
+   "input_tokens": 1359,
+   "output_tokens": 375,
+   "cost_usd": 0.000214425,
+   "error": null
+  },
+  "ENC-08": {
+   "ip_no": "ENC-08",
+   "draft": {
+    "presenting_complaints": "Recurrent epigastric and right upper abdominal pain after fatty meals",
+    "hospital_course": [
+     "Admitted 03/09/2026 with recurrent epigastric and RUQ pain.",
+     "USG Abdomen (28/08/2026) showed cholelithiasis, largest calculus 14\u202fmm, CBD 5\u202fmm.",
+     "Laparoscopic cholecystectomy performed 03/09/2026 at 11:00 by surgeon D04.",
+     "Post\u2011op: Ceftriaxone 1\u202fg IV once, Paracetamol 1\u202fg IV TDS for pain control.",
+     "Day 1: Tolerating soft diet, mild port\u2011site pain noted.",
+     "Day 2: Ambulating, port\u2011site dressing dry, patient stable.",
+     "Histopathology of gallbladder pending (03/09/2026)."
+    ],
+    "procedures_performed": [
+     "Laparoscopic cholecystectomy on 03/09/2026 \u2013 multiple calculi removed, GB sent for histopathology"
+    ],
+    "key_investigations": [
+     {
+      "test": "USG Abdomen",
+      "result": "Cholelithiasis, largest calculus 14 mm, CBD 5 mm",
+      "interpretation": "Cholelithiasis with normal CBD size"
+     },
+     {
+      "test": "Liver Function Test",
+      "result": "Within normal limits",
+      "interpretation": "Normal"
+     }
+    ],
+    "condition_at_discharge": "Stable, tolerating soft diet, mild port\u2011site pain controlled",
+    "follow_up_advice": [
+     "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+     "As advised by treating consultant"
+    ]
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 596,
+   "input_tokens": 1366,
+   "output_tokens": 349,
+   "cost_usd": 0.00020715000000000002,
+   "error": null
+  },
+  "ENC-09": {
+   "ip_no": "ENC-09",
+   "draft": {
+    "presenting_complaints": "Fall at home, unable to bear weight on right leg.",
+    "hospital_course": [
+     "18/09/2026 18:30 \u2013 Admitted with displaced subcapital fracture neck of femur, right.",
+     "19/09/2026 11:00 \u2013 Right hip hemiarthroplasty performed (EBL 400 ml).",
+     "10/09/2026 \u2013 Hb 9.6, transfused 1 unit PRBC; Vit D 11 ng/mL, started supplementation.",
+     "12/09/2026 \u2013 Pressure areas checked, no sores; family trained on transfers.",
+     "13/09/2026 \u2013 Walking with walker and assistance; fit for discharge tomorrow."
+    ],
+    "procedures_performed": [
+     "09/09/2026 \u2013 Right hip hemiarthroplasty (code 27125), EBL 400 ml, stable"
+    ],
+    "key_investigations": [
+     {
+      "test": "X-ray right hip",
+      "result": "Displaced subcapital fracture neck of femur",
+      "interpretation": "Final"
+     },
+     {
+      "test": "Haemoglobin",
+      "result": "9.6 g/dL",
+      "interpretation": "Low"
+     },
+     {
+      "test": "Vitamin D (25-OH)",
+      "result": "11 ng/mL",
+      "interpretation": "Low"
+     }
+    ],
+    "condition_at_discharge": "Stable, walking with walker and assistance.",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 552,
+   "input_tokens": 1591,
+   "output_tokens": 297,
+   "cost_usd": 0.00020842499999999998,
+   "error": null
+  },
+  "ENC-10": {
+   "ip_no": "ENC-10",
+   "draft": {
+    "presenting_complaints": "Fever, headache and body ache for 3 days",
+    "hospital_course": [
+     "12/09/2026 12:20 \u2013 Admitted with fever 3 days, NS1+ dengue, no warning signs, poor oral intake; started IV fluids.",
+     "12/09/2026 12:30 \u2013 NS1 antigen positive confirmed.",
+     "13/09/2026 \u2013 Platelet count 62000/\u200bcumm, SGPT 96 U/L noted; continued supportive care.",
+     "14/09/2026 \u2013 Platelet count rising, SGPT normalised; oral intake improved, no bleeding manifestations.",
+     "15/09/2026 \u2013 Afebrile for 48 hrs, platelets rising; discharge planned for next day."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+     {
+      "test": "NS1 Antigen",
+      "result": "Positive",
+      "interpretation": "Positive"
+     },
+     {
+      "test": "Platelet Count",
+      "result": "62000 /cumm",
+      "interpretation": "Low"
+     },
+     {
+      "test": "SGPT",
+      "result": "96 U/L",
+      "interpretation": "Elevated"
+     },
+     {
+      "test": "Platelet Count (repeat)",
+      "result": "118000 /cumm",
+      "interpretation": "Low"
+     }
+    ],
+    "condition_at_discharge": "Stable, afebrile, platelets 118000/\u200bcumm, SGPT 96 U/L, no warning signs",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 584,
+   "input_tokens": 1391,
+   "output_tokens": 308,
+   "cost_usd": 0.000196725,
+   "error": null
+  },
+  "ENC-11": {
+   "ip_no": "ENC-11",
+   "draft": {
+    "presenting_complaints": "Severe chest pain with sweating for 1 hour",
+    "hospital_course": [
+     "09/09/2026 04:20 \u2013 Admitted with severe chest pain, ECG ST\u2011elevation II, III, aVF; cath lab activated",
+     "09/09/2026 05:10 \u2013 CAG performed; 09/09/2026 05:30 \u2013 Primary PTCA with DES to RCA, TIMI III achieved",
+     "09/09/2026 06:30 \u2013 Post\u2011PCI review: patient stable, pain free",
+     "09/09/2026 10:00 \u2013 Echo shows LVEF 48%; patient shifted to ward",
+     "09/09/2026 18:00 \u2013 Patient ambulating, cardiac diet education given"
+    ],
+    "procedures_performed": [
+     "15/09/2026 \u2013 Coronary angiography (CAG) \u2013 RCA proximal total occlusion",
+     "15/09/2026 \u2013 Primary PTCA with drug\u2011eluting stent to RCA \u2013 TIMI III achieved"
+    ],
+    "key_investigations": [
+     {
+      "test": "Troponin I",
+      "result": "8.6 ng/mL",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "Serum Creatinine",
+      "result": "1.0 mg/dL",
+      "interpretation": "normal"
+     },
+     {
+      "test": "LDL Cholesterol",
+      "result": "144 mg/dL",
+      "interpretation": "elevated"
+     },
+     {
+      "test": "2D Echo LVEF",
+      "result": "48 %",
+      "interpretation": "low"
+     }
+    ],
+    "condition_at_discharge": "Stable, pain free, LVEF 48%",
+    "follow_up_advice": [
+     "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+     "Cardiac diet education done",
+     "Ambulating"
+    ]
+   },
+   "source": "live",
+   "model": "groq:openai/gpt-oss-20b",
+   "latency_ms": 677,
+   "input_tokens": 1674,
+   "output_tokens": 375,
+   "cost_usd": 0.00023804999999999999,
+   "error": null
+  }
+ }
+}

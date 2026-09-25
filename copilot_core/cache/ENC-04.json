@@ -1,0 +1,42 @@
+{
+  "ip_no": "ENC-04",
+  "draft": {
+    "presenting_complaints": "Pain right lower abdomen for 1 day with vomiting",
+    "hospital_course": [
+      "22/08/2026 22:20 – RIF pain, McBurney tenderness, TLC 14.8k, USG confirmed appendicitis – surgery planned",
+      "03/08/2026 01:30 – Laparoscopic appendectomy performed, inflamed appendix, no perforation",
+      "03/08/2026 02:30 – Post‑op stable, started on Ceftriaxone 1 g BD IV and Metronidazole 500 mg TDS IV",
+      "03/08/2026 18:00 – Patient passed flatus, started liquids"
+    ],
+    "procedures_performed": [
+      "03/08/2026 01:30 – Laparoscopic appendectomy – inflamed appendix, no perforation"
+    ],
+    "key_investigations": [
+      {
+        "test": "Total Leucocyte Count",
+        "result": "14800 /cumm",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "USG Abdomen",
+        "result": "Inflamed appendix 9 mm, no collection",
+        "interpretation": "positive for appendicitis"
+      },
+      {
+        "test": "Histopathology - appendix",
+        "result": "Acute suppurative appendicitis",
+        "interpretation": "confirmatory"
+      }
+    ],
+    "condition_at_discharge": "Stable, pain controlled, no complications",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 568,
+  "input_tokens": 1380,
+  "output_tokens": 308,
+  "cost_usd": 0.0001959,
+  "error": null
+}

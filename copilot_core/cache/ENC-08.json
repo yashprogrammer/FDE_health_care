@@ -1,0 +1,44 @@
+{
+  "ip_no": "ENC-08",
+  "draft": {
+    "presenting_complaints": "Recurrent epigastric and right upper abdominal pain after fatty meals",
+    "hospital_course": [
+      "Admitted 03/09/2026 with recurrent epigastric and RUQ pain.",
+      "USG Abdomen (28/08/2026) showed cholelithiasis, largest calculus 14 mm, CBD 5 mm.",
+      "Laparoscopic cholecystectomy performed 03/09/2026 at 11:00 by surgeon D04.",
+      "Post‑op: Ceftriaxone 1 g IV once, Paracetamol 1 g IV TDS for pain control.",
+      "Day 1: Tolerating soft diet, mild port‑site pain noted.",
+      "Day 2: Ambulating, port‑site dressing dry, patient stable.",
+      "Histopathology of gallbladder pending (03/09/2026)."
+    ],
+    "procedures_performed": [
+      "Laparoscopic cholecystectomy on 03/09/2026 – multiple calculi removed, GB sent for histopathology"
+    ],
+    "key_investigations": [
+      {
+        "test": "USG Abdomen",
+        "result": "Cholelithiasis, largest calculus 14 mm, CBD 5 mm",
+        "interpretation": "Cholelithiasis with normal CBD size"
+      },
+      {
+        "test": "Liver Function Test",
+        "result": "Within normal limits",
+        "interpretation": "Normal"
+      }
+    ],
+    "condition_at_discharge": "Stable, tolerating soft diet, mild port‑site pain controlled",
+    "follow_up_advice": [
+      "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+      "As advised by treating consultant"
+    ]
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 596,
+  "input_tokens": 1366,
+  "output_tokens": 349,
+  "cost_usd": 0.00020715000000000002,
+  "error": null
+}

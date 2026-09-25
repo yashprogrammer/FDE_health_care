@@ -1,0 +1,42 @@
+{
+  "ip_no": "ENC-03",
+  "draft": {
+    "presenting_complaints": "Planned left total knee replacement for primary osteoarthritis, left knee.",
+    "hospital_course": [
+      "Admitted 20/07/2026 for left TKR under spinal anaesthesia, tourniquet 70 min, uneventful.",
+      "Post-op day 1 (21/07/2026): Drain removed, physiotherapy twice, haemoglobin 10.8 g/dL (low).",
+      "Day 2 (22/07/2026): Patient ambulating with walker, knee flexion 80°, wound healthy.",
+      "Day 4 (24/07/2026): Knee flexion 95°, able to climb 2 steps, fit for discharge tomorrow."
+    ],
+    "procedures_performed": [
+      "27447 Left total knee arthroplasty on 20/07/2026 – implant in situ, good alignment"
+    ],
+    "key_investigations": [
+      {
+        "test": "Haemoglobin",
+        "result": "10.8 g/dL",
+        "interpretation": "low"
+      },
+      {
+        "test": "Serum Creatinine",
+        "result": "0.9 mg/dL",
+        "interpretation": "normal"
+      },
+      {
+        "test": "X-ray left knee (post-op)",
+        "result": "Implant in situ, good alignment",
+        "interpretation": "normal"
+      }
+    ],
+    "condition_at_discharge": "Stable, wound healing, adequate pain control, mobilised with walker.",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 578,
+  "input_tokens": 1471,
+  "output_tokens": 302,
+  "cost_usd": 0.00020092500000000002,
+  "error": null
+}

@@ -1,0 +1,54 @@
+{
+  "ip_no": "ENC-11",
+  "draft": {
+    "presenting_complaints": "Severe chest pain with sweating for 1 hour",
+    "hospital_course": [
+      "09/09/2026 04:20 – Admitted with severe chest pain, ECG ST‑elevation II, III, aVF; cath lab activated",
+      "09/09/2026 05:10 – CAG performed; 09/09/2026 05:30 – Primary PTCA with DES to RCA, TIMI III achieved",
+      "09/09/2026 06:30 – Post‑PCI review: patient stable, pain free",
+      "09/09/2026 10:00 – Echo shows LVEF 48%; patient shifted to ward",
+      "09/09/2026 18:00 – Patient ambulating, cardiac diet education given"
+    ],
+    "procedures_performed": [
+      "15/09/2026 – Coronary angiography (CAG) – RCA proximal total occlusion",
+      "15/09/2026 – Primary PTCA with drug‑eluting stent to RCA – TIMI III achieved"
+    ],
+    "key_investigations": [
+      {
+        "test": "Troponin I",
+        "result": "8.6 ng/mL",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Serum Creatinine",
+        "result": "1.0 mg/dL",
+        "interpretation": "normal"
+      },
+      {
+        "test": "LDL Cholesterol",
+        "result": "144 mg/dL",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "2D Echo LVEF",
+        "result": "48 %",
+        "interpretation": "low"
+      }
+    ],
+    "condition_at_discharge": "Stable, pain free, LVEF 48%",
+    "follow_up_advice": [
+      "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+      "Cardiac diet education done",
+      "Ambulating"
+    ]
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 677,
+  "input_tokens": 1674,
+  "output_tokens": 375,
+  "cost_usd": 0.00023804999999999999,
+  "error": null
+}
