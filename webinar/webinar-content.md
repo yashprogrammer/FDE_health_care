@@ -26,7 +26,7 @@
 ### What to show
 Three screens, one after another:
 1. **Legacy HMS** (old, grey, form-heavy). A resident doctor is copy-pasting from 5 screens into a Word template to write a discharge summary.
-2. **POC**: a clean standalone app. Pick a patient, click "Generate", and an AI draft of the discharge summary appears with a "TPA-readiness" checklist.
+2. **POC**: a standalone Streamlit app. Pick a de-identified past patient, click "Generate", and an AI draft of the discharge summary appears with a "TPA-readiness" checklist, a hallucination guardrail and an eval scorecard.
 3. **Integrated system**: the same legacy HMS, now with a "Discharge Copilot" link. The draft is waiting when the doctor opens it. The doctor edits and signs, and the PDF goes back into the HMS.
 
 ### What to say (script)
@@ -270,7 +270,7 @@ She maps the real discharge flow:
 **Legacy archaeology.** The HMS, "MediTrack", was built in 2011:
 - A Java monolith on Oracle with 400+ tables and names like `PT_ADM_DTL` and `IP_DSCH_HDR`
 - The vendor no longer supports it. **Suresh** from hospital IT is the only person who understands it (he's the "Ramesh Kaka" of this house).
-- **No APIs.** A **read-only reporting replica** exists for monthly MIS reports.
+- **No usable APIs.** MediTrack has internal, undocumented endpoints that only its own screens use, and hospital IT forbids external systems from calling them. A **read-only reporting replica** exists for monthly MIS reports.
 - Lab results arrive from the lab system over **HL7 v2** messages. Nursing notes are free text.
 - The discharge summary is a **Word template**. Residents copy-paste from 5 different screens.
 
@@ -285,7 +285,7 @@ Ananya asks Suresh for 3 months of timestamps from the replica and analyses them
 |---|---|
 | Time spent writing a summary | 35–45 min per patient |
 | Discharge advised → patient leaves (**cash** patients) | ~2.5 hours |
-| Discharge advised → patient leaves (**insured** patients) | **~6.2 hours** |
+| Discharge advised → patient leaves (**insured** patients) | **~6.3 hours** |
 | TPA submissions that bounce back with a **query** | **38%** (each adds about 2 hours) |
 | Top query reasons | Missing investigation reports, diagnosis/procedure mismatch, missing doctor details |
 
@@ -385,8 +385,8 @@ Ananya does **not** show the architecture diagram here. She shows this:
 ---
 
 ### Chapter 5: POC and verification (Weeks 4–5)
-- 50 past discharges, **de-identified**, exported from the replica
-- The AI pipeline, eval set and guardrails get built. **(This is where the AI engineer shines.)**
+- 11 past discharges with doctor-written summaries, **de-identified**, exported from the replica with Suresh
+- Built as a throwaway **Streamlit** app: a **Pydantic AI** agent with a typed output schema, a source-trace guardrail, an eval harness, and **Logfire** tracing of every run. **(This is where the AI engineer shines.)**
 - **Technical verification:**
   - Factual accuracy per section, checked against the source data
   - **Zero** invented medications (guaranteed by design, since meds are pulled deterministically)
@@ -402,8 +402,9 @@ Ananya does **not** show the architecture diagram here. She shows this:
 
 ### Chapter 6: Integration with the legacy system (Weeks 6–10)
 - **Adapter goes live**: it watches the replica for "discharge advised" events and generates drafts automatically
-- **Entry point without changing MediTrack's code**: Suresh reveals MediTrack supports **custom menu links**, so a "Discharge Copilot" link opens the draft for that patient. *(Only someone who sat with Suresh finds this.)*
-- **Write-back**: the signed summary goes back as a PDF through MediTrack's **existing** document upload module
+- **Entry point without changing MediTrack's code**: Suresh reveals MediTrack has an admin-configurable **External Links** menu (added in 2016 for the PACS viewer), so a "Discharge Copilot" link opens the draft for that patient. *(Only someone who sat with Suresh finds this.)*
+- **Write-back**: the signed summary goes back as a PDF through MediTrack's **existing batch document import hot-folder**, the scanned-document importer from 2013
+- **Live TPA check**: when the cath lab uploads the missing stent sticker in MediTrack, the Copilot's readiness score updates within seconds, because it re-reads the replica
 - **Shadow mode (1 week)**: drafts are generated but not shown, then compared silently against what doctors wrote
 - **Pilot (Cardiology, 4 weeks)**: a 20-minute training for residents, a feedback button, a daily check-in
 - **Monitoring dashboard**: discharge time, TPA query rate, doctor edit distance, flagged hallucinations, usage
@@ -411,7 +412,7 @@ Ananya does **not** show the architecture diagram here. She shows this:
 
 | Metric | Before | After |
 |---|---|---|
-| Insured discharge time | 6.2 h | 3.4 h |
+| Insured discharge time | 6.3 h | 3.4 h |
 | TPA query rate | 38% | 14% |
 | Doctor time per summary | ~40 min | ~12 min |
 
@@ -429,7 +430,7 @@ Show the full story as a timeline of 6 chapters. Then **grey out everything** ex
 | Chapter | AI Engineer's slice |
 |---|---|
 | 0–4 | *(Optionally reviews the LLD of the AI component)* |
-| **5: POC** | ✅ Prompt design, structured output, hallucination guardrails, source tracing, eval set and clinician rubric, error analysis, latency and cost tuning |
+| **5: POC** | ✅ Pydantic AI agent and prompt design, typed structured output, hallucination guardrails and source tracing, eval set and clinician rubric, Logfire observability, error analysis, latency and cost tuning |
 | **6: Integration** | ✅ LLM gateway hardening, model monitoring (quality drift, flagged outputs), prompt iteration from doctor feedback |
 
 ### What to say
@@ -478,7 +479,7 @@ Show the full story as a timeline of 6 chapters. Then **grey out everything** ex
 
 **Q4. In the house-renovation analogy, what do the "load-bearing walls you can't touch while the family lives there" correspond to, and how did Ananya respect them?**
 - A) The LLM's context window, so she used a bigger model
-- B) The legacy HMS core in production, so she read only from the reporting replica, used existing menu links and document upload, and never modified MediTrack's core ✅
+- B) The legacy HMS core in production, so she read only from the reporting replica, used the existing External Links menu and document import hot-folder, and never modified MediTrack's core ✅
 - C) The hospital budget, so she chose the cheapest cloud provider
 - D) Doctor resistance, so she made the AI fully automatic
 
