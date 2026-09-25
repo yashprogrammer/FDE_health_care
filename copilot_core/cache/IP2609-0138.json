@@ -1,0 +1,41 @@
+{
+  "ip_no": "IP2609-0138",
+  "draft": {
+    "presenting_complaints": "Fever with cough and breathlessness for 5 days",
+    "hospital_course": [
+      "Admitted 20/09/2026 with fever, productive cough, SpO2 91% RA; CXR showed right lower zone consolidation; diagnosed CAP; started IV ceftriaxone 1 g BD and oral azithromycin 500 mg OD, O2 support.",
+      "Afebrile after 24 hrs (23/09/2026); SpO2 96% RA; continued IV antibiotics.",
+      "Blood culture pending; awaiting results.",
+      "Clinical status improving; patient stable at discharge.",
+      "Discharge advised by treating consultant."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "Total Leucocyte Count",
+        "result": "16400 /cumm",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "CRP",
+        "result": "84 mg/L",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Chest X-ray",
+        "result": "Right lower zone consolidation",
+        "interpretation": "consolidation"
+      }
+    ],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 582,
+  "input_tokens": 1387,
+  "output_tokens": 307,
+  "cost_usd": 0.00019612499999999998,
+  "error": null
+}

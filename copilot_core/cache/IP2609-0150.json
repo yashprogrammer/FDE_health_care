@@ -1,0 +1,41 @@
+{
+  "ip_no": "IP2609-0150",
+  "draft": {
+    "presenting_complaints": "Vomiting, abdominal pain and drowsiness, sugar 'HI' on glucometer",
+    "hospital_course": [
+      "23/09/2026 19:40 – Admitted with vomiting, abdominal pain, drowsiness and hyperglycaemia (RBS 486 mg/dL).",
+      "23/09/2026 19:50 – Random Blood Sugar 486 mg/dL (H).",
+      "23/09/2026 20:00 – Arterial pH 7.18 (L) and Serum Ketones Positive (3+).",
+      "23/09/2026 20:10 – DKA protocol started, patient shifted to ICU.",
+      "24/09/2026 12:00 – Anion gap closed, shifted to SC basal‑bolus insulin regimen."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "Random Blood Sugar",
+        "result": "486 mg/dL",
+        "interpretation": "H"
+      },
+      {
+        "test": "Arterial pH",
+        "result": "7.18",
+        "interpretation": "L"
+      },
+      {
+        "test": "Serum Ketones",
+        "result": "Positive (3+)",
+        "interpretation": "H"
+      }
+    ],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 1040,
+  "input_tokens": 2937,
+  "output_tokens": 520,
+  "cost_usd": 0.0003762749999999999,
+  "error": null
+}

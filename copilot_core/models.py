@@ -98,11 +98,11 @@ class SummaryDraft(BaseModel):
 
     presenting_complaints: str = Field(description="One or two lines: chief complaints and duration")
     hospital_course: list[str] = Field(description="4-7 concise chronological bullet points")
-    procedures_performed: list[str] = Field(description="Each procedure with date and key findings; empty if none")
-    key_investigations: list[KeyInvestigation] = Field(description="Only clinically significant results")
+    procedures_performed: list[str] = Field(default_factory=list, description="Each procedure with date and key findings; empty if none")
+    key_investigations: list[KeyInvestigation] = Field(default_factory=list, description="Only clinically significant results")
     condition_at_discharge: str
-    follow_up_advice: list[str] = Field(description="Follow-up visits and instructions stated in the notes")
-    diet_and_activity: list[str] = Field(description="Diet / activity / lifestyle advice stated in the notes")
+    follow_up_advice: list[str] = Field(default_factory=list, description="Follow-up visits and instructions stated in the notes")
+    diet_and_activity: list[str] = Field(default_factory=list, description="Diet / activity / lifestyle advice stated in the notes")
 
 
 class DraftResult(BaseModel):

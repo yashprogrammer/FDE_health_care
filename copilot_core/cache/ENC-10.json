@@ -1,0 +1,46 @@
+{
+  "ip_no": "ENC-10",
+  "draft": {
+    "presenting_complaints": "Fever, headache and body ache for 3 days",
+    "hospital_course": [
+      "12/09/2026 12:20 – Admitted with fever 3 days, NS1+ dengue, no warning signs, poor oral intake; started IV fluids.",
+      "12/09/2026 12:30 – NS1 antigen positive confirmed.",
+      "13/09/2026 – Platelet count 62000/​cumm, SGPT 96 U/L noted; continued supportive care.",
+      "14/09/2026 – Platelet count rising, SGPT normalised; oral intake improved, no bleeding manifestations.",
+      "15/09/2026 – Afebrile for 48 hrs, platelets rising; discharge planned for next day."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "NS1 Antigen",
+        "result": "Positive",
+        "interpretation": "Positive"
+      },
+      {
+        "test": "Platelet Count",
+        "result": "62000 /cumm",
+        "interpretation": "Low"
+      },
+      {
+        "test": "SGPT",
+        "result": "96 U/L",
+        "interpretation": "Elevated"
+      },
+      {
+        "test": "Platelet Count (repeat)",
+        "result": "118000 /cumm",
+        "interpretation": "Low"
+      }
+    ],
+    "condition_at_discharge": "Stable, afebrile, platelets 118000/​cumm, SGPT 96 U/L, no warning signs",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 584,
+  "input_tokens": 1391,
+  "output_tokens": 308,
+  "cost_usd": 0.000196725,
+  "error": null
+}

@@ -1,0 +1,43 @@
+{
+  "ip_no": "ENC-07",
+  "draft": {
+    "presenting_complaints": "Fever with chills and burning micturition for 3 days, right flank pain",
+    "hospital_course": [
+      "24/08/2026 – Admitted with fever, chills, right flank pain; urine routine shows pus cells 40-50/hpf, TLC 15200/cumm; started IV ceftriaxone 1 g BD",
+      "25/08/2026 – Patient afebrile; encouraged oral fluids >3 L/day",
+      "26/08/2026 – Urine culture positive for E. coli sensitive to ceftriaxone, nitrofurantoin; plan oral step‑down therapy; patient remains afebrile"
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "Urine routine",
+        "result": "Pus cells 40-50/hpf",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Total Leucocyte Count",
+        "result": "15200 /cumm",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "Urine culture",
+        "result": "E. coli, sensitive to ceftriaxone, nitrofurantoin",
+        "interpretation": "positive culture"
+      }
+    ],
+    "condition_at_discharge": "Afebrile, stable, no residual flank pain",
+    "follow_up_advice": [
+      "As advised by treating consultant"
+    ],
+    "diet_and_activity": [
+      "Encouraged oral fluids >3 L/day"
+    ]
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 746,
+  "input_tokens": 1359,
+  "output_tokens": 375,
+  "cost_usd": 0.000214425,
+  "error": null
+}

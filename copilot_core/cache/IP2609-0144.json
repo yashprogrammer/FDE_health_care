@@ -1,0 +1,39 @@
+{
+  "ip_no": "IP2609-0144",
+  "draft": {
+    "presenting_complaints": "Planned right total knee replacement for osteoarthritis",
+    "hospital_course": [
+      "09/09/2026 08:00 – Admitted for planned right TKR",
+      "09/09/2026 10:30 – Right total knee arthroplasty performed under spinal anaesthesia, uneventful",
+      "09/09/2026 13:00 – Post‑op review: wound dry, patient mobilising with walker, physiotherapy ongoing",
+      "09/09/2026 22:00 – Discharge assessment: stable vitals, pain controlled, wound intact"
+    ],
+    "procedures_performed": [
+      "09/09/2026 – Right total knee arthroplasty (code 27447), uneventful"
+    ],
+    "key_investigations": [
+      {
+        "test": "Haemoglobin",
+        "result": "11.2 g/dL",
+        "interpretation": "low"
+      },
+      {
+        "test": "Serum Creatinine",
+        "result": "0.8 mg/dL",
+        "interpretation": "normal"
+      }
+    ],
+    "condition_at_discharge": "Stable, pain controlled, wound dry, mobilising with walker",
+    "follow_up_advice": [],
+    "diet_and_activity": [
+      "As advised by treating consultant"
+    ]
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 664,
+  "input_tokens": 1284,
+  "output_tokens": 311,
+  "cost_usd": 0.0001896,
+  "error": null
+}

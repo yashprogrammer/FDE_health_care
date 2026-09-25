@@ -63,7 +63,7 @@ def draft_to_text(d: SummaryDraft) -> str:
 def _source_corpus(enc: Encounter) -> str:
     bits = [enc.reason_for_admission, enc.admission_date, enc.discharge_advised_date or "", str(enc.age)]
     bits += [f"{d.icd10} {d.description}" for d in enc.diagnoses]
-    bits += [f"{p.description} {p.date}" for p in enc.procedures]
+    bits += [f"{p.code} {p.description} {p.date}" for p in enc.procedures]
     bits += [f"{lab.test} {lab.value} {lab.unit} {lab.ref_range} {lab.date}" for lab in enc.labs]
     bits += [f"{m.drug} {m.dose} {m.frequency} {m.duration}" for m in enc.inpatient_meds + enc.discharge_meds]
     bits += [f"{n.datetime} {n.text}" for n in enc.notes]
@@ -77,6 +77,7 @@ def _numbers(text: str) -> set[float]:
         out.add(v)
     for k in re.findall(r"(\d+(?:\.\d+)?)\s*k\b", text, re.I):    # "48k" == 48000
         out.add(float(k) * 1000)
+    out |= {v % 100 for v in out if 2000 <= v <= 2099 and v == int(v)}  # "2026" also allows "26"
     return out
 
 

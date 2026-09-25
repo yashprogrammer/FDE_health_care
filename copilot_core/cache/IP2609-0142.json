@@ -1,0 +1,65 @@
+{
+  "ip_no": "IP2609-0142",
+  "draft": {
+    "presenting_complaints": "62M with retrosternal chest pain radiating to left arm for 2 hrs with sweating",
+    "hospital_course": [
+      "21/09/2026 07:10 – Patient admitted with acute anterior wall STEMI; primary PCI planned.",
+      "21/09/2026 07:55 – CAG shows 99% thrombotic occlusion of proximal LAD; 40% LCx, normal RCA.",
+      "21/09/2026 08:15 – Primary PTCA with DES (Xience 3.0 x 28 mm) to proximal LAD via right radial; TIMI III flow achieved; patient shifted to CCU.",
+      "22/09/2026 10:00 – Echo shows LVEF 40%, anterior wall hypokinesia; patient pain free, haemodynamically stable; amlodipine stopped, ramipril started; smoking cessation counselled.",
+      "23/09/2026 10:15 – Shifted from CCU to ward 4B; ambulating with support; repeat Troponin I 3.1 (downtrending); Lp(a) sent to outside lab – report awaited.",
+      "24/09/2026 10:30 – Stable, pain free, ambulating independently; radial site healthy; plan discharge tomorrow if stable; cardiac rehab referral; review in OPD after 1 week with reports."
+    ],
+    "procedures_performed": [
+      "21/09/2026 – Coronary angiography: proximal LAD 99% thrombotic occlusion, LCx 40%, RCA normal",
+      "21/09/2026 – Primary PTCA with drug‑eluting stent (Xience 3.0 x 28 mm) to proximal LAD via right radial; TIMI III flow achieved"
+    ],
+    "key_investigations": [
+      {
+        "test": "Troponin I",
+        "result": "12.4 ng/mL",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "CK-MB",
+        "result": "86 U/L",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "LDL Cholesterol",
+        "result": "162 mg/dL",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "HbA1c",
+        "result": "6.1 %",
+        "interpretation": "elevated"
+      },
+      {
+        "test": "2D Echo LVEF",
+        "result": "40 %",
+        "interpretation": "low"
+      },
+      {
+        "test": "Troponin I (repeat)",
+        "result": "3.1 ng/mL",
+        "interpretation": "downtrending"
+      }
+    ],
+    "condition_at_discharge": "Stable, pain free, haemodynamically stable, LVEF 40%",
+    "follow_up_advice": [
+      "Cardiac rehab referral",
+      "Review in OPD after 1 week with reports"
+    ],
+    "diet_and_activity": [
+      "low salt, low fat, no smoking"
+    ]
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 979,
+  "input_tokens": 2809,
+  "output_tokens": 586,
+  "cost_usd": 0.000386475,
+  "error": null
+}

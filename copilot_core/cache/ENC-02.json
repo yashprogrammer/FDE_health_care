@@ -1,0 +1,45 @@
+{
+  "ip_no": "ENC-02",
+  "draft": {
+    "presenting_complaints": "Loose motions and vomiting for 2 days",
+    "hospital_course": [
+      "Admitted 15/07/2026 with 12-14 loose stools/day, vomiting, dry tongue, tachycardia; diagnosed with prerenal AKI and started on IV fluids (Ringer lactate 100 ml/hr) and Ondansetron 4 mg TDS",
+      "Serum electrolytes on 15/07/2026 showed hyponatraemia (131 mmol/L) and hypokalaemia (3.1 mmol/L); serum creatinine elevated (1.4 mg/dL) indicating AKI",
+      "Stools reduced to 3/day by 16/07/2026; patient tolerating oral intake; repeat creatinine 0.9 mg/dL on 16/07/2026 06:30",
+      "No vomiting reported on 16/07/2026 21:00; patient accepting soft diet"
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "Serum Sodium",
+        "result": "131 mmol/L",
+        "interpretation": "low"
+      },
+      {
+        "test": "Serum Potassium",
+        "result": "3.1 mmol/L",
+        "interpretation": "low"
+      },
+      {
+        "test": "Serum Creatinine",
+        "result": "1.4 mg/dL",
+        "interpretation": "high"
+      },
+      {
+        "test": "Serum Creatinine (repeat)",
+        "result": "0.9 mg/dL",
+        "interpretation": "normal"
+      }
+    ],
+    "condition_at_discharge": "Stable, tolerating oral intake, no vomiting, stools reduced",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 586,
+  "input_tokens": 1457,
+  "output_tokens": 342,
+  "cost_usd": 0.000211875,
+  "error": null
+}

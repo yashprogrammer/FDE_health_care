@@ -1,0 +1,42 @@
+{
+  "ip_no": "IP2609-0133",
+  "draft": {
+    "presenting_complaints": "71‑year‑old male with orthopnoea, paroxysmal nocturnal dyspnoea and bilateral pedal oedema for 1 week.",
+    "hospital_course": [
+      "Admitted 20/09/2026 with acute decompensated heart failure (ADHF) and started IV furosemide 40 mg BD.",
+      "Baseline labs on 20/09/2026: NT‑proBNP 6800 pg/mL (↑), 2D echo LVEF 30 % (↓).",
+      "Serum sodium 131 mmol/L on 21/09/2026 (↓).",
+      "Continued diuresis with furosemide IV and oral spironolactone 25 mg OD, bisoprolol 2.5 mg OD.",
+      "By 23/09/2026, net negative fluid balance 3.2 L, breathing improved, diuresis continued.",
+      "No invasive procedures performed during stay."
+    ],
+    "procedures_performed": [],
+    "key_investigations": [
+      {
+        "test": "NT-proBNP",
+        "result": "6800 pg/mL",
+        "interpretation": "↑"
+      },
+      {
+        "test": "2D Echo LVEF",
+        "result": "30 %",
+        "interpretation": "↓"
+      },
+      {
+        "test": "Serum Sodium",
+        "result": "131 mmol/L",
+        "interpretation": "↓"
+      }
+    ],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
+    "diet_and_activity": []
+  },
+  "source": "live",
+  "model": "groq:openai/gpt-oss-20b",
+  "latency_ms": 1226,
+  "input_tokens": 3000,
+  "output_tokens": 639,
+  "cost_usd": 0.0004167,
+  "error": null
+}
