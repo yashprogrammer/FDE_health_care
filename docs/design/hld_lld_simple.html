@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Discharge Copilot - Design (Simple)</title>
+<script src="node_modules/mermaid/dist/mermaid.min.js"></script>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 18mm 18mm 18mm;
+    @bottom-right { content: "Page " counter(page); font: 8px Helvetica, Arial, sans-serif; color: #94a3b8; }
+  }
+  @page :first { @bottom-right { content: none; } }
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --brand:#0f766e; --dark:#134e4a; --soft:#f0fdfa; }
+  body { font: 11pt/1.6 Helvetica, Arial, sans-serif; color: var(--ink); margin: 0; }
+  h1 { font-size: 22pt; color: var(--dark); margin: 0 0 2mm; break-before: page; }
+  h1 + .lead { color: var(--muted); font-size: 11.5pt; margin: 0 0 6mm; }
+  h2 { font-size: 14pt; color: var(--dark); margin: 7mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 3mm; }
+  ul { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.5mm; }
+  .simple { background: var(--soft); border-left: 5px solid var(--brand); border-radius: 4px; padding: 3mm 5mm; margin: 0 0 6mm; font-size: 11.5pt; break-inside: avoid; }
+  .simple b:first-child { color: var(--brand); display: block; font-size: 9pt; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 1mm; }
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0 5mm; font-size: 10pt; }
+  tr { break-inside: avoid; }
+  th { background: var(--dark); color: #fff; text-align: left; padding: 2mm 3mm; font-weight: 600; }
+  td { padding: 2mm 3mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  figure { margin: 2mm 0 6mm; break-inside: avoid; }
+  figure .mermaid { display: block; width: 100%; }
+  figure .mermaid svg { display: block; margin: 0 auto; }
+  figcaption { font-size: 9pt; color: var(--muted); text-align: center; margin-top: 2mm; }
+  .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 2mm 0 6mm; }
+  .num { border: 1px solid var(--line); border-radius: 8px; padding: 4mm; text-align: center; }
+  .num b { display: block; font-size: 22pt; color: #b91c1c; line-height: 1.2; }
+  .num.good b { color: var(--brand); }
+  .num span { font-size: 9.5pt; color: var(--muted); }
+  .cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; }
+  .cover .band { background: linear-gradient(135deg, #134e4a, #0f766e 60%, #14b8a6); color: #fff; border-radius: 10px; padding: 18mm 14mm; }
+  .cover .band small { letter-spacing: .2em; text-transform: uppercase; opacity: .85; font-size: 9pt; }
+  .cover .band .t { font-size: 30pt; font-weight: 800; line-height: 1.15; margin: 5mm 0 4mm; }
+  .cover .band p { font-size: 13pt; margin: 0; opacity: .95; }
+  .cover .meta { margin-top: 10mm; color: var(--muted); font-size: 10.5pt; }
+  .cover ol { font-size: 12pt; line-height: 1.9; margin-top: 8mm; }
+  .note { font-size: 9pt; color: var(--muted); margin-top: 8mm; }
+  .key span { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 9pt; font-weight: 700; margin-right: 2mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER -->
+<section class="cover">
+  <div class="band">
+    <small>CityCare Hospitals · Forward Deployed Engineering</small>
+    <div class="t">Discharge Copilot<br>Design, made simple</div>
+    <p>How the old hospital system works, the POC we built, and how it all connects</p>
+  </div>
+  <ol>
+    <li>The problem</li>
+    <li>The old system (MediTrack)</li>
+    <li>The POC: high-level design</li>
+    <li>The POC: how it works inside</li>
+    <li>The integrated system: high-level design</li>
+    <li>The integrated system: how it works inside</li>
+    <li>Summary</li>
+  </ol>
+  <div class="meta">Version 1.0 · 25 September 2026</div>
+  <div class="key" style="margin-top:4mm">
+    Colours in diagrams:
+    <span style="background:#f1efe8;border:1px solid #8a8170">Old system</span>
+    <span style="background:#e0f2f1;border:1px solid #0f766e">New Copilot</span>
+    <span style="background:#ede9fe;border:1px solid #7c3aed">AI</span>
+    <span style="background:#fef3c7;border:1px solid #b45309">People</span>
+  </div>
+  <div class="note">CityCare Hospitals, its patients, doctors and numbers are fictional and used for teaching.</div>
+</section>
+
+<!-- ============================ 1 PROBLEM -->
+<h1>1. The problem</h1>
+<p class="lead">Why insured patients wait so long to go home.</p>
+
+<div class="simple"><b>In simple words</b>
+When a doctor says a patient can go home, someone has to write a <b>discharge summary</b> (a report of the whole stay). For insured patients, the insurance company must also approve the bill, and it needs that summary. Writing it is slow, and it often misses things the insurer wants, so the insurer sends it back.</div>
+
+<figure><pre class="mermaid">
+flowchart LR
+  A["Doctor says:<br/>patient can go home"]:::people --> B["Junior doctor types<br/>the summary<br/>40 minutes"]:::bad
+  B --> C["Bill is made"]:::old
+  C --> D{"Insurer<br/>approves?"}:::old
+  D -->|"yes"| E["Patient goes home"]:::people
+  D -->|"no: something missing<br/>38% of the time"| F["Fix it and<br/>send again<br/>+2 to 4 hours"]:::bad
+  F --> D
+  classDef old fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef bad fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+</pre><figcaption>What happens on the day a patient leaves. The red boxes are where time is lost.</figcaption></figure>
+
+<div class="nums">
+  <div class="num"><b>6.3 hours</b><span>wait for insured patients<br>(cash patients: 2.5 hours)</span></div>
+  <div class="num"><b>38%</b><span>of insurance submissions<br>are sent back</span></div>
+  <div class="num"><b>40 min</b><span>to type one summary</span></div>
+</div>
+
+<h2>Our solution in one line</h2>
+<p>The moment the doctor says "go home", <b>AI writes a first draft</b> of the summary, <b>a checklist flags anything the insurer will ask for</b>, and <b>the doctor reviews and signs it</b>, all inside the hospital's existing system.</p>
+
+<!-- ============================ 2 LEGACY -->
+<h1>2. The old system (MediTrack)</h1>
+<p class="lead">The hospital software we must work with, not replace.</p>
+
+<div class="simple"><b>In simple words</b>
+MediTrack was built in 2011. The company that made it no longer exists, so <b>nobody can change its code</b>. Patient information is spread across many screens. But it has three "doors" we can use safely without touching its code.</div>
+
+<figure data-maxh="330"><pre class="mermaid">
+flowchart TB
+  U["Doctors, nurses,<br/>insurance desk"]:::people --> S["MediTrack screens<br/>Diagnosis · Labs · Medicines<br/>Notes · Documents · ..."]:::old
+  S --> DB[("MediTrack database")]:::old
+  DB --> D1["Door 1: Reporting copy<br/>a read-only copy of the data"]:::door
+  S --- D2["Door 2: Custom tab<br/>admin can add a tab<br/>to every patient file"]:::door
+  D3["Door 3: Scanner folder<br/>drop a PDF here and it is<br/>filed in the patient's documents"]:::door --> DB
+  classDef old fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef door fill:#ffffff,stroke:#0f766e,stroke-width:2px,stroke-dasharray:5 3,color:#134e4a
+</pre><figcaption>MediTrack and its three safe doors (dashed boxes).</figcaption></figure>
+
+<h2>What MediTrack stores (the parts we use)</h2>
+<table>
+  <tr><th style="width:30%">Information</th><th>Example for our demo patient, Ramesh Kulkarni</th></tr>
+  <tr><td>Patient and admission</td><td>62 years, admitted 21 Sep with a heart attack, insured (cashless)</td></tr>
+  <tr><td>Diagnosis</td><td>Heart attack (ICD-10 code I21.0), high blood pressure</td></tr>
+  <tr><td>Procedures</td><td>Angiography and stent placed in a heart artery</td></tr>
+  <tr><td>Lab results</td><td>Troponin 12.4, heart pumping at 40%, one report still pending</td></tr>
+  <tr><td>Medicines</td><td>7 medicines to take home</td></tr>
+  <tr><td>Doctor and nurse notes</td><td>Free-text notes written each day</td></tr>
+  <tr><td>Documents</td><td>Consent, cath report, but the <b>stent sticker is missing</b> (insurers always ask for it)</td></tr>
+</table>
+
+<!-- ============================ 3 POC HLD -->
+<h1>3. The POC: high-level design</h1>
+<p class="lead">A small test app to prove the AI is safe and useful before touching the real system.</p>
+
+<div class="simple"><b>In simple words</b>
+We took <b>11 old patient records</b>, removed names and IDs, and built a simple app in <b>Streamlit</b>. It lets us generate AI drafts, check them for mistakes, score them against what the doctors actually wrote, and collect doctors' opinions. It is <b>not connected</b> to the hospital system.</div>
+
+<figure><pre class="mermaid">
+flowchart LR
+  A[("11 past patient records<br/>names and IDs removed")]:::old --> B["Streamlit POC app"]:::new
+  B --> C["Copilot brain<br/>(copilot_core)"]:::new
+  C <--> AI["AI model<br/>gpt-oss-20b on Groq"]:::ai
+  B --> T1["1 Generate a draft"]:::tab
+  B --> T2["2 Check for mistakes"]:::tab
+  B --> T3["3 Score all 11"]:::tab
+  B --> T4["4 Doctor feedback"]:::tab
+  classDef old fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef new fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef tab fill:#ffffff,stroke:#0f766e,color:#134e4a
+</pre><figcaption>The POC and its four screens.</figcaption></figure>
+
+<h2>The most important design rule</h2>
+<table>
+  <tr><th style="width:45%">Part of the summary</th><th>Who writes it</th></tr>
+  <tr><td>Diagnosis, medicines, pending reports</td><td><b>Copied straight from hospital records.</b> Never written by AI, because a mistake here could harm a patient.</td></tr>
+  <tr><td>Insurance checklist</td><td><b>Simple rules in code.</b> We already know what insurers ask for.</td></tr>
+  <tr><td>The story of the stay: symptoms, what happened each day, test highlights, condition at discharge, follow-up</td><td><b>AI writes the draft.</b> Turning messy notes into a clear story is what AI is good at. The doctor can edit everything.</td></tr>
+</table>
+
+<h2>Tools used</h2>
+<p><b>Streamlit</b> (screens) · <b>Pydantic AI</b> (talks to the AI and makes it return a fixed format) · <b>Groq gpt-oss-20b</b> (the AI model) · <b>Logfire</b> (records every AI call so we can inspect it)</p>
+
+<!-- ============================ 4 POC LLD -->
+<h1>4. The POC: how it works inside</h1>
+<p class="lead">What happens when you click "Generate".</p>
+
+<figure><pre class="mermaid">
+flowchart TB
+  S1["1 Collect the patient's data<br/>diagnosis, labs, medicines, notes"]:::new --> S2["2 Remove personal details<br/>name, ID, policy number"]:::new
+  S2 --> S3["3 AI writes the story<br/>in a fixed format"]:::ai
+  S3 --> S4["4 Add facts from records<br/>diagnosis, medicines, pending reports"]:::new
+  S4 --> S5["5 Run two safety checks"]:::new
+  S5 --> S6["Draft ready for the doctor"]:::people
+  classDef new fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+</pre><figcaption>Five steps from patient data to a draft summary.</figcaption></figure>
+
+<h2>The two safety checks</h2>
+<table>
+  <tr><th style="width:28%">Check</th><th>What it does</th></tr>
+  <tr><td><b>Fact check</b></td><td>Every medicine, test name and number in the AI text is looked up in the patient's record. Green = found. Yellow = number not found. Red = not in the record at all (the AI made it up).</td></tr>
+  <tr><td><b>Insurance checklist</b></td><td>7 simple rules, e.g. "is there a final diagnosis?", "is the stent sticker attached?", "are pending reports mentioned?". Gives a readiness score such as 71%.</td></tr>
+</table>
+
+<h2>If the AI is not available</h2>
+<p>The app never shows an empty screen. It tries, in order: <b>live AI</b> → a <b>saved copy</b> of an earlier AI draft → a <b>basic draft</b> built directly from the notes.</p>
+
+<h2>Results on the 11 test patients</h2>
+<div class="nums">
+  <div class="num good"><b>0</b><span>made-up medicines or tests</span></div>
+  <div class="num good"><b>99%</b><span>of facts match the records</span></div>
+  <div class="num good"><b>&lt;1 second</b><span>per draft, about ₹0.02 each</span></div>
+</div>
+<p><b>What we learned:</b> the AI once wrote wrong dates, and the fact check caught them. Follow-up advice is often missing because doctors don't write it in their notes. That's a process fix, not an AI fix.</p>
+
+<!-- ============================ 5 INTEGRATED HLD -->
+<h1>5. The integrated system: high-level design</h1>
+<p class="lead">The real thing, running next to MediTrack.</p>
+
+<div class="simple"><b>In simple words</b>
+The Copilot runs <b>beside</b> MediTrack and connects only through the three safe doors. It <b>reads</b> from the reporting copy, <b>shows</b> the draft in a new tab inside MediTrack, and <b>sends back</b> the signed summary through the scanner folder. MediTrack's code is never changed, and doctors never leave MediTrack.</div>
+
+<figure data-maxh="430"><pre class="mermaid">
+flowchart TB
+  DR["Doctor"]:::people --> P["MediTrack patient file<br/>(unchanged)"]:::old
+  P -->|"Door 1: read-only reporting copy"| W["Copilot watcher<br/>spots new discharges"]:::new
+  W --> BR["Copilot brain<br/>AI draft + facts + checks"]:::new
+  BR <--> AI["AI model"]:::ai
+  BR --> R["Review screen"]:::new
+  R -->|"Door 2: appears as a tab"| T["AI Discharge Draft tab<br/>inside MediTrack"]:::old
+  R -->|"Door 3: signed PDF via scanner folder"| D["Documents tab<br/>inside MediTrack"]:::old
+  classDef old fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef new fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+</pre><figcaption>How the Copilot connects to MediTrack through the three doors.</figcaption></figure>
+
+<h2>Why a tab, not a new app</h2>
+<p>300+ doctors and nurses already know MediTrack. A new app means new logins, training and resistance. A tab that <b>looks exactly like MediTrack</b> (same grey style, same buttons) means the only new habit is: <i>"after Discharge Advised, open the AI tab."</i></p>
+
+<h2>Built-in safety</h2>
+<ul>
+  <li><b>MediTrack is never written to directly</b>: the Copilot only reads the copy and uses the scanner folder.</li>
+  <li><b>A doctor must sign</b>: nothing reaches the patient or insurer without it.</li>
+  <li><b>Personal details are removed</b> before anything is sent to the AI.</li>
+  <li><b>Every step is logged</b>, including who edited and who signed.</li>
+</ul>
+
+<!-- ============================ 6 INTEGRATED LLD -->
+<h1>6. The integrated system: how it works inside</h1>
+<p class="lead">One patient, start to finish, in about 10 seconds of system time.</p>
+
+<figure data-maxh="500"><pre class="mermaid">
+flowchart TB
+  A["1 Doctor clicks<br/>Discharge Advised in MediTrack"]:::people --> B["2 Reporting copy updates<br/>every 3 seconds"]:::old
+  B --> C["3 Copilot watcher notices<br/>checks every 2 seconds"]:::new
+  C --> D["4 AI writes the draft<br/>about 1 second"]:::ai
+  D --> E["5 Doctor opens the AI tab<br/>sees draft + insurance score 71%"]:::people
+  E --> F["6 Missing stent sticker uploaded<br/>score updates to 86%"]:::people
+  F --> G["7 Doctor edits and signs"]:::people
+  G --> H["8 Signed PDF dropped<br/>into scanner folder"]:::new
+  H --> I["9 PDF appears in<br/>MediTrack Documents tab"]:::old
+  classDef old fill:#f1efe8,stroke:#8a8170,color:#1f1a10
+  classDef new fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef ai fill:#ede9fe,stroke:#7c3aed,color:#1e1b4b
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+</pre><figcaption>The full journey for Ramesh Kulkarni.</figcaption></figure>
+
+<h2>The main parts</h2>
+<table>
+  <tr><th style="width:28%">Part</th><th>Job</th></tr>
+  <tr><td>Reporting copy</td><td>A read-only copy of MediTrack's data, refreshed every 3 seconds</td></tr>
+  <tr><td>Watcher</td><td>Looks for patients marked "Discharge Advised" and starts a draft</td></tr>
+  <tr><td>Copilot brain</td><td>The same code as the POC: AI draft + facts from records + two safety checks</td></tr>
+  <tr><td>Copilot database</td><td>Keeps each draft, the doctor's edits, and a log of every action</td></tr>
+  <tr><td>Review screen</td><td>Shown inside MediTrack's tab: edit, check, sign</td></tr>
+  <tr><td>PDF writer</td><td>Creates the signed summary and drops it in the scanner folder</td></tr>
+  <tr><td>Monitor page</td><td>For management: before vs after numbers and activity</td></tr>
+</table>
+
+<h2>A draft's life</h2>
+<figure data-maxh="110"><pre class="mermaid">
+flowchart LR
+  A["Drafting"]:::new --> B["Ready for review"]:::people --> C["Signed"]:::ok
+  B -->|"doctor edits"| B
+  classDef new fill:#e0f2f1,stroke:#0f766e,color:#0f172a
+  classDef people fill:#fef3c7,stroke:#b45309,color:#78350f
+  classDef ok fill:#dcfce7,stroke:#16a34a,color:#14532d
+</pre></figure>
+
+<h2>If something goes wrong</h2>
+<table>
+  <tr><th style="width:36%">Problem</th><th>What happens</th></tr>
+  <tr><td>AI or internet is down</td><td>A saved draft or a basic draft is shown instead</td></tr>
+  <tr><td>Copilot is down</td><td>MediTrack keeps working; doctors use the old Word template</td></tr>
+  <tr><td>A document is still missing</td><td>The checklist warns the doctor before signing</td></tr>
+</table>
+
+<!-- ============================ 7 SUMMARY -->
+<h1>7. Summary</h1>
+<p class="lead">Everything on one page.</p>
+<table>
+  <tr><th style="width:22%"></th><th>Old system</th><th>POC</th><th>Integrated system</th></tr>
+  <tr><td><b>What it is</b></td><td>MediTrack, 2011 hospital software</td><td>Test app on 11 anonymised past patients</td><td>Copilot running beside MediTrack</td></tr>
+  <tr><td><b>Purpose</b></td><td>Stores all patient data</td><td>Prove the AI is safe and useful</td><td>Save time for real patients</td></tr>
+  <tr><td><b>Built with</b></td><td>FastAPI, SQLite, React</td><td>Streamlit, Pydantic AI, Groq, Logfire</td><td>FastAPI, React, same AI brain as the POC</td></tr>
+  <tr><td><b>Connected to hospital?</b></td><td>It is the hospital system</td><td>No</td><td>Yes, through 3 safe doors only</td></tr>
+  <tr><td><b>Who uses it</b></td><td>All staff</td><td>Project team, doctors (for feedback)</td><td>Doctors (AI tab), managers (monitor)</td></tr>
+</table>
+
+<div class="simple"><b>The big idea</b>
+AI writes the story. The records supply the facts. Simple rules check what the insurer needs. <b>The doctor stays in charge and signs.</b> And the old system keeps running exactly as before.</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: false, theme: 'base',
+    themeVariables: { fontFamily: 'Helvetica, Arial, sans-serif', fontSize: '16px', lineColor: '#475569',
+      primaryColor: '#e0f2f1', primaryBorderColor: '#0f766e', primaryTextColor: '#0f172a',
+      clusterBkg: '#f8fafc', clusterBorder: '#cbd5e1', edgeLabelBackground: '#ffffff' },
+    flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: true, nodeSpacing: 30, rankSpacing: 40, padding: 12 }
+  });
+  function fit() {
+    document.querySelectorAll('figure .mermaid svg').forEach((svg) => {
+      const vb = svg.viewBox.baseVal
+      if (!vb || !vb.width) return
+      const fig = svg.closest('figure')
+      const scale = Math.min((fig.clientWidth - 8) / vb.width, (fig.dataset.maxh ? +fig.dataset.maxh : 620) / vb.height, 1.3)
+      svg.removeAttribute('style')
+      svg.setAttribute('width', Math.round(vb.width * scale))
+      svg.setAttribute('height', Math.round(vb.height * scale))
+    })
+  }
+  mermaid.run().then(fit)
+</script>
+</body>
+</html>
