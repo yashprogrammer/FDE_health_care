@@ -233,7 +233,7 @@ SummaryDraft (narrative sections only)
 | Tab | What it shows | What to point out |
 |---|---|---|
 | **⚡ Generate** | Source data (expander) → **Generate** → metric strip (source, latency, tokens, ₹ cost, TPA %) → assembled summary + TPA checklist | 🔒 sections are pulled, not generated. The checklist is rules, not AI. |
-| **🔍 Source trace** | The draft as editable text, with every drug / lab / number highlighted: 🟩 verified · 🟨 unverified number · 🟥 not in record | Type `Warfarin 5 mg OD` → it turns red. **ENC-01** shows real model mistakes (wrong dates) caught in yellow. |
+| **🔍 Source trace** | The draft as editable text, with every drug / lab / number highlighted: 🟩 verified · 🟨 unverified number · 🟥 not in record | Type `Warfarin 5 mg OD` → it turns red. Change a date to `09/09/2026` → it turns yellow (not a date in this patient's record). |
 | **📊 Eval** | Runs all 11 encounters and scores each one | See the metrics below |
 | **👩‍⚕️ Clinician feedback** | AI draft vs the doctor's original, side by side. Reviewers rate accuracy, completeness and usefulness, and say whether they'd sign. | This is the *business* verification step from the story |
 
@@ -242,22 +242,22 @@ SummaryDraft (narrative sections only)
 | Metric | Definition | Result |
 |---|---|---|
 | Hallucinated | Drugs / lab tests not in the patient's record | **0** |
-| Faithfulness | Verified entities ÷ all entities | **99%** |
-| Key-fact recall | Share of facts (drugs, tests, numbers) in the doctor's summary that the AI draft also mentions (excluding the med list) | **74%** |
-| Completeness | Required sections present | **87%** |
-| Latency | Per draft | **~0.6 s median** |
+| Faithfulness | Verified entities ÷ all entities | **100%** |
+| Key-fact recall | Share of facts (drugs, tests, numbers) in the doctor's summary that the AI draft also mentions (excluding the med list) | **75%** |
+| Completeness | Required sections present | **90%** |
+| Latency | Per draft | **~0.8 s median** |
 | Cost | Per draft | **~$0.0002 (≈ ₹0.02)** |
 
 **What the POC taught us** (these are good stories to tell the audience):
 1. **The model's first output mode failed.** Groq rejected gpt-oss-20b's tool-call output, and every draft silently fell back to the template. Switching to *native structured output* fixed it. *Lesson: test with the real model and provider, not just the framework.*
-2. **The model made a date error** (ENC-01: 24–26/07 instead of 08–12/07). The guardrail flagged it, and the doctor would fix it. *Lesson: guardrails plus human sign-off, not blind trust.*
+2. **The model got dates wrong** (e.g. "09/09/2026" for a 21/09/2026 procedure) because it had to convert the data's `2026-09-21` into Indian DD/MM format. Worse, the first guardrail missed it, because it checked numbers one at a time and 09 appears elsewhere in the record. Two fixes: dates are handed to the model **already in DD/MM/YYYY** (it copies instead of converting), and the guardrail now verifies **whole dates** against the record. *Lesson: prevent at the input, catch at the output, and a doctor still signs.*
 3. **Follow-up advice is often missing**, because doctors don't write the follow-up plan in the notes. It only exists in their head when they write the summary. *This is an FDE finding, not a model bug: the fix is a process change (add a follow-up line to the final ward note).*
 
 ---
 
 ## 5. The integrated system
 
-**Run:** `./run.sh integrated` → MediTrack http://localhost:8001 + Copilot http://localhost:8002 (branch `part-3-integrated`)
+**Run:** `./run.sh integrated` → open MediTrack at http://localhost:8001. The Copilot service runs on :8002 but has **no screens of its own**: users only ever see MediTrack. (Branch `part-3-integrated`.)
 
 ### 5.1 Architecture
 
@@ -280,7 +280,6 @@ SummaryDraft (narrative sections only)
              │  copilot.db (own drafts + audit)                                   │               │      │
              │  API: /api/drafts, /checks, PUT edit, /sign, /pdf, /metrics        │               │      │
              │  UI:  #/embed/review/{IP_NO}  ── shown inside MediTrack tab ───────┼───────────────┘      │
-             │       #/ (worklist), #/monitor  ── for pilot team / management     │                      │
              │  sign → render PDF → IPNO_DSCHSUMM_<ts>.pdf ───────────────────────┼──────────────────────┘
              └──────────────────────────── traces → Logfire ──────────────────────┘
 ```
@@ -296,9 +295,9 @@ SummaryDraft (narrative sections only)
 | **~5–7 s total** | MediTrack **AI Discharge Draft** tab | "Waiting" turns into the full draft, with **TPA readiness 71%**: ❌ implant sticker missing |
 | | MediTrack Documents tab | Cath lab uploads the stent sticker (`demo_assets/…pdf`, type `IMPLANT_STKR`) the old way |
 | ≤3 s later | AI tab | TPA panel re-reads the replica and updates to **86%** |
-| | AI tab | Doctor edits a line → **Sign & send to MediTrack** (warns if checks still fail) |
+| | AI tab | Doctor edits a line → **Sign Discharge Summary** (warns if checks still fail) |
 | ≤3 s | MediTrack importer | PDF picked up from the hot-folder → **Documents tab** shows `DSCHSUMM … BATCH_IMPORT` (yellow row) |
-| | Copilot Monitor | Baseline 6.3 h / 38% vs pilot metrics; activity feed; link to Logfire traces |
+| | Logfire | One trace shows the whole chain: replica read → agent → guardrail → PDF write-back |
 
 ### 5.3 Components
 
@@ -308,8 +307,7 @@ SummaryDraft (narrative sections only)
 | Adapter | `copilot/service/app.py` (`adapter_loop`) | Watches for `STS='DA'` and drafts each patient once |
 | AI core | `copilot_core/*` | Same code as the POC, promoted to production |
 | Copilot store | `copilot/data/copilot.db` | Drafts, edits, signatures, audit events. Separate from MediTrack by design. |
-| Review UI (embedded) | `copilot/ui` → `#/embed/review/{IP_NO}` | **The only screen doctors use**, inside MediTrack in the classic skin |
-| Worklist / Monitor | `copilot/ui` → `#/`, `#/monitor` | For the pilot team and management, not for doctors |
+| AI Discharge Draft tab | `copilot/ui` → `#/embed/review/{IP_NO}` | **The only new screen.** Rendered inside MediTrack using MediTrack's own stylesheet (copied verbatim), with fields in the order of MediTrack's paper form MRD/DS/07 |
 | PDF write-back | `copilot/service/pdf.py` + hot-folder | Signed summary returns to MediTrack's own records |
 | Observability | Logfire | Spans: `adapter.process_discharge` → `discharge_copilot.generate_draft` → agent run → `writeback.hotfolder` |
 
@@ -318,7 +316,7 @@ SummaryDraft (narrative sections only)
 | Change | Type | Who does it | Training impact |
 |---|---|---|---|
 | One row in **System Admin → External Links**: `AI Discharge Draft`, URL `http://localhost:8002/#/embed/review/{IP_NO}`, Display = **Patient file tab** | Configuration | Hospital IT (Suresh), 1 minute | None |
-| New tab in the patient file, in MediTrack's own look (grey panels, Tahoma, bevelled buttons) | Appears automatically | – | ~5 minutes: "open the tab, check, edit, sign" |
+| New tab in the patient file, **identical in look and layout** to the other tabs (same stylesheet, grid tables, status strip, bevelled buttons, form MRD/DS/07 order) | Appears automatically | – | ~5 minutes: "open the tab, check, edit, sign" |
 | "Discharge Advised" button, Documents tab, everything else | **Unchanged** | – | None |
 
 **Why a tab and not a new app:** 300 doctors and nurses already know MediTrack. A new app means new logins, new training and resistance. A tab that looks native means the only new habit is *"after Discharge Advised, open the AI tab."* Adoption is part of the FDE's job, not an afterthought.
@@ -339,6 +337,6 @@ SummaryDraft (narrative sections only)
 
 - **Domain in one line:** cashless patients wait for the insurer's final approval, which needs a complete discharge summary. Slow and incomplete summaries → 6.3 h waits, 38% queries.
 - **Legacy in one line:** data lives in 6 MediTrack tabs. The summary is typed by hand. Three hidden doors: replica, External Links (link/tab), document hot-folder.
-- **POC in one line:** Pydantic AI + gpt-oss-20b drafts the narrative. Diagnoses and meds are pulled, never generated. A guardrail and evals prove it: 0 hallucinations, 99% faithful, ₹0.02 per summary.
-- **Integrated in one line:** click "Discharge Advised" as usual → a draft appears in a native-looking MediTrack tab within seconds → doctor signs → PDF lands in MediTrack. MediTrack's code isn't changed.
+- **POC in one line:** Pydantic AI + gpt-oss-20b drafts the narrative. Diagnoses and meds are pulled, never generated. A guardrail and evals prove it: 0 hallucinations, 100% faithful, ₹0.02 per summary.
+- **Integrated in one line:** same MediTrack UI plus one new tab. Click "Discharge Advised" as usual → a draft appears in the AI Discharge Draft tab within seconds → doctor signs → PDF lands in the Documents tab. Added by configuration.
 - **FDE vs AI engineer in one line:** the AI engineer built `copilot_core`. The FDE found the real problem, the three doors, the "tab not app" adoption decision and the business case, and made it all work in the hospital.
