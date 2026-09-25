@@ -2,6 +2,7 @@
 import json
 import sqlite3
 
+from copilot_core import config
 from copilot_core.agent import generate_draft
 from copilot_core.encounter import load_encounter
 from copilot_core.models import Encounter
@@ -9,6 +10,7 @@ from copilot_core.observability import setup
 from legacy_meditrack.backend.db import DB_PATH
 from poc.export_deidentified import OUT
 
+config.WRITE_CACHE = True
 setup("discharge-copilot-warm-cache")
 encs = [Encounter.model_validate(e) for e in json.loads(OUT.read_text())]
 conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
