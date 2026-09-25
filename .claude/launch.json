@@ -1,6 +1,21 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "legacy", "runtimeExecutable": "./run.sh", "runtimeArgs": ["legacy"], "port": 8001 }
+    {
+      "name": "legacy",
+      "runtimeExecutable": "./run.sh",
+      "runtimeArgs": [
+        "legacy"
+      ],
+      "port": 8001
+    },
+    {
+      "name": "poc",
+      "runtimeExecutable": "./run.sh",
+      "runtimeArgs": [
+        "poc"
+      ],
+      "port": 8501
+    }
   ]
 }

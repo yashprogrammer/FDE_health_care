@@ -3,3 +3,10 @@ fastapi==0.118.*
 uvicorn[standard]
 python-multipart
 fpdf2
+
+# Part 2 - POC (AI core + Streamlit)
+pydantic-ai-slim[groq,logfire]
+logfire
+streamlit
+pandas
+python-dotenv

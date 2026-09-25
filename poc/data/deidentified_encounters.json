@@ -1,0 +1,1529 @@
+[
+ {
+  "ip_no": "ENC-01",
+  "uhid": "UHID-9ECBB997",
+  "patient_name": "Patient ENC-01",
+  "age": 58,
+  "sex": "M",
+  "admission_date": "2026-07-08 23:10",
+  "discharge_advised_date": "2026-07-12 10:30",
+  "ward": "4B-CARD",
+  "bed": "05",
+  "consultant": "Dr. Anjali Mehta",
+  "consultant_speciality": "Cardiology",
+  "consultant_reg_no": "MMC-2009-04512",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "SecureHealth TPA",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Chest heaviness for 6 hours",
+  "diagnoses": [
+   {
+    "icd10": "I21.4",
+    "description": "Non-ST elevation myocardial infarction",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "E11.9",
+    "description": "Type 2 diabetes mellitus without complications",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "93458",
+    "description": "Coronary angiography",
+    "date": "2026-07-09 12:00",
+    "surgeon": "D01"
+   },
+   {
+    "code": "92928",
+    "description": "PTCA with drug-eluting stent to RCA",
+    "date": "2026-07-09 12:40",
+    "surgeon": "D01"
+   }
+  ],
+  "labs": [
+   {
+    "test": "Troponin I",
+    "value": "2.8",
+    "unit": "ng/mL",
+    "ref_range": "<0.04",
+    "flag": "H",
+    "date": "2026-07-08 23:40",
+    "status": "FINAL"
+   },
+   {
+    "test": "HbA1c",
+    "value": "7.9",
+    "unit": "%",
+    "ref_range": "<5.7",
+    "flag": "H",
+    "date": "2026-07-09 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "LDL Cholesterol",
+    "value": "128",
+    "unit": "mg/dL",
+    "ref_range": "<100",
+    "flag": "H",
+    "date": "2026-07-09 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "2D Echo LVEF",
+    "value": "50",
+    "unit": "%",
+    "ref_range": "55-70",
+    "flag": "L",
+    "date": "2026-07-09 10:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Aspirin",
+    "dose": "75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": ""
+   },
+   {
+    "drug": "Clopidogrel",
+    "dose": "75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": ""
+   },
+   {
+    "drug": "Heparin",
+    "dose": "5000 IU",
+    "frequency": "QID",
+    "route": "SC",
+    "duration": "2 days"
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Aspirin",
+    "dose": "75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Lifelong"
+   },
+   {
+    "drug": "Clopidogrel",
+    "dose": "75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "12 months"
+   },
+   {
+    "drug": "Rosuvastatin",
+    "dose": "20 mg",
+    "frequency": "HS",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Metformin",
+    "dose": "500 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "Continue"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-07-08 23:30",
+    "type": "DR",
+    "author": "Dr. Karan Shah (RMO)",
+    "text": "58M, DM. Chest heaviness 6 hrs. ECG ST depression II, III, aVF. Trop I 2.8. NSTEMI."
+   },
+   {
+    "datetime": "2026-07-09 13:30",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "CAG: RCA 90% mid lesion. PTCA + DES to RCA. LAD, LCx minor plaques."
+   },
+   {
+    "datetime": "2026-07-10 20:00",
+    "type": "NRS",
+    "author": "Sr. Meena Jadhav",
+    "text": "Femoral site clean, no bleed. Vitals stable."
+   },
+   {
+    "datetime": "2026-07-11 10:00",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "Stable, ambulant. Echo LVEF 50%. Plan discharge tomorrow."
+   }
+  ],
+  "documents": [
+   "CATH_RPT",
+   "CONSENT",
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: NSTEMI (inferior). Type 2 diabetes mellitus.\nPresenting complaints: Chest heaviness for 6 hours.\nHospital course: 58 year old diabetic male admitted with chest heaviness. ECG showed ST depression in inferior leads, Troponin I 2.8. Diagnosed NSTEMI. CAG showed 90% mid RCA lesion, treated with PTCA and drug eluting stent to RCA. Post procedure uneventful. Echo LVEF 50%. Ambulant and stable at discharge.\nProcedures: CAG, PTCA + DES to RCA (09/07/2026).\nInvestigations: Trop I 2.8 ng/mL, HbA1c 7.9%, LDL 128 mg/dL, LVEF 50%.\nCondition at discharge: Stable, pain free.\nDischarge medications: Tab Aspirin 75 mg OD, Tab Clopidogrel 75 mg OD x 12 months, Tab Rosuvastatin 20 mg HS, Tab Metformin 500 mg BD.\nFollow-up: Cardiology OPD after 1 week. Diabetic diet. Avoid heavy exertion for 4 weeks."
+ },
+ {
+  "ip_no": "ENC-02",
+  "uhid": "UHID-D113E9F3",
+  "patient_name": "Patient ENC-02",
+  "age": 41,
+  "sex": "F",
+  "admission_date": "2026-07-15 09:20",
+  "discharge_advised_date": "2026-07-17 10:00",
+  "ward": "3C-MED",
+  "bed": "02",
+  "consultant": "Dr. Rajesh Gokhale",
+  "consultant_speciality": "Internal Medicine",
+  "consultant_reg_no": "MMC-2005-11873",
+  "pay_mode": "CASH",
+  "tpa_name": null,
+  "policy_no": null,
+  "reason_for_admission": "Loose motions and vomiting x 2 days",
+  "diagnoses": [
+   {
+    "icd10": "A09",
+    "description": "Infectious gastroenteritis and colitis",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "E86.0",
+    "description": "Dehydration",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [],
+  "labs": [
+   {
+    "test": "Serum Sodium",
+    "value": "131",
+    "unit": "mmol/L",
+    "ref_range": "135-145",
+    "flag": "L",
+    "date": "2026-07-15 10:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Potassium",
+    "value": "3.1",
+    "unit": "mmol/L",
+    "ref_range": "3.5-5.1",
+    "flag": "L",
+    "date": "2026-07-15 10:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Creatinine",
+    "value": "1.4",
+    "unit": "mg/dL",
+    "ref_range": "0.6-1.1",
+    "flag": "H",
+    "date": "2026-07-15 10:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Creatinine (repeat)",
+    "value": "0.9",
+    "unit": "mg/dL",
+    "ref_range": "0.6-1.1",
+    "flag": "",
+    "date": "2026-07-16 06:30",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Ringer lactate",
+    "dose": "100 ml/hr",
+    "frequency": "Continuous",
+    "route": "IV",
+    "duration": ""
+   },
+   {
+    "drug": "Ondansetron",
+    "dose": "4 mg",
+    "frequency": "TDS",
+    "route": "IV",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Oral rehydration salts",
+    "dose": "1 sachet in 1 L water",
+    "frequency": "Sip frequently",
+    "route": "Oral",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Racecadotril",
+    "dose": "100 mg",
+    "frequency": "TDS",
+    "route": "Oral",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Probiotic",
+    "dose": "1 capsule",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "5 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-07-15 09:40",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "41F, 12-14 loose stools/day, vomiting. Dry tongue, tachycardia. AKI prerenal. IV fluids."
+   },
+   {
+    "datetime": "2026-07-16 10:00",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "Stools reduced to 3. Tolerating orally. Creat 0.9."
+   },
+   {
+    "datetime": "2026-07-16 21:00",
+    "type": "NRS",
+    "author": "Sr. Pooja More",
+    "text": "No vomiting since morning. Accepting soft diet."
+   }
+  ],
+  "documents": [
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Acute gastroenteritis with dehydration and pre-renal AKI.\nPresenting complaints: Loose motions and vomiting for 2 days.\nHospital course: 41 year old female admitted with frequent loose stools and vomiting with signs of dehydration. Sodium 131, potassium 3.1, creatinine 1.4. Treated with IV fluids, antiemetics and electrolyte correction. Creatinine normalised to 0.9. Tolerating oral diet at discharge.\nInvestigations: Na 131, K 3.1, Creat 1.4 -> 0.9 mg/dL.\nCondition at discharge: Stable, hydrated.\nDischarge medications: ORS 1 sachet in 1 L water sip frequently x 3 days, Tab Racecadotril 100 mg TDS x 3 days, Cap Probiotic BD x 5 days.\nFollow-up: Medicine OPD after 5 days or earlier if symptoms recur. Boiled water, light diet."
+ },
+ {
+  "ip_no": "ENC-03",
+  "uhid": "UHID-928D3875",
+  "patient_name": "Patient ENC-03",
+  "age": 69,
+  "sex": "F",
+  "admission_date": "2026-07-20 08:00",
+  "discharge_advised_date": "2026-07-25 10:15",
+  "ward": "3A-ORTH",
+  "bed": "06",
+  "consultant": "Dr. Sameer Bhide",
+  "consultant_speciality": "Orthopaedics",
+  "consultant_reg_no": "MMC-2011-07734",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "Medinsure TPA",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Planned left total knee replacement",
+  "diagnoses": [
+   {
+    "icd10": "M17.1",
+    "description": "Primary osteoarthritis, left knee",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "I10",
+    "description": "Essential (primary) hypertension",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "27447",
+    "description": "Left total knee arthroplasty",
+    "date": "2026-07-20 10:00",
+    "surgeon": "D03"
+   }
+  ],
+  "labs": [
+   {
+    "test": "Haemoglobin",
+    "value": "10.8",
+    "unit": "g/dL",
+    "ref_range": "12-15",
+    "flag": "L",
+    "date": "2026-07-21 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Creatinine",
+    "value": "0.9",
+    "unit": "mg/dL",
+    "ref_range": "0.6-1.1",
+    "flag": "",
+    "date": "2026-07-21 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "X-ray left knee (post-op)",
+    "value": "Implant in situ, good alignment",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-07-21 10:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Cefuroxime",
+    "dose": "1.5 g",
+    "frequency": "BD",
+    "route": "IV",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Enoxaparin",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "SC",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Apixaban",
+    "dose": "2.5 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "14 days"
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "TDS",
+    "route": "Oral",
+    "duration": "7 days"
+   },
+   {
+    "drug": "Telmisartan",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Calcium + Vitamin D3",
+    "dose": "1 tablet",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "3 months"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-07-20 12:30",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "Left TKR under spinal. Tourniquet 70 min. Uneventful."
+   },
+   {
+    "datetime": "2026-07-21 18:00",
+    "type": "NRS",
+    "author": "Sr. Anita Gaikwad",
+    "text": "Drain removed. Physio session done twice."
+   },
+   {
+    "datetime": "2026-07-22 10:00",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "Walking with walker. Knee flexion 80 degrees. Wound healthy."
+   },
+   {
+    "datetime": "2026-07-24 10:00",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "Flexion 95 degrees. Climbing 2 steps. Fit for discharge tomorrow."
+   }
+  ],
+  "documents": [
+   "CONSENT",
+   "ID_PROOF",
+   "IMPLANT_STKR",
+   "OT_NOTE"
+  ],
+  "reference_summary": "Diagnosis: Primary osteoarthritis left knee. Hypertension.\nPresenting complaints: Planned admission for left TKR.\nHospital course: 69 year old female with advanced OA left knee underwent left total knee arthroplasty under spinal anaesthesia on 20/07/2026. Post-op uneventful. DVT prophylaxis given. Mobilised with walker from day 1. At discharge knee flexion 95 degrees, wound healthy. Post op Hb 10.8.\nProcedures: Left total knee arthroplasty (20/07/2026).\nInvestigations: Hb 10.8 g/dL, creatinine 0.9, post-op X-ray satisfactory.\nCondition at discharge: Stable, walking with walker.\nDischarge medications: Tab Apixaban 2.5 mg BD x 14 days, Tab Paracetamol 650 mg TDS x 7 days, Tab Telmisartan 40 mg OD, Tab Calcium + D3 OD x 3 months.\nFollow-up: Ortho OPD on day 14 for suture removal. Continue physiotherapy."
+ },
+ {
+  "ip_no": "ENC-04",
+  "uhid": "UHID-F0AAA17D",
+  "patient_name": "Patient ENC-04",
+  "age": 24,
+  "sex": "M",
+  "admission_date": "2026-08-02 22:00",
+  "discharge_advised_date": "2026-08-04 10:00",
+  "ward": "2B-SURG",
+  "bed": "03",
+  "consultant": "Dr. Neha Rao",
+  "consultant_speciality": "General Surgery",
+  "consultant_reg_no": "MMC-2013-02291",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "CarePlus TPA Services",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Pain right lower abdomen x 1 day with vomiting",
+  "diagnoses": [
+   {
+    "icd10": "K35.8",
+    "description": "Acute appendicitis, other and unspecified",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "44970",
+    "description": "Laparoscopic appendectomy",
+    "date": "2026-08-03 01:30",
+    "surgeon": "D04"
+   }
+  ],
+  "labs": [
+   {
+    "test": "Total Leucocyte Count",
+    "value": "14800",
+    "unit": "/cumm",
+    "ref_range": "4000-11000",
+    "flag": "H",
+    "date": "2026-08-02 22:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "USG Abdomen",
+    "value": "Inflamed appendix 9 mm, no collection",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-08-02 23:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Histopathology - appendix",
+    "value": "Acute suppurative appendicitis",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-08-04 09:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Ceftriaxone",
+    "dose": "1 g",
+    "frequency": "BD",
+    "route": "IV",
+    "duration": ""
+   },
+   {
+    "drug": "Metronidazole",
+    "dose": "500 mg",
+    "frequency": "TDS",
+    "route": "IV",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Cefuroxime axetil",
+    "dose": "500 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "5 days"
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "SOS pain",
+    "route": "Oral",
+    "duration": "5 days"
+   },
+   {
+    "drug": "Pantoprazole",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "5 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-08-02 22:20",
+    "type": "DR",
+    "author": "Dr. Karan Shah (RMO)",
+    "text": "24M, RIF pain, McBurney tenderness, TLC 14.8k. USG appendicitis. Surgery planned."
+   },
+   {
+    "datetime": "2026-08-03 02:30",
+    "type": "DR",
+    "author": "Dr. Neha Rao",
+    "text": "Lap appendectomy done. Inflamed appendix, no perforation."
+   },
+   {
+    "datetime": "2026-08-03 18:00",
+    "type": "NRS",
+    "author": "Sr. Rekha Pawar",
+    "text": "Passed flatus. Started liquids."
+   }
+  ],
+  "documents": [
+   "CONSENT",
+   "ID_PROOF",
+   "OT_NOTE"
+  ],
+  "reference_summary": "Diagnosis: Acute appendicitis.\nPresenting complaints: Right lower abdominal pain for 1 day with vomiting.\nHospital course: 24 year old male with RIF pain and tenderness, TLC 14800, USG suggestive of acute appendicitis. Underwent emergency laparoscopic appendectomy on 03/08/2026. Intra-op inflamed appendix without perforation. Post-op recovery uneventful, tolerating diet. HPE: acute suppurative appendicitis.\nProcedures: Laparoscopic appendectomy (03/08/2026).\nInvestigations: TLC 14800, USG inflamed appendix 9 mm, HPE acute suppurative appendicitis.\nCondition at discharge: Stable, port sites healthy.\nDischarge medications: Tab Cefuroxime axetil 500 mg BD x 5 days, Tab Paracetamol 650 mg SOS, Tab Pantoprazole 40 mg OD x 5 days.\nFollow-up: Surgery OPD after 7 days for dressing. Avoid lifting weights for 2 weeks."
+ },
+ {
+  "ip_no": "ENC-05",
+  "uhid": "UHID-13BA8B4B",
+  "patient_name": "Patient ENC-05",
+  "age": 66,
+  "sex": "M",
+  "admission_date": "2026-08-11 05:30",
+  "discharge_advised_date": "2026-08-15 10:30",
+  "ward": "3C-MED",
+  "bed": "08",
+  "consultant": "Dr. Rajesh Gokhale",
+  "consultant_speciality": "Internal Medicine",
+  "consultant_reg_no": "MMC-2005-11873",
+  "pay_mode": "CASH",
+  "tpa_name": null,
+  "policy_no": null,
+  "reason_for_admission": "Increased breathlessness and wheeze x 3 days",
+  "diagnoses": [
+   {
+    "icd10": "J44.1",
+    "description": "COPD with acute exacerbation",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [],
+  "labs": [
+   {
+    "test": "Arterial pCO2",
+    "value": "52",
+    "unit": "mmHg",
+    "ref_range": "35-45",
+    "flag": "H",
+    "date": "2026-08-11 06:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Total Leucocyte Count",
+    "value": "11800",
+    "unit": "/cumm",
+    "ref_range": "4000-11000",
+    "flag": "H",
+    "date": "2026-08-11 06:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Chest X-ray",
+    "value": "Hyperinflated lungs, no consolidation",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-08-11 07:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Salbutamol + Ipratropium nebulisation",
+    "dose": "2.5 mg + 500 mcg",
+    "frequency": "QID",
+    "route": "Nebulised",
+    "duration": ""
+   },
+   {
+    "drug": "Methylprednisolone",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "IV",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Doxycycline",
+    "dose": "100 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Tiotropium",
+    "dose": "18 mcg",
+    "frequency": "OD",
+    "route": "Inhaled",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Budesonide + Formoterol",
+    "dose": "200/6 mcg",
+    "frequency": "BD",
+    "route": "Inhaled",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Prednisolone",
+    "dose": "30 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "5 days"
+   },
+   {
+    "drug": "Doxycycline",
+    "dose": "100 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "3 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-08-11 05:50",
+    "type": "DR",
+    "author": "Dr. Karan Shah (RMO)",
+    "text": "66M, ex-smoker, COPD. Breathless, wheeze, SpO2 86% RA, pCO2 52. Nebs, steroids, BiPAP night."
+   },
+   {
+    "datetime": "2026-08-13 10:00",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "Off BiPAP. SpO2 93% RA. Wheeze reduced."
+   },
+   {
+    "datetime": "2026-08-14 20:00",
+    "type": "NRS",
+    "author": "Sr. Pooja More",
+    "text": "Inhaler technique taught to patient and son."
+   }
+  ],
+  "documents": [
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Acute exacerbation of COPD.\nPresenting complaints: Increased breathlessness and wheeze for 3 days.\nHospital course: 66 year old ex-smoker, known COPD, admitted with acute exacerbation, SpO2 86% on room air, pCO2 52. Managed with nebulised bronchodilators, IV steroids, antibiotics and night-time BiPAP. Weaned off BiPAP on day 3, SpO2 93% on room air at discharge. Inhaler technique taught.\nInvestigations: pCO2 52 mmHg, TLC 11800, CXR hyperinflation, no consolidation.\nCondition at discharge: Stable, SpO2 93% RA.\nDischarge medications: Tiotropium 18 mcg inhaler OD, Budesonide + Formoterol 200/6 inhaler BD, Tab Prednisolone 30 mg OD x 5 days, Cap Doxycycline 100 mg BD x 3 days.\nFollow-up: Chest/Medicine OPD after 1 week with PFT. Pneumococcal and influenza vaccination advised."
+ },
+ {
+  "ip_no": "ENC-06",
+  "uhid": "UHID-EFA71360",
+  "patient_name": "Patient ENC-06",
+  "age": 74,
+  "sex": "F",
+  "admission_date": "2026-08-18 13:00",
+  "discharge_advised_date": "2026-08-23 10:20",
+  "ward": "4B-CARD",
+  "bed": "09",
+  "consultant": "Dr. Anjali Mehta",
+  "consultant_speciality": "Cardiology",
+  "consultant_reg_no": "MMC-2009-04512",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "SecureHealth TPA",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Breathlessness and swelling of feet x 5 days",
+  "diagnoses": [
+   {
+    "icd10": "I50.9",
+    "description": "Heart failure with reduced ejection fraction",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "N18.3",
+    "description": "Chronic kidney disease, stage 3",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [],
+  "labs": [
+   {
+    "test": "NT-proBNP",
+    "value": "9200",
+    "unit": "pg/mL",
+    "ref_range": "<450",
+    "flag": "H",
+    "date": "2026-08-18 14:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Creatinine",
+    "value": "1.8",
+    "unit": "mg/dL",
+    "ref_range": "0.6-1.1",
+    "flag": "H",
+    "date": "2026-08-18 14:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "2D Echo LVEF",
+    "value": "32",
+    "unit": "%",
+    "ref_range": "55-70",
+    "flag": "L",
+    "date": "2026-08-19 10:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Potassium",
+    "value": "4.9",
+    "unit": "mmol/L",
+    "ref_range": "3.5-5.1",
+    "flag": "",
+    "date": "2026-08-21 06:30",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Furosemide",
+    "dose": "40 mg",
+    "frequency": "BD",
+    "route": "IV",
+    "duration": ""
+   },
+   {
+    "drug": "Metoprolol succinate",
+    "dose": "12.5 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Furosemide",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Metoprolol succinate",
+    "dose": "25 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Dapagliflozin",
+    "dose": "10 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Spironolactone",
+    "dose": "12.5 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-08-18 13:30",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "74F, HFrEF, CKD3. Orthopnoea, pedal oedema, basal crepts. IV diuretics. Fluid restriction 1.5 L."
+   },
+   {
+    "datetime": "2026-08-21 10:00",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "Weight down 3.8 kg. Creat stable 1.7. Start dapagliflozin, low dose spironolactone."
+   },
+   {
+    "datetime": "2026-08-22 20:00",
+    "type": "NRS",
+    "author": "Sr. Meena Jadhav",
+    "text": "Daily weight chart explained to daughter."
+   }
+  ],
+  "documents": [
+   "CONSENT",
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Acute decompensated heart failure (HFrEF, LVEF 32%). CKD stage 3.\nPresenting complaints: Breathlessness and pedal oedema for 5 days.\nHospital course: 74 year old female with HFrEF and CKD admitted with decompensated heart failure. NT-proBNP 9200. Treated with IV furosemide and fluid restriction, 3.8 kg weight loss. Creatinine stable around 1.7-1.8. Guideline directed therapy optimised with dapagliflozin and spironolactone. Potassium 4.9 prior to discharge.\nInvestigations: NT-proBNP 9200 pg/mL, LVEF 32%, creatinine 1.8 mg/dL, K 4.9.\nCondition at discharge: Stable, no orthopnoea.\nDischarge medications: Tab Furosemide 40 mg OD, Tab Metoprolol succinate 25 mg OD, Tab Dapagliflozin 10 mg OD, Tab Spironolactone 12.5 mg OD.\nFollow-up: Cardiology OPD after 1 week with serum creatinine and potassium. Daily weight, fluid restriction 1.5 L/day, low salt diet."
+ },
+ {
+  "ip_no": "ENC-07",
+  "uhid": "UHID-EBCC8E16",
+  "patient_name": "Patient ENC-07",
+  "age": 33,
+  "sex": "F",
+  "admission_date": "2026-08-24 16:40",
+  "discharge_advised_date": "2026-08-27 10:00",
+  "ward": "3C-MED",
+  "bed": "05",
+  "consultant": "Dr. Rajesh Gokhale",
+  "consultant_speciality": "Internal Medicine",
+  "consultant_reg_no": "MMC-2005-11873",
+  "pay_mode": "CASH",
+  "tpa_name": null,
+  "policy_no": null,
+  "reason_for_admission": "Fever with chills and burning micturition x 3 days, right flank pain",
+  "diagnoses": [
+   {
+    "icd10": "N10",
+    "description": "Acute pyelonephritis",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [],
+  "labs": [
+   {
+    "test": "Urine routine",
+    "value": "Pus cells 40-50/hpf",
+    "unit": "",
+    "ref_range": "0-5/hpf",
+    "flag": "H",
+    "date": "2026-08-24 17:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Total Leucocyte Count",
+    "value": "15200",
+    "unit": "/cumm",
+    "ref_range": "4000-11000",
+    "flag": "H",
+    "date": "2026-08-24 17:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Urine culture",
+    "value": "E. coli, sensitive to ceftriaxone, nitrofurantoin",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-08-26 10:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Ceftriaxone",
+    "dose": "1 g",
+    "frequency": "BD",
+    "route": "IV",
+    "duration": ""
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "SOS fever",
+    "route": "Oral",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Cefixime",
+    "dose": "200 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "7 days"
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "SOS fever",
+    "route": "Oral",
+    "duration": "3 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-08-24 17:10",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "33F, fever with chills, R renal angle tenderness. Urine pus cells++. Pyelonephritis. IV ceftriaxone."
+   },
+   {
+    "datetime": "2026-08-25 21:00",
+    "type": "NRS",
+    "author": "Sr. Rekha Pawar",
+    "text": "Encouraged oral fluids > 3 L/day."
+   },
+   {
+    "datetime": "2026-08-26 10:00",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "Afebrile 36 hrs. Culture E. coli sensitive. Plan oral step-down."
+   }
+  ],
+  "documents": [
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Acute pyelonephritis (E. coli).\nPresenting complaints: Fever with chills, burning micturition and right flank pain for 3 days.\nHospital course: 33 year old female admitted with features of right sided pyelonephritis. TLC 15200, urine pus cells 40-50/hpf. Treated with IV ceftriaxone. Urine culture grew E. coli sensitive to ceftriaxone. Afebrile for 36 hours, switched to oral antibiotics.\nInvestigations: TLC 15200, urine pus cells 40-50/hpf, urine culture E. coli.\nCondition at discharge: Afebrile, stable.\nDischarge medications: Tab Cefixime 200 mg BD x 7 days, Tab Paracetamol 650 mg SOS.\nFollow-up: Medicine OPD after 1 week with repeat urine routine. Oral fluids 3 L/day."
+ },
+ {
+  "ip_no": "ENC-08",
+  "uhid": "UHID-2505F24E",
+  "patient_name": "Patient ENC-08",
+  "age": 44,
+  "sex": "F",
+  "admission_date": "2026-09-03 07:00",
+  "discharge_advised_date": "2026-09-05 10:00",
+  "ward": "2B-SURG",
+  "bed": "02",
+  "consultant": "Dr. Neha Rao",
+  "consultant_speciality": "General Surgery",
+  "consultant_reg_no": "MMC-2013-02291",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "Medinsure TPA",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Recurrent epigastric and right upper abdominal pain after fatty meals",
+  "diagnoses": [
+   {
+    "icd10": "K80.2",
+    "description": "Calculus of gallbladder without cholecystitis",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "47562",
+    "description": "Laparoscopic cholecystectomy",
+    "date": "2026-09-03 11:00",
+    "surgeon": "D04"
+   }
+  ],
+  "labs": [
+   {
+    "test": "USG Abdomen",
+    "value": "Cholelithiasis, largest calculus 14 mm, CBD 5 mm",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-08-28 10:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Liver Function Test",
+    "value": "Within normal limits",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-09-03 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "Histopathology - gallbladder",
+    "value": "",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-09-03 13:00",
+    "status": "PENDING"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Ceftriaxone",
+    "dose": "1 g",
+    "frequency": "OD",
+    "route": "IV",
+    "duration": "1 day"
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "1 g",
+    "frequency": "TDS",
+    "route": "IV",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "TDS",
+    "route": "Oral",
+    "duration": "5 days"
+   },
+   {
+    "drug": "Pantoprazole",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "7 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-09-03 12:30",
+    "type": "DR",
+    "author": "Dr. Neha Rao",
+    "text": "Lap chole done. GB with multiple calculi. Sent for HPE."
+   },
+   {
+    "datetime": "2026-09-04 10:00",
+    "type": "DR",
+    "author": "Dr. Neha Rao",
+    "text": "Tolerating soft diet. Mild port site pain."
+   },
+   {
+    "datetime": "2026-09-04 19:00",
+    "type": "NRS",
+    "author": "Sr. Rekha Pawar",
+    "text": "Ambulating. Port site dressing dry."
+   }
+  ],
+  "documents": [
+   "CONSENT",
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Symptomatic cholelithiasis.\nPresenting complaints: Recurrent right upper abdominal pain after fatty meals.\nHospital course: 44 year old female with USG proven cholelithiasis underwent elective laparoscopic cholecystectomy on 03/09/2026. Intra-op gallbladder with multiple calculi. Post-op uneventful, tolerating diet.\nProcedures: Laparoscopic cholecystectomy (03/09/2026).\nInvestigations: USG cholelithiasis (14 mm), LFT normal. Histopathology report awaited.\nCondition at discharge: Stable, port sites healthy.\nDischarge medications: Tab Paracetamol 650 mg TDS x 5 days, Tab Pantoprazole 40 mg OD x 7 days.\nFollow-up: Surgery OPD after 7 days with HPE report. Low fat diet for 4 weeks."
+ },
+ {
+  "ip_no": "ENC-09",
+  "uhid": "UHID-BE23B78C",
+  "patient_name": "Patient ENC-09",
+  "age": 79,
+  "sex": "F",
+  "admission_date": "2026-09-08 18:30",
+  "discharge_advised_date": "2026-09-14 10:10",
+  "ward": "3A-ORTH",
+  "bed": "04",
+  "consultant": "Dr. Sameer Bhide",
+  "consultant_speciality": "Orthopaedics",
+  "consultant_reg_no": "MMC-2011-07734",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "CarePlus TPA Services",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Fall at home, unable to bear weight on right leg",
+  "diagnoses": [
+   {
+    "icd10": "S72.0",
+    "description": "Fracture of neck of femur, right",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "M81.0",
+    "description": "Postmenopausal osteoporosis",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "27125",
+    "description": "Right hip hemiarthroplasty",
+    "date": "2026-09-09 11:00",
+    "surgeon": "D03"
+   }
+  ],
+  "labs": [
+   {
+    "test": "X-ray right hip",
+    "value": "Displaced subcapital fracture neck of femur",
+    "unit": "",
+    "ref_range": "",
+    "flag": "",
+    "date": "2026-09-08 19:00",
+    "status": "FINAL"
+   },
+   {
+    "test": "Haemoglobin",
+    "value": "9.6",
+    "unit": "g/dL",
+    "ref_range": "12-15",
+    "flag": "L",
+    "date": "2026-09-10 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "Vitamin D (25-OH)",
+    "value": "11",
+    "unit": "ng/mL",
+    "ref_range": "30-100",
+    "flag": "L",
+    "date": "2026-09-10 06:30",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Cefuroxime",
+    "dose": "1.5 g",
+    "frequency": "BD",
+    "route": "IV",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Enoxaparin",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "SC",
+    "duration": ""
+   },
+   {
+    "drug": "Packed red cells",
+    "dose": "1 unit",
+    "frequency": "Once",
+    "route": "IV",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Apixaban",
+    "dose": "2.5 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "28 days"
+   },
+   {
+    "drug": "Paracetamol",
+    "dose": "500 mg",
+    "frequency": "TDS",
+    "route": "Oral",
+    "duration": "7 days"
+   },
+   {
+    "drug": "Cholecalciferol",
+    "dose": "60000 IU",
+    "frequency": "Once weekly",
+    "route": "Oral",
+    "duration": "8 weeks"
+   },
+   {
+    "drug": "Calcium carbonate",
+    "dose": "500 mg",
+    "frequency": "BD",
+    "route": "Oral",
+    "duration": "3 months"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-09-08 19:10",
+    "type": "DR",
+    "author": "Dr. Karan Shah (RMO)",
+    "text": "79F, fall at home, R leg shortened and externally rotated. X-ray: displaced # NOF."
+   },
+   {
+    "datetime": "2026-09-09 13:30",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "R hip bipolar hemiarthroplasty. EBL 400 ml. Stable."
+   },
+   {
+    "datetime": "2026-09-10 11:00",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "Hb 9.6, transfused 1 unit PRBC. Vit D 11, start supplementation."
+   },
+   {
+    "datetime": "2026-09-12 18:00",
+    "type": "NRS",
+    "author": "Sr. Anita Gaikwad",
+    "text": "Pressure areas checked, no sores. Family trained on transfers."
+   },
+   {
+    "datetime": "2026-09-13 10:00",
+    "type": "DR",
+    "author": "Dr. Sameer Bhide",
+    "text": "Walking with walker and assistance. Fit for discharge tomorrow."
+   }
+  ],
+  "documents": [
+   "CONSENT",
+   "ID_PROOF",
+   "IMPLANT_STKR",
+   "OT_NOTE"
+  ],
+  "reference_summary": "Diagnosis: Fracture neck of right femur (displaced subcapital). Osteoporosis. Vitamin D deficiency.\nPresenting complaints: Fall at home, unable to bear weight on right leg.\nHospital course: 79 year old female sustained a fall at home. X-ray showed displaced subcapital fracture neck of right femur. Underwent right hip bipolar hemiarthroplasty on 09/09/2026. Post-op Hb 9.6, transfused 1 unit PRBC. Vitamin D 11, supplementation started. Mobilised with walker and assistance.\nProcedures: Right hip hemiarthroplasty (09/09/2026).\nInvestigations: Hb 9.6 g/dL, Vitamin D 11 ng/mL.\nCondition at discharge: Stable, walking with walker and support.\nDischarge medications: Tab Apixaban 2.5 mg BD x 28 days, Tab Paracetamol 500 mg TDS x 7 days, Cholecalciferol 60000 IU once weekly x 8 weeks, Tab Calcium carbonate 500 mg BD x 3 months.\nFollow-up: Ortho OPD on day 14 for suture removal. Fall prevention at home. Continue physiotherapy."
+ },
+ {
+  "ip_no": "ENC-10",
+  "uhid": "UHID-BF773104",
+  "patient_name": "Patient ENC-10",
+  "age": 27,
+  "sex": "M",
+  "admission_date": "2026-09-12 12:00",
+  "discharge_advised_date": "2026-09-16 10:00",
+  "ward": "3C-MED",
+  "bed": "10",
+  "consultant": "Dr. Rajesh Gokhale",
+  "consultant_speciality": "Internal Medicine",
+  "consultant_reg_no": "MMC-2005-11873",
+  "pay_mode": "CASH",
+  "tpa_name": null,
+  "policy_no": null,
+  "reason_for_admission": "Fever, headache and body ache x 3 days",
+  "diagnoses": [
+   {
+    "icd10": "A97.0",
+    "description": "Dengue without warning signs",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [],
+  "labs": [
+   {
+    "test": "NS1 Antigen",
+    "value": "Positive",
+    "unit": "",
+    "ref_range": "Negative",
+    "flag": "H",
+    "date": "2026-09-12 12:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "Platelet Count",
+    "value": "62000",
+    "unit": "/cumm",
+    "ref_range": "150000-450000",
+    "flag": "L",
+    "date": "2026-09-13 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "SGPT",
+    "value": "96",
+    "unit": "U/L",
+    "ref_range": "<40",
+    "flag": "H",
+    "date": "2026-09-13 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "Platelet Count (repeat)",
+    "value": "118000",
+    "unit": "/cumm",
+    "ref_range": "150000-450000",
+    "flag": "L",
+    "date": "2026-09-16 06:30",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "TDS",
+    "route": "Oral",
+    "duration": ""
+   },
+   {
+    "drug": "Normal saline",
+    "dose": "75 ml/hr",
+    "frequency": "Continuous",
+    "route": "IV",
+    "duration": ""
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Paracetamol",
+    "dose": "650 mg",
+    "frequency": "SOS fever",
+    "route": "Oral",
+    "duration": "3 days"
+   },
+   {
+    "drug": "Oral rehydration salts",
+    "dose": "1 sachet in 1 L water",
+    "frequency": "Sip frequently",
+    "route": "Oral",
+    "duration": "3 days"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-09-12 12:20",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "27M, fever 3 days, NS1+, no warning signs, poor oral intake. Admit for IV fluids."
+   },
+   {
+    "datetime": "2026-09-14 20:00",
+    "type": "NRS",
+    "author": "Sr. Pooja More",
+    "text": "No bleeding manifestations. Oral intake improved."
+   },
+   {
+    "datetime": "2026-09-15 10:00",
+    "type": "DR",
+    "author": "Dr. Rajesh Gokhale",
+    "text": "Afebrile 48 hrs. Platelets rising. Discharge tomorrow."
+   }
+  ],
+  "documents": [
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Dengue fever without warning signs.\nPresenting complaints: Fever, headache and body ache for 3 days.\nHospital course: 27 year old male with NS1 positive dengue admitted for poor oral intake. Platelet nadir 62000, SGPT 96. Managed with IV fluids and paracetamol. No bleeding. Afebrile for 48 hours with platelets rising to 118000 at discharge.\nInvestigations: NS1 positive, platelets 62000 -> 118000, SGPT 96 U/L.\nCondition at discharge: Afebrile, stable.\nDischarge medications: Tab Paracetamol 650 mg SOS, ORS 1 sachet in 1 L water x 3 days.\nFollow-up: Medicine OPD after 3 days with CBC. Avoid NSAIDs. Plenty of oral fluids."
+ },
+ {
+  "ip_no": "ENC-11",
+  "uhid": "UHID-6A7F084A",
+  "patient_name": "Patient ENC-11",
+  "age": 63,
+  "sex": "M",
+  "admission_date": "2026-09-15 04:20",
+  "discharge_advised_date": "2026-09-19 10:40",
+  "ward": "4B-CARD",
+  "bed": "10",
+  "consultant": "Dr. Anjali Mehta",
+  "consultant_speciality": "Cardiology",
+  "consultant_reg_no": "MMC-2009-04512",
+  "pay_mode": "CASHLESS",
+  "tpa_name": "Medinsure TPA",
+  "policy_no": "XXXX",
+  "reason_for_admission": "Severe chest pain with sweating x 1 hour",
+  "diagnoses": [
+   {
+    "icd10": "I21.1",
+    "description": "Acute ST-elevation myocardial infarction, inferior wall",
+    "type": "FINAL"
+   },
+   {
+    "icd10": "I10",
+    "description": "Essential (primary) hypertension",
+    "type": "FINAL"
+   }
+  ],
+  "procedures": [
+   {
+    "code": "93458",
+    "description": "Coronary angiography",
+    "date": "2026-09-15 05:10",
+    "surgeon": "D01"
+   },
+   {
+    "code": "92928",
+    "description": "Primary PTCA with drug-eluting stent to RCA",
+    "date": "2026-09-15 05:30",
+    "surgeon": "D01"
+   }
+  ],
+  "labs": [
+   {
+    "test": "Troponin I",
+    "value": "8.6",
+    "unit": "ng/mL",
+    "ref_range": "<0.04",
+    "flag": "H",
+    "date": "2026-09-15 04:40",
+    "status": "FINAL"
+   },
+   {
+    "test": "Serum Creatinine",
+    "value": "1.0",
+    "unit": "mg/dL",
+    "ref_range": "0.7-1.3",
+    "flag": "",
+    "date": "2026-09-15 04:40",
+    "status": "FINAL"
+   },
+   {
+    "test": "LDL Cholesterol",
+    "value": "144",
+    "unit": "mg/dL",
+    "ref_range": "<100",
+    "flag": "H",
+    "date": "2026-09-16 06:30",
+    "status": "FINAL"
+   },
+   {
+    "test": "2D Echo LVEF",
+    "value": "48",
+    "unit": "%",
+    "ref_range": "55-70",
+    "flag": "L",
+    "date": "2026-09-16 10:00",
+    "status": "FINAL"
+   }
+  ],
+  "inpatient_meds": [
+   {
+    "drug": "Aspirin",
+    "dose": "325 mg stat, then 75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": ""
+   },
+   {
+    "drug": "Prasugrel",
+    "dose": "60 mg stat, then 10 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": ""
+   },
+   {
+    "drug": "Heparin",
+    "dose": "5000 IU",
+    "frequency": "QID",
+    "route": "SC",
+    "duration": "2 days"
+   }
+  ],
+  "discharge_meds": [
+   {
+    "drug": "Aspirin",
+    "dose": "75 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Lifelong"
+   },
+   {
+    "drug": "Prasugrel",
+    "dose": "10 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "12 months"
+   },
+   {
+    "drug": "Atorvastatin",
+    "dose": "80 mg",
+    "frequency": "HS",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Metoprolol succinate",
+    "dose": "25 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   },
+   {
+    "drug": "Telmisartan",
+    "dose": "40 mg",
+    "frequency": "OD",
+    "route": "Oral",
+    "duration": "Continue"
+   }
+  ],
+  "notes": [
+   {
+    "datetime": "2026-09-15 04:35",
+    "type": "DR",
+    "author": "Dr. Karan Shah (RMO)",
+    "text": "63M, HTN. Severe chest pain 1 hr. ECG ST elevation II, III, aVF. Inferior STEMI. Cath lab activated."
+   },
+   {
+    "datetime": "2026-09-15 06:30",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "Primary PCI: RCA proximal total occlusion, DES deployed, TIMI III. Temp pacing not needed."
+   },
+   {
+    "datetime": "2026-09-17 10:00",
+    "type": "DR",
+    "author": "Dr. Anjali Mehta",
+    "text": "Stable, pain free. LVEF 48%. Shift to ward."
+   },
+   {
+    "datetime": "2026-09-18 18:00",
+    "type": "NRS",
+    "author": "Sr. Meena Jadhav",
+    "text": "Ambulating. Cardiac diet education done."
+   }
+  ],
+  "documents": [
+   "CATH_RPT",
+   "CONSENT",
+   "ID_PROOF"
+  ],
+  "reference_summary": "Diagnosis: Acute inferior wall STEMI. Hypertension.\nPresenting complaints: Severe chest pain with sweating for 1 hour.\nHospital course: 63 year old hypertensive male presented with inferior STEMI, Trop I 8.6. Primary PCI done: proximal RCA total occlusion treated with DES, TIMI III flow. Post PCI stable, no arrhythmias. Echo LVEF 48%. Ambulant at discharge.\nProcedures: CAG, primary PTCA + DES to RCA (15/09/2026).\nInvestigations: Trop I 8.6 ng/mL, LVEF 48%, LDL 144 mg/dL, creatinine 1.0.\nCondition at discharge: Stable, pain free.\nDischarge medications: Tab Aspirin 75 mg OD, Tab Prasugrel 10 mg OD x 12 months, Tab Atorvastatin 80 mg HS, Tab Metoprolol succinate 25 mg OD, Tab Telmisartan 40 mg OD.\nFollow-up: Cardiology OPD after 1 week. Cardiac rehab. Stop smoking. Low fat low salt diet."
+ }
+]

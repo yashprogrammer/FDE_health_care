@@ -29,3 +29,21 @@ All people, patients, policies and TPAs are fictional.
 - **MIS → Discharge TAT** shows the pain: cash patients leave ~2.5 h after discharge is advised, insured (cashless) ~6.3 h, and 38% of TPA submissions come back with a query
 
 **Golden demo patient:** `IP2609-0142` — Ramesh Kulkarni, anterior-wall STEMI, PTCA + stent, cashless via SecureHealth TPA. His stent implant sticker is *not* on file (the #1 TPA query reason).
+
+## Part 2 — Discharge Copilot POC (Streamlit)
+
+```bash
+cp .env.example .env   # add GROQ_API_KEY and LOGFIRE_TOKEN
+./run.sh poc           # http://localhost:8501
+./run.sh warm          # pre-generate + cache live drafts (offline safety net)
+```
+
+- **Standalone**: reads `poc/data/deidentified_encounters.json`, 11 past discharges exported (read-only) from MediTrack and de-identified by `poc/export_deidentified.py`. It touches no hospital system.
+- **`copilot_core/`** is the AI engineer's slice, reused later by Part 3:
+  - `agent.py`: Pydantic AI agent (`groq:openai/gpt-oss-20b`) with a typed `SummaryDraft` output. Fallback chain: live LLM → cached draft → template.
+  - `models.py`: `Encounter` input contract and `SummaryDraft` output contract. Direct identifiers are stripped before the LLM call (`Encounter.for_llm`).
+  - `trace.py`: source-trace guardrail. Every drug, lab and number is checked against the patient's data.
+  - `rules.py`: TPA-readiness checklist, a deterministic rules engine (not AI).
+  - `assemble.py`: final summary. Diagnoses, discharge meds and pending reports are pulled deterministically (🔒).
+  - `observability.py`: Logfire tracing of every agent run (only if `LOGFIRE_TOKEN` is set).
+- Tabs: **Generate** · **Source trace** (edit the draft, e.g. add "Warfarin 5 mg OD", to watch the guardrail fire) · **Eval** (completeness, hallucinations, faithfulness, key-fact recall vs the doctor's summary, latency, cost) · **Clinician feedback**
