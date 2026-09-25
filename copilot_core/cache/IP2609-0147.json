@@ -1,14 +1,12 @@
 {
   "ip_no": "IP2609-0147",
   "draft": {
-    "presenting_complaints": "High grade fever with body ache x 4 days",
+    "presenting_complaints": "High grade fever with body ache for 4 days",
     "hospital_course": [
-      "Admitted 22/09/2026 with dengue NS1+, platelets 48k, abdominal pain; started IV fluids and monitoring.",
-      "Day 1 (23/09/2026) continued IV fluids, paracetamol TDS, patient remained febrile.",
-      "Day 2 (24/09/2026) platelets rose to 72k, patient afebrile, oral intake good.",
-      "Patient remained stable till discharge.",
-      "",
-      ""
+      "22/09/2026 14:30 – Admitted with dengue NS1+, platelets 48k, abdominal pain. Started IV fluids and paracetamol.",
+      "22/09/2026 15:00 – NS1 antigen positive confirmed. Platelet count 48k noted.",
+      "24/09/2026 06:30 – Repeat platelet count 72k, showing rise.",
+      "24/09/2026 10:00 – Patient afebrile, oral intake good, platelets rising. No further intervention required."
     ],
     "procedures_performed": [],
     "key_investigations": [
@@ -25,22 +23,20 @@
       {
         "test": "Platelet Count (repeat)",
         "result": "72000 /cumm",
-        "interpretation": "Low"
+        "interpretation": "Low but rising"
       }
     ],
-    "condition_at_discharge": "Stable, afebrile, platelets 72k",
-    "follow_up_advice": [
-      "As advised by treating consultant"
-    ],
+    "condition_at_discharge": "Stable",
+    "follow_up_advice": [],
     "diet_and_activity": [
       "As advised by treating consultant"
     ]
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 715,
-  "input_tokens": 1260,
-  "output_tokens": 370,
-  "cost_usd": 0.0002055,
+  "latency_ms": 657,
+  "input_tokens": 1277,
+  "output_tokens": 307,
+  "cost_usd": 0.000187875,
   "error": null
 }

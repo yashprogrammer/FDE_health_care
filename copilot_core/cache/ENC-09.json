@@ -1,23 +1,19 @@
 {
   "ip_no": "ENC-09",
   "draft": {
-    "presenting_complaints": "Fall at home, unable to bear weight on right leg.",
+    "presenting_complaints": "Fall at home, unable to bear weight on right leg",
     "hospital_course": [
-      "18/09/2026 18:30 – Admitted with displaced subcapital fracture neck of femur, right.",
-      "19/09/2026 11:00 – Right hip hemiarthroplasty performed (EBL 400 ml).",
-      "10/09/2026 – Hb 9.6, transfused 1 unit PRBC; Vit D 11 ng/mL, started supplementation.",
-      "12/09/2026 – Pressure areas checked, no sores; family trained on transfers.",
-      "13/09/2026 – Walking with walker and assistance; fit for discharge tomorrow."
+      "08/09/2026 18:30 – Admitted with right hip fracture",
+      "08/09/2026 19:00 – X‑ray shows displaced subcapital fracture neck of femur",
+      "09/09/2026 11:00 – Right hip hemiarthroplasty performed (EBL 400 ml)",
+      "10/09/2026 06:30 – Hb 9.6 g/dL, transfused 1 unit PRBC; Vit D 11 ng/mL, started supplementation",
+      "12/09/2026 18:00 – Pressure areas checked, no sores; family trained on transfers",
+      "13/09/2026 10:00 – Patient walking with walker and assistance, fit for discharge"
     ],
     "procedures_performed": [
-      "09/09/2026 – Right hip hemiarthroplasty (code 27125), EBL 400 ml, stable"
+      "09/09/2026 11:00 – Right hip hemiarthroplasty (code 27125) – EBL 400 ml"
     ],
     "key_investigations": [
-      {
-        "test": "X-ray right hip",
-        "result": "Displaced subcapital fracture neck of femur",
-        "interpretation": "Final"
-      },
       {
         "test": "Haemoglobin",
         "result": "9.6 g/dL",
@@ -29,15 +25,15 @@
         "interpretation": "Low"
       }
     ],
-    "condition_at_discharge": "Stable, walking with walker and assistance.",
+    "condition_at_discharge": "Stable, ambulatory with walker, no pressure sores",
     "follow_up_advice": [],
     "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 552,
-  "input_tokens": 1591,
-  "output_tokens": 297,
-  "cost_usd": 0.00020842499999999998,
+  "latency_ms": 584,
+  "input_tokens": 1608,
+  "output_tokens": 316,
+  "cost_usd": 0.00021539999999999998,
   "error": null
 }

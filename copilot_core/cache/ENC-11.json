@@ -1,17 +1,16 @@
 {
   "ip_no": "ENC-11",
   "draft": {
-    "presenting_complaints": "Severe chest pain with sweating for 1 hour",
+    "presenting_complaints": "Severe chest pain with sweating x 1 hour",
     "hospital_course": [
-      "09/09/2026 04:20 – Admitted with severe chest pain, ECG ST‑elevation II, III, aVF; cath lab activated",
-      "09/09/2026 05:10 – CAG performed; 09/09/2026 05:30 – Primary PTCA with DES to RCA, TIMI III achieved",
-      "09/09/2026 06:30 – Post‑PCI review: patient stable, pain free",
-      "09/09/2026 10:00 – Echo shows LVEF 48%; patient shifted to ward",
-      "09/09/2026 18:00 – Patient ambulating, cardiac diet education given"
+      "15/09/2026 04:20 – Admitted with severe chest pain and sweating; ECG showed ST elevation II, III, aVF; cath lab activated.",
+      "15/09/2026 05:10 – Coronary angiography performed; 15/09/2026 05:30 – Primary PTCA with drug‑eluting stent to RCA; TIMI III achieved.",
+      "15/09/2026 06:30 – Post‑procedure review: patient stable, pain free.",
+      "17/09/2026 10:00 – Echo shows LVEF 48%; patient shifted to ward.",
+      "18/09/2026 18:00 – Ambulating; cardiac diet education done."
     ],
     "procedures_performed": [
-      "15/09/2026 – Coronary angiography (CAG) – RCA proximal total occlusion",
-      "15/09/2026 – Primary PTCA with drug‑eluting stent to RCA – TIMI III achieved"
+      "15/09/2026 05:10 – Coronary angiography; 15/09/2026 05:30 – Primary PTCA with drug‑eluting stent to RCA, TIMI III"
     ],
     "key_investigations": [
       {
@@ -40,15 +39,14 @@
       "As advised by treating consultant"
     ],
     "diet_and_activity": [
-      "Cardiac diet education done",
-      "Ambulating"
+      "Cardiac diet education done"
     ]
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 677,
-  "input_tokens": 1674,
-  "output_tokens": 375,
-  "cost_usd": 0.00023804999999999999,
+  "latency_ms": 738,
+  "input_tokens": 1691,
+  "output_tokens": 377,
+  "cost_usd": 0.000239925,
   "error": null
 }

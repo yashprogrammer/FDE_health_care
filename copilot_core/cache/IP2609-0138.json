@@ -3,11 +3,10 @@
   "draft": {
     "presenting_complaints": "Fever with cough and breathlessness for 5 days",
     "hospital_course": [
-      "Admitted 20/09/2026 with fever, productive cough, SpO2 91% RA; CXR showed right lower zone consolidation; diagnosed CAP; started IV ceftriaxone 1 g BD and oral azithromycin 500 mg OD, O2 support.",
-      "Afebrile after 24 hrs (23/09/2026); SpO2 96% RA; continued IV antibiotics.",
-      "Blood culture pending; awaiting results.",
-      "Clinical status improving; patient stable at discharge.",
-      "Discharge advised by treating consultant."
+      "20/09/2026 11:45 – Admitted with fever, productive cough, SpO2 91% RA, crepitations at right base; CXR showed right lower zone consolidation; diagnosis CAP; started IV ceftriaxone 1 g BD, oral azithromycin 500 mg OD, paracetamol 650 mg SOS fever, O2 support.",
+      "20/09/2026 12:00 – Labs: TLC 16400 /cumm (H), CRP 84 mg/L (H); blood culture pending; CXR confirmed RLZ consolidation.",
+      "23/09/2026 10:00 – Afebrile for 24 hrs, SpO2 96% on RA; continued IV antibiotics.",
+      "Discharge – patient afebrile, SpO2 96% RA, clinically improved."
     ],
     "procedures_performed": [],
     "key_investigations": [
@@ -27,15 +26,15 @@
         "interpretation": "consolidation"
       }
     ],
-    "condition_at_discharge": "Stable",
+    "condition_at_discharge": "Improved, afebrile, SpO2 96% RA",
     "follow_up_advice": [],
     "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 582,
-  "input_tokens": 1387,
-  "output_tokens": 307,
-  "cost_usd": 0.00019612499999999998,
+  "latency_ms": 727,
+  "input_tokens": 1404,
+  "output_tokens": 380,
+  "cost_usd": 0.00021930000000000002,
   "error": null
 }

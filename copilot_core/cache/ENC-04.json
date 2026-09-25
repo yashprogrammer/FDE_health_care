@@ -1,15 +1,16 @@
 {
   "ip_no": "ENC-04",
   "draft": {
-    "presenting_complaints": "Pain right lower abdomen for 1 day with vomiting",
+    "presenting_complaints": "Pain right lower abdomen x 1 day with vomiting",
     "hospital_course": [
-      "22/08/2026 22:20 – RIF pain, McBurney tenderness, TLC 14.8k, USG confirmed appendicitis – surgery planned",
-      "03/08/2026 01:30 – Laparoscopic appendectomy performed, inflamed appendix, no perforation",
-      "03/08/2026 02:30 – Post‑op stable, started on Ceftriaxone 1 g BD IV and Metronidazole 500 mg TDS IV",
-      "03/08/2026 18:00 – Patient passed flatus, started liquids"
+      "02/08/2026 22:20 – Patient presented with RIF pain, McBurney tenderness, TLC 14.8k, USG confirmed appendicitis; surgery planned.",
+      "03/08/2026 01:30 – Laparoscopic appendectomy performed; inflamed appendix, no perforation.",
+      "03/08/2026 02:30 – Post‑op assessment: stable, no collection.",
+      "03/08/2026 18:00 – Patient passed flatus, started liquids.",
+      "04/08/2026 09:00 – Histopathology: acute suppurative appendicitis confirmed."
     ],
     "procedures_performed": [
-      "03/08/2026 01:30 – Laparoscopic appendectomy – inflamed appendix, no perforation"
+      "03/08/2026 01:30 – Laparoscopic appendectomy: inflamed appendix, no perforation"
     ],
     "key_investigations": [
       {
@@ -28,15 +29,15 @@
         "interpretation": "confirmatory"
       }
     ],
-    "condition_at_discharge": "Stable, pain controlled, no complications",
+    "condition_at_discharge": "Stable, pain controlled, tolerating liquids",
     "follow_up_advice": [],
     "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 568,
-  "input_tokens": 1380,
-  "output_tokens": 308,
-  "cost_usd": 0.0001959,
+  "latency_ms": 681,
+  "input_tokens": 1397,
+  "output_tokens": 316,
+  "cost_usd": 0.00019957499999999999,
   "error": null
 }

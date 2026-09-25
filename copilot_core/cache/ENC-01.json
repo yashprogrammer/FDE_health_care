@@ -3,25 +3,48 @@
   "draft": {
     "presenting_complaints": "Chest heaviness for 6 hours",
     "hospital_course": [
-      "23/07/2026 23:10 – Admitted with chest heaviness, ECG ST depression II, III, aVF, Troponin I 2.8 ng/mL.",
-      "24/07/2026 12:00 – CAG performed; RCA 90% mid lesion noted. 24/07/2026 12:40 – PTCA with drug‑eluting stent placed in RCA.",
-      "25/07/2026 10:00 – 2D Echo shows LVEF 50%.",
-      "26/07/2026 20:00 – Femoral site clean, no bleed, vitals stable. 26/07/2026 10:00 – Patient stable, ambulant, plan discharge tomorrow."
+      "08/07/2026 23:10 – Admitted with chest heaviness, ECG ST depression II, III, aVF, Troponin I 2.8 ng/mL (H).",
+      "09/07/2026 12:00 – CAG performed, RCA 90% mid lesion noted. 09/07/2026 12:40 – PTCA with drug‑eluting stent to RCA.",
+      "09/07/2026 09:30 – Labs: HbA1c 7.9%, LDL 128 mg/dL (both H). 09/07/2026 10:00 – 2D Echo LVEF 50% (L).",
+      "10/07/2026 20:00 – Femoral site clean, no bleed, vitals stable. 11/07/2026 10:00 – Patient stable, ambulant, echo LVEF 50%, plan discharge tomorrow."
     ],
     "procedures_performed": [
-      "09/07/2026 – Coronary angiography: RCA 90% mid lesion.",
-      "09/07/2026 – PTCA with drug‑eluting stent to RCA."
+      "09/07/2026 12:00 – Coronary angiography, RCA 90% mid lesion noted.",
+      "09/07/2026 12:40 – PTCA with drug‑eluting stent to RCA."
     ],
-    "key_investigations": [],
-    "condition_at_discharge": "Stable",
+    "key_investigations": [
+      {
+        "test": "Troponin I",
+        "result": "2.8 ng/mL",
+        "interpretation": "H"
+      },
+      {
+        "test": "HbA1c",
+        "result": "7.9 %",
+        "interpretation": "H"
+      },
+      {
+        "test": "LDL Cholesterol",
+        "result": "128 mg/dL",
+        "interpretation": "H"
+      },
+      {
+        "test": "2D Echo LVEF",
+        "result": "50 %",
+        "interpretation": "L"
+      }
+    ],
+    "condition_at_discharge": "Stable, ambulant, LVEF 50%",
     "follow_up_advice": [],
-    "diet_and_activity": []
+    "diet_and_activity": [
+      "As advised by treating consultant"
+    ]
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 1088,
-  "input_tokens": 3568,
-  "output_tokens": 491,
-  "cost_usd": 0.0004149,
+  "latency_ms": 940,
+  "input_tokens": 1676,
+  "output_tokens": 417,
+  "cost_usd": 0.0002508,
   "error": null
 }

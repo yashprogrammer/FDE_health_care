@@ -1,4 +1,5 @@
 """Data contracts: the Encounter (input, built from MediTrack data) and the SummaryDraft (LLM output)."""
+import re
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -78,11 +79,25 @@ class Encounter(BaseModel):
         return [lab for lab in self.labs if lab.status == "PENDING"]
 
     def for_llm(self) -> dict:
-        """What the model is allowed to see: clinical facts only, no direct identifiers."""
-        return self.model_dump(
+        """What the model is allowed to see: clinical facts only, no direct identifiers.
+        Dates are pre-formatted DD/MM/YYYY so the model copies them instead of converting them."""
+        return _ddmmyyyy(self.model_dump(
             exclude={"ip_no", "uhid", "patient_name", "policy_no", "tpa_name", "reference_summary",
                      "discharge_meds", "documents", "consultant_reg_no"},
-        )
+        ))
+
+
+_ISO_DATE = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b")
+
+
+def _ddmmyyyy(v):
+    if isinstance(v, str):
+        return _ISO_DATE.sub(r"\3/\2/\1", v)
+    if isinstance(v, dict):
+        return {k: _ddmmyyyy(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_ddmmyyyy(x) for x in v]
+    return v
 
 
 # ------------------------------------------------------------------ output: what the LLM drafts

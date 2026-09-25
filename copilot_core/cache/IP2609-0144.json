@@ -3,13 +3,13 @@
   "draft": {
     "presenting_complaints": "Planned right total knee replacement for osteoarthritis",
     "hospital_course": [
-      "09/09/2026 08:00 – Admitted for planned right TKR",
-      "09/09/2026 10:30 – Right total knee arthroplasty performed under spinal anaesthesia, uneventful",
-      "09/09/2026 13:00 – Post‑op review: wound dry, patient mobilising with walker, physiotherapy ongoing",
-      "09/09/2026 22:00 – Discharge assessment: stable vitals, pain controlled, wound intact"
+      "21/09/2026 10:30 – Right total knee arthroplasty performed under spinal anaesthesia, uneventful.",
+      "21/09/2026 13:00 – Post‑op assessment: wound dry, patient mobilising with walker, physiotherapy ongoing.",
+      "22/09/2026 – Routine labs: Haemoglobin 11.2 g/dL (low), Serum Creatinine 0.8 mg/dL (normal).",
+      "23/09/2026 10:00 – Continued mobilisation, wound remains dry, physiotherapy ongoing."
     ],
     "procedures_performed": [
-      "09/09/2026 – Right total knee arthroplasty (code 27447), uneventful"
+      "21/09/2026 – Right total knee arthroplasty (code 27447), uneventful"
     ],
     "key_investigations": [
       {
@@ -23,17 +23,15 @@
         "interpretation": "normal"
       }
     ],
-    "condition_at_discharge": "Stable, pain controlled, wound dry, mobilising with walker",
+    "condition_at_discharge": "Stable, mobilising with walker, wound dry, pain controlled with tramadol.",
     "follow_up_advice": [],
-    "diet_and_activity": [
-      "As advised by treating consultant"
-    ]
+    "diet_and_activity": []
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 664,
-  "input_tokens": 1284,
-  "output_tokens": 311,
-  "cost_usd": 0.0001896,
+  "latency_ms": 590,
+  "input_tokens": 1301,
+  "output_tokens": 272,
+  "cost_usd": 0.000179175,
   "error": null
 }

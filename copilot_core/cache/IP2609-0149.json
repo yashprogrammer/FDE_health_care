@@ -3,26 +3,24 @@
   "draft": {
     "presenting_complaints": "Recurrent right upper abdominal pain, USG gallstones",
     "hospital_course": [
-      "Admitted 23/09/2026 with recurrent RUQ pain; USG showed multiple gallbladder calculi, CBD normal.",
-      "Underwent laparoscopic cholecystectomy 23/09/2026 at 10:00 by surgeon D04; 4 ports used, GB sent for histopathology; procedure uneventful.",
-      "Post‑op: 23/09/2026 06:30 LFT within normal limits; started Ceftriaxone 1 g IV once, Paracetamol 1 g IV TDS, Ondansetron 4 mg IV SOS.",
-      "23/09/2026 11:30 Dr. Neha Rao noted lap chole done, GB sent for HPE, uneventful.",
-      "24/09/2026 10:00 Dr. Neha Rao noted patient tolerating liquids, port sites healthy.",
-      "Awaiting histopathology report of gallbladder (pending)."
+      "23/09/2026 07:30 – Admitted to 2B‑SURG for recurrent RUQ pain, USG confirmed multiple gallbladder calculi, CBD normal.",
+      "23/09/2026 10:00 – Laparoscopic cholecystectomy performed (4 ports) by surgeon D04, GB sent for histopathology.",
+      "23/09/2026 11:30 – Post‑op review: uneventful, port sites healthy, patient tolerating liquids.",
+      "24/09/2026 10:00 – Follow‑up review: patient tolerating liquids, port sites healthy. Histopathology pending."
     ],
     "procedures_performed": [
-      "23/09/2026 Laparoscopic cholecystectomy – 4 ports, GB sent for HPE, uneventful"
+      "23/09/2026 10:00 – Laparoscopic cholecystectomy (4 ports), GB sent for histopathology"
     ],
     "key_investigations": [
       {
         "test": "USG Abdomen",
         "result": "Multiple gallbladder calculi, CBD normal",
-        "interpretation": "elevated"
+        "interpretation": "Positive for gallstones"
       },
       {
         "test": "Liver Function Test",
         "result": "Within normal limits",
-        "interpretation": "normal"
+        "interpretation": "Normal"
       }
     ],
     "condition_at_discharge": "Stable, tolerating liquids, port sites healthy",
@@ -31,9 +29,9 @@
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 670,
-  "input_tokens": 1334,
-  "output_tokens": 355,
-  "cost_usd": 0.00020655,
+  "latency_ms": 842,
+  "input_tokens": 1351,
+  "output_tokens": 296,
+  "cost_usd": 0.00019012499999999997,
   "error": null
 }

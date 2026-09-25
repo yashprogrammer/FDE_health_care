@@ -3,16 +3,17 @@
   "draft": {
     "presenting_complaints": "62M with retrosternal chest pain radiating to left arm for 2 hrs with sweating",
     "hospital_course": [
-      "21/09/2026 07:10 – Patient admitted with acute anterior wall STEMI; primary PCI planned.",
-      "21/09/2026 07:55 – CAG shows 99% thrombotic occlusion of proximal LAD; 40% LCx, normal RCA.",
-      "21/09/2026 08:15 – Primary PTCA with DES (Xience 3.0 x 28 mm) to proximal LAD via right radial; TIMI III flow achieved; patient shifted to CCU.",
-      "22/09/2026 10:00 – Echo shows LVEF 40%, anterior wall hypokinesia; patient pain free, haemodynamically stable; amlodipine stopped, ramipril started; smoking cessation counselled.",
-      "23/09/2026 10:15 – Shifted from CCU to ward 4B; ambulating with support; repeat Troponin I 3.1 (downtrending); Lp(a) sent to outside lab – report awaited.",
-      "24/09/2026 10:30 – Stable, pain free, ambulating independently; radial site healthy; plan discharge tomorrow if stable; cardiac rehab referral; review in OPD after 1 week with reports."
+      "21/09/2026 07:10 – Patient admitted with acute anterior wall STEMI, primary PCI planned.",
+      "21/09/2026 07:55 – Coronary angiography performed; 99% thrombotic occlusion of proximal LAD noted.",
+      "21/09/2026 08:15 – Primary PTCA with drug‑eluting stent (Xience 3.0 x 28 mm) to proximal LAD; TIMI III flow achieved, uneventful.",
+      "21/09/2026 14:10 – Radial access site stable, TR band removed.",
+      "22/09/2026 – Pain free, haemodynamically stable; Echo shows LVEF 40%, anterior wall hypokinesia; amlodipine stopped, ramipril started; smoking cessation counselled.",
+      "23/09/2026 – Shifted to ward 4B, ambulating with support; repeat Troponin I downtrending to 3.1 ng/mL; Lp(a) sent to outside lab – report pending.",
+      "24/09/2026 – Stable, pain free, ambulating independently; radial site healthy; cardiac rehab referral; plan discharge tomorrow if stable."
     ],
     "procedures_performed": [
-      "21/09/2026 – Coronary angiography: proximal LAD 99% thrombotic occlusion, LCx 40%, RCA normal",
-      "21/09/2026 – Primary PTCA with drug‑eluting stent (Xience 3.0 x 28 mm) to proximal LAD via right radial; TIMI III flow achieved"
+      "21/09/2026 07:55 – Coronary angiography: proximal LAD 99% thrombotic occlusion, LCx 40% non‑critical, RCA normal",
+      "21/09/2026 08:15 – Primary PTCA with drug‑eluting stent (Xience 3.0 x 28 mm) to proximal LAD; TIMI III flow achieved"
     ],
     "key_investigations": [
       {
@@ -46,20 +47,21 @@
         "interpretation": "downtrending"
       }
     ],
-    "condition_at_discharge": "Stable, pain free, haemodynamically stable, LVEF 40%",
+    "condition_at_discharge": "Stable, pain free, haemodynamically stable, LVEF 40%, on dual antiplatelet therapy, statin, beta‑blocker, ACE inhibitor, PPI, and anticoagulant for 2 days",
     "follow_up_advice": [
-      "Cardiac rehab referral",
-      "Review in OPD after 1 week with reports"
+      "Review in OPD after 1 week with reports",
+      "Cardiac rehab referral"
     ],
     "diet_and_activity": [
-      "low salt, low fat, no smoking"
+      "low salt, low fat diet",
+      "no smoking"
     ]
   },
   "source": "live",
   "model": "groq:openai/gpt-oss-20b",
-  "latency_ms": 979,
-  "input_tokens": 2809,
-  "output_tokens": 586,
-  "cost_usd": 0.000386475,
+  "latency_ms": 1237,
+  "input_tokens": 2826,
+  "output_tokens": 618,
+  "cost_usd": 0.00039735,
   "error": null
 }
