@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const api = async (path, opts) => {
   const r = await fetch(path, opts)
@@ -139,11 +139,26 @@ function Patient({ ip }) {
         {tab === 'Clinical Notes' && <Grid rows={d.notes} cols={[['NOTE_DT', 'Date/Time'], ['NOTE_TYP', 'Type'], ['AUTH', 'Author'], ['NOTE_TXT', 'Note']]} />}
         {tab === 'Documents' && <Documents ip={ip} docs={d.docs} reload={reload} />}
         {tab === 'Discharge Summary' && <SummaryTab ip={ip} summary={d.summary} reload={reload} />}
-        {custom && <iframe title={custom.LNK_LBL} src={custom.HREF} style={{ width: '100%', height: 620, border: '2px inset #fff', background: '#fff' }} />}
+        {custom && <EmbeddedTab key={custom.LNK_ID} title={custom.LNK_LBL} src={custom.HREF} />}
         {tab === 'TPA' && <Grid rows={d.claims} cols={[['SUBM_DT', 'Submitted'], ['CLM_STS', 'Status'], ['QRY_RSN', 'Query Reason'], ['APPR_DT', 'Approved']]} />}
       </div>
     </>
   )
+}
+
+// Configured "Patient file tab" links render the page inside the tab body.
+// The embedded page may report its height (postMessage 'meditrack:tab-height') so the tab grows to fit.
+function EmbeddedTab({ title, src }) {
+  const ref = useRef(null)
+  const [height, setHeight] = useState(600)
+  useEffect(() => {
+    const on = (e) => {
+      if (e.source === ref.current?.contentWindow && e.data?.type === 'meditrack:tab-height') setHeight(Math.max(300, e.data.height + 4))
+    }
+    window.addEventListener('message', on)
+    return () => window.removeEventListener('message', on)
+  }, [])
+  return <iframe ref={ref} title={title} src={src} style={{ width: '100%', height, border: 0, display: 'block' }} />
 }
 
 function Grid({ rows, cols }) {
