@@ -1,0 +1,5 @@
+# Part 1 - legacy MediTrack
+fastapi==0.118.*
+uvicorn[standard]
+python-multipart
+fpdf2
