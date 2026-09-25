@@ -402,7 +402,8 @@ Ananya does **not** show the architecture diagram here. She shows this:
 
 ### Chapter 6: Integration with the legacy system (Weeks 6–10)
 - **Adapter goes live**: it watches the replica for "discharge advised" events and generates drafts automatically
-- **Entry point without changing MediTrack's code**: Suresh reveals MediTrack has an admin-configurable **External Links** menu (added in 2016 for the PACS viewer), so a "Discharge Copilot" link opens the draft for that patient. *(Only someone who sat with Suresh finds this.)*
+- **Entry point without changing MediTrack's code**: Suresh reveals MediTrack has an admin-configurable **External Links** feature (added in 2016 for the PACS viewer) that can show a link *as a patient-file tab*. One configuration row adds an **"AI Discharge Draft"** tab to every patient file, styled like the rest of MediTrack. *(Only someone who sat with Suresh finds this.)*
+- **Adoption decision, a tab and not a new app**: 300 doctors and nurses already know MediTrack. A new app means logins, training and resistance. A native-looking tab means one new habit: "after Discharge Advised, open the AI tab." 
 - **Write-back**: the signed summary goes back as a PDF through MediTrack's **existing batch document import hot-folder**, the scanned-document importer from 2013
 - **Live TPA check**: when the cath lab uploads the missing stent sticker in MediTrack, the Copilot's readiness score updates within seconds, because it re-reads the replica
 - **Shadow mode (1 week)**: drafts are generated but not shown, then compared silently against what doctors wrote
