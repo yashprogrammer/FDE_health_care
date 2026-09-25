@@ -125,8 +125,8 @@ def seed() -> None:
     for enc in S.PAST + S.CURRENT:
         insert_encounter(conn, enc)
     insert_historic(conn, random.Random(42))
-    conn.execute("INSERT INTO SYS_EXT_LNK (LNK_LBL, LNK_URL, IS_ACTV, CRT_BY, CRT_DT) VALUES (?,?,?,?,?)",
-                 ("PACS Image Viewer", "http://pacs.citycare.local/viewer?uhid={UHID}", 1, "admin", "2016-03-14 11:20"))
+    conn.execute("INSERT INTO SYS_EXT_LNK (LNK_LBL, LNK_URL, DISP_MD, IS_ACTV, CRT_BY, CRT_DT) VALUES (?,?,?,?,?,?)",
+                 ("PACS Image Viewer", "http://pacs.citycare.local/viewer?uhid={UHID}", "LINK", 1, "admin", "2016-03-14 11:20"))
     conn.commit()
     conn.close()
     print(f"MediTrack DB seeded -> {DB_PATH}")

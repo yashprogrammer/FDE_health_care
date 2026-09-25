@@ -112,6 +112,7 @@ CREATE TABLE SYS_EXT_LNK (     -- admin-configurable external links (added v3.1,
     LNK_ID   INTEGER PRIMARY KEY,
     LNK_LBL  TEXT,
     LNK_URL  TEXT,             -- {IP_NO} and {UHID} placeholders supported
+    DISP_MD  TEXT,             -- LINK = open in new window | TAB = embed as patient-file tab (v3.2)
     IS_ACTV  INTEGER,
     CRT_BY   TEXT,
     CRT_DT   TEXT

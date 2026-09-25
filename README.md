@@ -24,7 +24,7 @@ All people, patients, policies and TPAs are fictional.
 - React UI styled like 2011 (`legacy_meditrack/ui`)
 - `/int/*` endpoints are **internal-only** — hospital IT forbids external systems from calling them
 - Existing extension points an FDE can discover:
-  - **System Admin → External Links**: config-driven links on every patient file (`{IP_NO}`, `{UHID}` placeholders)
+  - **System Admin → External Links**: config-driven links on every patient file, shown either as a link (new window) or as an **extra patient-file tab** (embedded page). Supports `{IP_NO}` and `{UHID}` placeholders.
   - **Batch document import hot-folder** (`legacy_meditrack/data/import_hotfolder/`): drop `<IP_NO>_<DOC_TYP>_<YYYYMMDDHHMMSS>.pdf` and it appears in the patient's Documents tab
 - **MIS → Discharge TAT** shows the pain: cash patients leave ~2.5 h after discharge is advised, insured (cashless) ~6.3 h, and 38% of TPA submissions come back with a query
 
