@@ -190,11 +190,11 @@ function DraftTab({ ip }) {
           from MediTrack and must be corrected in their own tab.
         </div>
         {!signed && meta.status === 'READY' && (
-          <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
+          <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
             <button disabled={!dirty || !!busy} onClick={save}>{busy === 'save' ? 'Saving...' : 'Save Draft'}</button>
             <button disabled={!!busy} onClick={regenerate}>{busy === 'regen' ? 'Preparing...' : 'Prepare New Draft'}</button>
             <a className="btn" href={`/api/drafts/${ip}/pdf`} target="_blank" rel="noreferrer">Print Preview</a>
-            <button disabled={!!busy} onClick={sign} style={{ fontWeight: 'bold' }}>{busy === 'sign' ? 'Signing...' : 'Sign Discharge Summary'}</button>
+            <button className="primary" disabled={!!busy} onClick={sign}>{busy === 'sign' ? 'Signing...' : 'Sign Discharge Summary'}</button>
           </div>
         )}
       </fieldset>
