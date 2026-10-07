@@ -31,7 +31,7 @@ def connect():
     """Pooled connection; use as `with connect() as c:` (commits on success, rolls back on error)."""
     global _pool
     if _pool is None:
-        _pool = ConnectionPool(DB_URL, min_size=1, max_size=5, open=True,
+        _pool = ConnectionPool(DB_URL, min_size=1, max_size=5, open=True, check=ConnectionPool.check_connection,
                                kwargs={"row_factory": upper_row, "autocommit": False})
     return _pool.connection()
 

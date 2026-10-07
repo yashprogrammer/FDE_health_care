@@ -1,0 +1,53 @@
+# Azure Developer CLI: `azd up` provisions infra/ (Bicep) and deploys the four containers.
+#   hospital RG : MediTrack + Discharge Copilot + gateway (one Container Apps environment), Postgres, Azure Files, Foundry
+#   POC RG      : the cloud POC sandbox (its own Container Apps environment)
+name: citycare-discharge-copilot
+infra:
+  provider: bicep
+  path: infra
+services:
+  meditrack:
+    project: .
+    language: docker
+    host: containerapp
+    docker:
+      path: ./Dockerfile
+      context: .
+      remoteBuild: true      # built in ACR (linux/amd64), no local Docker needed
+  copilot:
+    project: .
+    language: docker
+    host: containerapp
+    docker:
+      path: ./Dockerfile
+      context: .
+      remoteBuild: true
+  gateway:
+    project: ./gateway
+    language: docker
+    host: containerapp
+    docker:
+      path: ./Dockerfile
+      remoteBuild: true
+  poc:
+    project: .
+    language: docker
+    host: containerapp
+    resourceGroup: ${AZURE_POC_RESOURCE_GROUP}
+    docker:
+      path: ./poc/Dockerfile
+      context: .
+      remoteBuild: true
+hooks:
+  preprovision:
+    posix:
+      shell: sh
+      run: ./infra/hooks/preprovision.sh
+      interactive: false
+      continueOnError: false
+  postdeploy:
+    posix:
+      shell: sh
+      run: ./infra/hooks/postdeploy.sh
+      interactive: false
+      continueOnError: false

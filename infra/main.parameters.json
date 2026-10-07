@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": { "value": "${AZURE_ENV_NAME}" },
+    "location": { "value": "${AZURE_LOCATION}" },
+    "pgAdminPassword": { "value": "${PG_ADMIN_PASSWORD}" },
+    "demoPassword": { "value": "${DEMO_PASSWORD}" },
+    "logfireToken": { "value": "${LOGFIRE_TOKEN=}" },
+    "clientIp": { "value": "${CLIENT_IP=}" },
+    "foundryLocation": { "value": "${FOUNDRY_LOCATION=}" },
+    "foundryModelName": { "value": "${FOUNDRY_MODEL_NAME=gpt-oss-20b}" },
+    "foundryModelFormat": { "value": "${FOUNDRY_MODEL_FORMAT=OpenAI-OSS}" },
+    "foundryModelVersion": { "value": "${FOUNDRY_MODEL_VERSION=1}" },
+    "foundrySkuName": { "value": "${FOUNDRY_SKU=GlobalStandard}" },
+    "foundryCapacity": { "value": "${FOUNDRY_CAPACITY=50}" },
+    "meditrackExists": { "value": "${SERVICE_MEDITRACK_RESOURCE_EXISTS=false}" },
+    "copilotExists": { "value": "${SERVICE_COPILOT_RESOURCE_EXISTS=false}" },
+    "gatewayExists": { "value": "${SERVICE_GATEWAY_RESOURCE_EXISTS=false}" },
+    "pocExists": { "value": "${SERVICE_POC_RESOURCE_EXISTS=false}" }
+  }
+}

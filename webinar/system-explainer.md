@@ -100,7 +100,7 @@ An **in-patient** (IPD, in-patient department) is anyone admitted to a bed, as o
 | Pharmacy | Correct discharge meds | Pharmacy issue screen |
 | TPA desk (Mrs. Kapoor) | Fewer insurer queries | Collects documents, submits to TPA |
 | Billing | Complete bill | Final bill |
-| Hospital IT (Suresh) | "Don't break MediTrack", security | MediTrack admin, replica |
+| Hospital IT (Suresh) | "Don't break MediTrack", security | MediTrack admin, database logins |
 | CEO / CFO | Bed turnover, revenue, complaints | MIS reports |
 | Patient and family | Going home on time | Waiting in the room |
 
@@ -132,11 +132,11 @@ An **in-patient** (IPD, in-patient department) is anyone admitted to a bed, as o
 
 ## 3. MediTrack: the legacy system
 
-**Run:** `./run.sh legacy` → http://localhost:8001 (branch `part-1-legacy`)
+**Run:** `./run.sh legacy` → http://localhost:8001 (branch `part-1-legacy`). Cloud: the same containers in Azure (§6).
 
 ### 3.1 What it is
 
-MediTrack HMS v3.2 was built in 2011 by a vendor that no longer exists. In the story it runs on Oracle; in our demo it's **FastAPI + SQLite + a React UI styled like 2011**. Only Suresh in IT understands it. The table names are cryptic (`PT_MST`, `IP_ADM_DTL`…) because nobody documented them.
+MediTrack HMS v3.2 was built in 2011 by a vendor that no longer exists; its screens got one cosmetic refresh in 2018 (the "Clarity" theme), but underneath nothing changed. In the story it runs on Oracle; in our demo it's **FastAPI + PostgreSQL + a React UI**. Only Suresh in IT understands it. The table names are cryptic (`PT_MST`, `IP_ADM_DTL`…) because nobody documented them.
 
 ### 3.2 Mapping the hospital cycle to MediTrack
 
@@ -172,7 +172,7 @@ The FDE can't modify MediTrack's code (vendor gone, no source, IT forbids it). B
 
 | Extension point | Built for | How the Copilot uses it |
 |---|---|---|
-| **MIS reporting replica** (read-only copy of the DB) | Monthly management reports | The Copilot *reads* patient data from here, never from the live DB |
+| **MIS reporting views + read-only login** (schema `mis`, role `mis_ro`) | Monthly management reports (IT, 2019) | The Copilot *reads* patient data through these views with its own login. It has no rights on MediTrack's tables and cannot write anything. |
 | **System Admin → External Links**, which can show as a link *or* as a **patient-file tab** | Opening the PACS X-ray viewer (2016) | The "AI Discharge Draft" tab is added *by configuration* |
 | **Batch document import hot-folder** | MRD's document scanner (2013). Drop `IPNO_DOCTYPE_TIMESTAMP.pdf` and it's filed. | The signed summary PDF is written back here |
 
@@ -257,7 +257,7 @@ SummaryDraft (narrative sections only)
 
 ## 5. The integrated system
 
-**Run:** `./run.sh integrated` → open MediTrack at http://localhost:8001. The Copilot service runs on :8002 but has **no screens of its own**: users only ever see MediTrack. (Branch `part-3-integrated`.)
+**Run:** `./run.sh integrated` → open MediTrack at http://localhost:8001. The Copilot service runs behind the same address at `/copilot/` but has **no screens of its own**: users only ever see MediTrack. (Branch `part-3-integrated`.)
 
 ### 5.1 Architecture
 
@@ -267,19 +267,18 @@ SummaryDraft (narrative sections only)
  Doctor clicks ───► │  Patient file ─ [Discharge Advised]        tabs: Diagnosis … TPA │ AI Discharge Draft │ │
                     │        │ writes STS='DA'                                           (config: External  │
                     │        ▼                                                             Links → TAB)     │
-                    │   meditrack.db (primary) ◄── never touched by Copilot                     │           │
-                    │        │                                          import hot-folder ◄─────┼──────┐    │
+                    │   Postgres: schema meditrack (tables) ◄── never written by Copilot        │           │
+                    │             schema mis (IT's read-only reporting views)                   │           │
+                    │        │                                  import hot-folder (share) ◄─────┼──────┐    │
                     └────────┼──────────────────────────────────────────────────────────────────┼──────┼────┘
-                             │ replica_sync.py (IT's MIS replica, every 3 s)                     │      │
+                             │ login copilot_svc: SELECT on mis.* only                           │      │
+                             │ adapter polls every 2 s; TPA checks re-read live                  │      │
                              ▼                                                                   │      │
-                      replica.db (READ-ONLY) ◄──────────┐                                        │      │
-                             │ adapter polls every 2 s  │ TPA checks re-read live                │      │
-                             ▼                          │                                        │      │
-             ┌──────────── Discharge Copilot service (FastAPI :8002) ────────────┐               │      │
+             ┌──────────── Discharge Copilot service (FastAPI, behind /copilot/) ─┐               │      │
              │  adapter: new STS='DA' → load_encounter → agent → trace → store    │               │      │
-             │  copilot.db (own drafts + audit)                                   │               │      │
+             │  schema copilot (own drafts + audit)                               │               │      │
              │  API: /api/drafts, /checks, PUT edit, /sign, /pdf, /metrics        │               │      │
-             │  UI:  #/embed/review/{IP_NO}  ── shown inside MediTrack tab ───────┼───────────────┘      │
+             │  UI:  /copilot/#/embed/review/{IP_NO} ── shown inside MediTrack tab ┼───────────────┘      │
              │  sign → render PDF → IPNO_DSCHSUMM_<ts>.pdf ───────────────────────┼──────────────────────┘
              └──────────────────────────── traces → Logfire ──────────────────────┘
 ```
@@ -289,24 +288,23 @@ SummaryDraft (narrative sections only)
 | t | Where | What happens |
 |---|---|---|
 | 0 s | MediTrack | Doctor clicks **Discharge Advised** for Ramesh (MediTrack sets `STS='DA'`, as it always has) |
-| ≤3 s | replica_sync | The change is copied into `replica.db` |
 | ≤2 s | Copilot adapter | Sees a new `DA` patient, logs `DISCHARGE_ADVISED_DETECTED` |
-| ~1 s | copilot_core | Builds the Encounter from the replica → Pydantic AI agent → draft (≈3.4k tokens) → guardrail → saved |
-| **~5–7 s total** | MediTrack **AI Discharge Draft** tab | "Waiting" turns into the full draft, with **TPA readiness 71%**: ❌ implant sticker missing |
+| ~1 s | copilot_core | Builds the Encounter from the `mis` views → Pydantic AI agent → draft (≈3.4k tokens) → guardrail → saved |
+| **~3–5 s total** | MediTrack **AI Discharge Draft** tab | "Waiting" turns into the full draft, with **TPA readiness 71%**: ❌ implant sticker missing |
 | | MediTrack Documents tab | Cath lab uploads the stent sticker (`demo_assets/…pdf`, type `IMPLANT_STKR`) the old way |
-| ≤3 s later | AI tab | TPA panel re-reads the replica and updates to **86%** |
+| ≤3 s later | AI tab | TPA panel re-reads MediTrack (read-only) and updates to **86%** |
 | | AI tab | Doctor edits a line → **Sign Discharge Summary** (warns if checks still fail) |
 | ≤3 s | MediTrack importer | PDF picked up from the hot-folder → **Documents tab** shows `DSCHSUMM … BATCH_IMPORT` (yellow row) |
-| | Logfire | One trace shows the whole chain: replica read → agent → guardrail → PDF write-back |
+| | Logfire | One trace shows the whole chain: read-only DB read → agent → guardrail → PDF write-back |
 
 ### 5.3 Components
 
 | Component | File | Role |
 |---|---|---|
-| Replica sync | `copilot/replica_sync.py` | Stands in for IT's MIS replica (in reality, Oracle Data Guard). Atomic copy every 3 s. |
+| Read-only login | `copilot/bootstrap.py` | IT's one-time grant: login `copilot_svc`, member of `mis_ro` (SELECT on the `mis` views), owner of its own schema `copilot` |
 | Adapter | `copilot/service/app.py` (`adapter_loop`) | Watches for `STS='DA'` and drafts each patient once |
 | AI core | `copilot_core/*` | Same code as the POC, promoted to production |
-| Copilot store | `copilot/data/copilot.db` | Drafts, edits, signatures, audit events. Separate from MediTrack by design. |
+| Copilot store | schema `copilot` (same Postgres server) | Drafts, edits, signatures, audit events. Separate from MediTrack's tables by design. |
 | AI Discharge Draft tab | `copilot/ui` → `#/embed/review/{IP_NO}` | **The only new screen.** Rendered inside MediTrack using MediTrack's own stylesheet (copied verbatim), with fields in the order of MediTrack's paper form MRD/DS/07 |
 | PDF write-back | `copilot/service/pdf.py` + hot-folder | Signed summary returns to MediTrack's own records |
 | Observability | Logfire | Spans: `adapter.process_discharge` → `discharge_copilot.generate_draft` → agent run → `writeback.hotfolder` |
@@ -315,8 +313,9 @@ SummaryDraft (narrative sections only)
 
 | Change | Type | Who does it | Training impact |
 |---|---|---|---|
-| One row in **System Admin → External Links**: `AI Discharge Draft`, URL `http://localhost:8002/#/embed/review/{IP_NO}`, Display = **Patient file tab** | Configuration | Hospital IT (Suresh), 1 minute | None |
-| New tab in the patient file, **identical in look and layout** to the other tabs (same stylesheet, grid tables, status strip, bevelled buttons, form MRD/DS/07 order) | Appears automatically | – | ~5 minutes: "open the tab, check, edit, sign" |
+| One row in **System Admin → External Links**: `AI Discharge Draft`, URL `/copilot/#/embed/review/{IP_NO}`, Display = **Patient file tab** | Configuration | Hospital IT (Suresh), 1 minute | None |
+| One database login (`copilot_svc`, read-only on the reporting views) | Configuration | Hospital IT, 1 minute | None |
+| New tab in the patient file, **identical in look and layout** to the other tabs (same stylesheet, grid tables, status strip, buttons, form MRD/DS/07 order) | Appears automatically | – | ~5 minutes: "open the tab, check, edit, sign" |
 | "Discharge Advised" button, Documents tab, everything else | **Unchanged** | – | None |
 
 **Why a tab and not a new app:** 300 doctors and nurses already know MediTrack. A new app means new logins, new training and resistance. A tab that looks native means the only new habit is *"after Discharge Advised, open the AI tab."* Adoption is part of the FDE's job, not an afterthought.
@@ -325,18 +324,65 @@ SummaryDraft (narrative sections only)
 
 | Question | Answer |
 |---|---|
-| Can it break MediTrack? | No. It only reads the replica and writes through MediTrack's own import folder. MediTrack's DB is never written. |
+| Can it break MediTrack? | No. Its database login can only SELECT from IT's reporting views (enforced by Postgres grants), and it writes back only through MediTrack's own import folder. |
 | Does patient data go to the LLM? | Only clinical facts. Name, UHID, policy number and the med list are stripped (`Encounter.for_llm`). In production: zero-data-retention endpoints or a region-approved host. |
 | What if the AI is wrong? | Guardrails flag unverified facts, the rules engine checks completeness, and **a doctor must sign**. Nothing is sent automatically. |
 | What if the LLM or network is down? | Cached draft → template. Doctors can always fall back to the old Word template. |
-| Audit? | Every detection, draft, edit (with % changed) and signature is logged in `copilot.db` and traced in Logfire |
+| Audit? | Every detection, draft, edit (with % changed) and signature is logged in the `copilot` schema and traced in Logfire |
+| Why not a replica? | A real read replica doubles the database cost. IT's existing read-only reporting views give the same guarantee (no writes, no access to contact details or admin tables) on the same server. |
 
 ---
 
-## 6. Cheat sheet
+## 6. Deployment: local and Azure
+
+The same containers run on a laptop (docker compose) and in Azure (azd + Bicep). Everything in the hospital's world shares one **Container Apps environment**; the POC sandbox has its own.
+
+```
+Azure, Central India (Pune)
+┌───────────────────────── rg-<env>-hospital ("the hospital") ─────────────────────────────┐
+│  Container Apps environment (shared)                                                       │
+│                                                                                            │
+│   Internet ─► gateway (Caddy, demo password) ── /          ─► MediTrack       (internal)   │
+│                                              └─ /copilot/* ─► Discharge Copilot (internal)  │
+│                                                                                            │
+│   MediTrack ─ owner login ──────► PostgreSQL Flexible Server (Burstable B1ms)              │
+│   Copilot   ─ copilot_svc login ─►   schema meditrack (tables) · mis (read-only views)     │
+│                                       · copilot (drafts, audit)                            │
+│   MediTrack ◄─ Azure Files: documents (MediTrack only), import-hotfolder (both) ─► Copilot  │
+│   reset job (Container Apps Job): IT's DB setup + reseed + clear drafts                    │
+│   Azure AI Foundry: gpt-oss-20b deployment ◄── Copilot                                     │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+┌──────────── rg-<env>-poc ("the POC sandbox") ────────────┐
+│  own Container Apps environment                           │
+│  Streamlit POC + de-identified data (baked into image)    │──► same Foundry deployment
+│  no database login, no file shares, own password          │
+└───────────────────────────────────────────────────────────┘
+```
+
+| In the hospital (story) | Local demo | Azure demo |
+|---|---|---|
+| Oracle database server | `postgres:16` container | PostgreSQL Flexible Server, Burstable B1ms (≈ $0.02/h) |
+| MIS reporting access (IT, 2019) | `mis` views + `mis_ro` role | same, on the same server: **no replica, no copy** |
+| MediTrack app server (Tomcat) | `meditrack` container | Container App, internal only |
+| SMB file shares (scanner, documents) | bind-mounted folders | Azure Files shares, mounted into the containers |
+| Reverse proxy / hospital intranet entry | Caddy on `localhost:8001` | Caddy Container App, the only public URL, demo password |
+| Discharge Copilot server | `copilot` container | Container App in the **same** environment, internal only |
+| LLM endpoint | Groq (`gpt-oss-20b`) | Azure AI Foundry (`gpt-oss-20b`): data stays in the customer's Azure tenant |
+| POC laptop / sandbox | `./run.sh poc` | separate resource group and environment, no path to the hospital data |
+
+**Two POCs, one codebase.** The local POC (`./run.sh poc`, Groq) is the AI engineer's sandbox. The cloud POC is the *same* Streamlit image in its own resource group, calling Foundry. It's what you'd show the hospital's doctors before integrating: shareable link, password, de-identified data only. Moving the model from Groq to Foundry is a configuration change (`COPILOT_PROVIDER=foundry`), but the eval must be re-run (`./run.sh eval-foundry`) before trusting it: lesson 1 of §4.5 (the provider matters, not just the model) applies again.
+
+**Why one shared environment for MediTrack and the Copilot?** It mirrors the hospital: the Copilot runs *inside* the hospital's network, next to MediTrack, reached only through the hospital's own entry point. Only the gateway is public; MediTrack and the Copilot have internal-only ingress.
+
+**Cost while up** (illustrative): Postgres B1ms ≈ $0.02/h, Container Apps mostly within the free monthly grant, Azure Files and Log Analytics cents, container registry ≈ $0.17/day, Foundry tokens ≈ cents per webinar. `./run.sh cloud-down` deletes everything.
+
+---
+
+## 7. Cheat sheet
 
 - **Domain in one line:** cashless patients wait for the insurer's final approval, which needs a complete discharge summary. Slow and incomplete summaries → 6.3 h waits, 38% queries.
-- **Legacy in one line:** data lives in 6 MediTrack tabs. The summary is typed by hand. Three hidden doors: replica, External Links (link/tab), document hot-folder.
+- **Legacy in one line:** data lives in 6 MediTrack tabs. The summary is typed by hand. Three hidden doors: read-only reporting login, External Links (link/tab), document hot-folder.
 - **POC in one line:** Pydantic AI + gpt-oss-20b drafts the narrative. Diagnoses and meds are pulled, never generated. A guardrail and evals prove it: 0 hallucinations, 100% faithful, ₹0.02 per summary.
 - **Integrated in one line:** same MediTrack UI plus one new tab. Click "Discharge Advised" as usual → a draft appears in the AI Discharge Draft tab within seconds → doctor signs → PDF lands in the Documents tab. Added by configuration.
 - **FDE vs AI engineer in one line:** the AI engineer built `copilot_core`. The FDE found the real problem, the three doors, the "tab not app" adoption decision and the business case, and made it all work in the hospital.
+- **Deployment in one line:** same containers locally and in Azure. MediTrack + Copilot share one Container Apps environment and one Postgres (Copilot = read-only login); the cloud POC lives in its own sandbox resource group. Groq locally, Azure AI Foundry in the cloud, same gpt-oss-20b.

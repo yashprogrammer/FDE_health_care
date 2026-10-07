@@ -38,7 +38,7 @@ def now() -> str:
 def _get_pool() -> ConnectionPool:
     global _pool
     if _pool is None:
-        _pool = ConnectionPool(DB_URL, min_size=1, max_size=6, open=True)
+        _pool = ConnectionPool(DB_URL, min_size=1, max_size=6, open=True, check=ConnectionPool.check_connection)
     return _pool
 
 

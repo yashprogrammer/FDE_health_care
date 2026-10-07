@@ -69,10 +69,13 @@ case "${1:-}" in
       $PY -m scripts.run_eval
     ;;
   cloud-up)
+    # first time: create the azd environment in Central India (azd asks for the subscription)
+    [ -f .azure/config.json ] || azd env new "${2:-citycare}" --location centralindia
+    [ -n "$(azd_env AZURE_LOCATION)" ] || azd env set AZURE_LOCATION centralindia
     azd up
     ;;
   cloud-reset)
-    ./infra/hooks/reset.sh
+    sh infra/hooks/reset.sh
     ;;
   cloud-urls)
     echo "MediTrack HMS (hospital RG) -> $(azd_env MEDITRACK_URL)   user: citycare"

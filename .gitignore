@@ -9,3 +9,4 @@ dist/
 legacy_meditrack/data/
 copilot/data/
 poc/data/feedback.jsonl
+.azure/
