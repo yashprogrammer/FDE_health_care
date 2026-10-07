@@ -1,0 +1,75 @@
+# Local CityCare stack - the same images and wiring as the Azure deployment.
+#   ./run.sh legacy       db + MediTrack + gateway           -> http://localhost:8001
+#   ./run.sh integrated   + Discharge Copilot behind /copilot/ -> http://localhost:8001
+name: citycare
+
+x-app: &app
+  build: .
+  image: citycare-app
+  restart: unless-stopped
+
+services:
+  db:   # stands in for the hospital's Oracle server (Azure: PostgreSQL Flexible Server)
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: citycare
+    ports: ["${PG_PORT:-5432}:5432"]          # published so ./run.sh poc-export / warm can read the mis views
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d citycare"]
+      interval: 2s
+      retries: 30
+
+  init:  # hospital IT's DB setup + first-time seed (Azure: the reset Container Apps Job)
+    <<: *app
+    restart: "no"
+    environment:
+      APP_ROLE: reset
+      DB_ADMIN_URL: postgresql://postgres:postgres@db:5432/citycare
+      MEDITRACK_DB_URL: postgresql://meditrack:meditrack@db:5432/citycare
+      COPILOT_DB_URL: postgresql://copilot_svc:copilot_svc@db:5432/citycare
+    command: ["--if-empty"]
+    volumes:
+      - ./legacy_meditrack/data/documents:/mnt/documents
+      - ./legacy_meditrack/data/import_hotfolder:/mnt/import_hotfolder
+    depends_on:
+      db: {condition: service_healthy}
+
+  meditrack:
+    <<: *app
+    environment:
+      APP_ROLE: meditrack
+      MEDITRACK_DB_URL: postgresql://meditrack:meditrack@db:5432/citycare
+    volumes:
+      - ./legacy_meditrack/data/documents:/mnt/documents
+      - ./legacy_meditrack/data/import_hotfolder:/mnt/import_hotfolder
+    depends_on:
+      init: {condition: service_completed_successfully}
+
+  copilot:
+    <<: *app
+    environment:
+      APP_ROLE: copilot
+      COPILOT_DB_URL: postgresql://copilot_svc:copilot_svc@db:5432/citycare   # read-only on MediTrack (mis views)
+      COPILOT_PROVIDER: groq
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      LOGFIRE_TOKEN: ${LOGFIRE_TOKEN:-}
+      COPILOT_OFFLINE: ${COPILOT_OFFLINE:-0}
+    volumes:
+      - ./legacy_meditrack/data/import_hotfolder:/mnt/import_hotfolder        # write-back only; no access to documents
+    depends_on:
+      init: {condition: service_completed_successfully}
+
+  gateway:   # the only published port
+    build: ./gateway
+    image: citycare-gateway
+    restart: unless-stopped
+    environment:
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+    ports: ["${MEDITRACK_PORT:-8001}:80"]
+    depends_on: [meditrack]
+
+volumes:
+  pgdata:

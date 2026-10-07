@@ -73,7 +73,7 @@ function DraftTab({ ip }) {
 
   const load = useCallback(async () => {
     try {
-      const d = await api(`/api/drafts/${ip}`)
+      const d = await api(`api/drafts/${ip}`)
       setWaiting(false)
       setData(d)
       setTraceInfo(d.trace)
@@ -99,7 +99,7 @@ function DraftTab({ ip }) {
   useEffect(() => {
     if (!data || data.meta.status === 'SIGNED') return
     const t = setInterval(async () => {
-      const c = await api(`/api/drafts/${ip}/checks`).catch(() => null)
+      const c = await api(`api/drafts/${ip}/checks`).catch(() => null)
       if (!c) return
       if (prevScore.current !== null && c.readiness !== prevScore.current) { setFlash(true); setTimeout(() => setFlash(false), 1700) }
       prevScore.current = c.readiness
@@ -113,7 +113,7 @@ function DraftTab({ ip }) {
   const save = async () => {
     setBusy('save')
     try {
-      const r = await send('PUT', `/api/drafts/${ip}`, { draft: fromForm(form) })
+      const r = await send('PUT', `api/drafts/${ip}`, { draft: fromForm(form) })
       setTraceInfo(r.trace); setDirty(false)
       setMsg({ kind: 'info', text: `Draft saved. ${r.edit_pct}% of the AI text changed by doctor.` })
     } catch (e) { setMsg({ kind: 'err', text: e.message }) }
@@ -123,7 +123,7 @@ function DraftTab({ ip }) {
   const regenerate = async () => {
     if (!window.confirm('DISCARD YOUR EDITS AND PREPARE A NEW DRAFT?')) return
     setBusy('regen')
-    try { await send('POST', `/api/drafts/${ip}/regenerate`); await load(); setMsg({ kind: 'info', text: 'New draft prepared.' }) } catch (e) { setMsg({ kind: 'err', text: e.message }) }
+    try { await send('POST', `api/drafts/${ip}/regenerate`); await load(); setMsg({ kind: 'info', text: 'New draft prepared.' }) } catch (e) { setMsg({ kind: 'err', text: e.message }) }
     setBusy('')
   }
 
@@ -133,8 +133,8 @@ function DraftTab({ ip }) {
     if (!window.confirm(`SIGN DISCHARGE SUMMARY AS ${data.encounter.consultant.toUpperCase()}?${warn}`)) return
     setBusy('sign')
     try {
-      if (dirty) await send('PUT', `/api/drafts/${ip}`, { draft: fromForm(form) })
-      await send('POST', `/api/drafts/${ip}/sign`, { signed_by: data.encounter.consultant })
+      if (dirty) await send('PUT', `api/drafts/${ip}`, { draft: fromForm(form) })
+      await send('POST', `api/drafts/${ip}/sign`, { signed_by: data.encounter.consultant })
       await load()
       setMsg({ kind: 'ok', text: 'Discharge summary signed. PDF will appear in the Documents tab shortly.' })
     } catch (e) { setMsg({ kind: 'err', text: e.message }) }
@@ -193,7 +193,7 @@ function DraftTab({ ip }) {
           <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
             <button disabled={!dirty || !!busy} onClick={save}>{busy === 'save' ? 'Saving...' : 'Save Draft'}</button>
             <button disabled={!!busy} onClick={regenerate}>{busy === 'regen' ? 'Preparing...' : 'Prepare New Draft'}</button>
-            <a className="btn" href={`/api/drafts/${ip}/pdf`} target="_blank" rel="noreferrer">Print Preview</a>
+            <a className="btn" href={`api/drafts/${ip}/pdf`} target="_blank" rel="noreferrer">Print Preview</a>
             <button className="primary" disabled={!!busy} onClick={sign}>{busy === 'sign' ? 'Signing...' : 'Sign Discharge Summary'}</button>
           </div>
         )}
@@ -287,7 +287,7 @@ export default function App() {
     <fieldset style={{ margin: 10 }}>
       <legend>Discharge Copilot service</legend>
       This service has no screens of its own. It appears inside MediTrack as the <b>AI Discharge Draft</b> tab of each patient file.
-      <div className="hint">MediTrack System Admin &gt; External Links: URL http://localhost:8002/#/embed/review/{'{IP_NO}'}, Display = Patient file tab</div>
+      <div className="hint">MediTrack System Admin &gt; External Links: URL /copilot/#/embed/review/{'{IP_NO}'}, Display = Patient file tab</div>
     </fieldset>
   )
 }

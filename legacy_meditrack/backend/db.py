@@ -1,33 +1,57 @@
-import sqlite3
+import os
 from datetime import datetime
 from pathlib import Path
 
+import psycopg
+from psycopg_pool import ConnectionPool
+
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
-DB_PATH = DATA_DIR / "meditrack.db"
-DOCS_DIR = DATA_DIR / "documents"
-HOTFOLDER = DATA_DIR / "import_hotfolder"
 SCHEMA = Path(__file__).resolve().parent / "schema.sql"
 
+# Postgres (stands in for the hospital's Oracle). The app logs in as its owner role "meditrack".
+DB_URL = os.getenv("MEDITRACK_DB_URL", "postgresql://meditrack:meditrack@localhost:5432/citycare")
+# File stores (SMB shares in the hospital / Azure Files shares in the cloud):
+#   documents        - scanned + uploaded patient documents (MediTrack only)
+#   import_hotfolder - batch document import; other systems may DROP files here
+FILES_DIR = ROOT / "data"
+DOCS_DIR = Path(os.getenv("MEDITRACK_DOCS_DIR", FILES_DIR / "documents"))
+HOTFOLDER = Path(os.getenv("MEDITRACK_HOTFOLDER", FILES_DIR / "import_hotfolder"))
 
-def connect() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH, timeout=10)
-    conn.row_factory = sqlite3.Row
-    return conn
+
+def upper_row(cursor):
+    """Rows as dicts keyed by UPPERCASE column names, as the vendor's code expects (Postgres folds names to lowercase)."""
+    names = [d.name.upper() for d in cursor.description] if cursor.description else []
+    return lambda values: dict(zip(names, values))
+
+
+_pool: ConnectionPool | None = None
+
+
+def connect():
+    """Pooled connection; use as `with connect() as c:` (commits on success, rolls back on error)."""
+    global _pool
+    if _pool is None:
+        _pool = ConnectionPool(DB_URL, min_size=1, max_size=5, open=True,
+                               kwargs={"row_factory": upper_row, "autocommit": False})
+    return _pool.connection()
+
+
+def connect_once() -> psycopg.Connection:
+    """Plain, unpooled connection (seed / one-off scripts)."""
+    return psycopg.connect(DB_URL, row_factory=upper_row)
 
 
 def now() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M")
 
 
-def rows(conn: sqlite3.Connection, sql: str, *args) -> list[dict]:
-    return [dict(r) for r in conn.execute(sql, args).fetchall()]
+def rows(conn, sql: str, *args) -> list[dict]:
+    return conn.execute(sql, args).fetchall()
 
 
-def row(conn: sqlite3.Connection, sql: str, *args) -> dict | None:
-    r = conn.execute(sql, args).fetchone()
-    return dict(r) if r else None
+def row(conn, sql: str, *args) -> dict | None:
+    return conn.execute(sql, args).fetchone()
 
 
-def audit(conn: sqlite3.Connection, usr: str, actn: str, ref: str) -> None:
-    conn.execute("INSERT INTO SYS_AUDIT (TS, USR, ACTN, REF) VALUES (?,?,?,?)", (now(), usr, actn, ref))
+def audit(conn, usr: str, actn: str, ref: str) -> None:
+    conn.execute("INSERT INTO SYS_AUDIT (TS, USR, ACTN, REF) VALUES (%s,%s,%s,%s)", (now(), usr, actn, ref))

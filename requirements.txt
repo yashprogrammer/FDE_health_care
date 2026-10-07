@@ -3,9 +3,10 @@ fastapi==0.118.*
 uvicorn[standard]
 python-multipart
 fpdf2
+psycopg[binary,pool]
 
-# Part 2 - POC (AI core + Streamlit)
-pydantic-ai-slim[groq,logfire]
+# Part 2 - POC (AI core + Streamlit). gpt-oss-20b: Groq locally, Azure AI Foundry (OpenAI-compatible) in the cloud
+pydantic-ai-slim[groq,openai,logfire]
 logfire
 streamlit
 pandas

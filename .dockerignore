@@ -1,0 +1,12 @@
+.git
+.venv
+.azure
+.env
+**/node_modules
+**/dist
+**/__pycache__
+legacy_meditrack/data
+copilot/data
+poc/data/feedback.jsonl
+docs
+webinar

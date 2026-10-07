@@ -8,6 +8,8 @@ import time
 import logfire
 from pydantic_ai import Agent, NativeOutput
 from pydantic_ai.models.groq import GroqModelSettings
+from pydantic_ai.models.openai import OpenAIChatModel, OpenAIChatModelSettings
+from pydantic_ai.providers.openai import OpenAIProvider
 
 from . import config
 from .models import DraftResult, Encounter, KeyInvestigation, SummaryDraft
@@ -30,17 +32,30 @@ Hard rules:
 - Fill every field of the output schema.
 """
 
+
+
+def _model_and_settings():
+    """gpt-oss-20b on Groq (local) or on an Azure AI Foundry deployment (cloud). Same prompt, schema and limits.
+    gpt-oss is a reasoning model: reasoning is capped so it can't burn the whole token budget."""
+    if config.PROVIDER == "foundry" and not config.OFFLINE:
+        model = OpenAIChatModel(config.FOUNDRY_DEPLOYMENT,
+                                provider=OpenAIProvider(base_url=config.FOUNDRY_ENDPOINT, api_key=config.FOUNDRY_API_KEY))
+        return model, OpenAIChatModelSettings(max_tokens=6000, temperature=0.2, openai_reasoning_effort="low")
+    return config.MODEL, GroqModelSettings(max_tokens=6000, temperature=0.2, groq_reasoning_effort="low")
+
+
+_model, _settings = _model_and_settings()
+
 # NativeOutput = provider-enforced JSON schema. Groq rejects gpt-oss tool-call output
 # ("output_parse_failed"), but its native structured outputs work reliably.
 agent = Agent(
-    config.MODEL,
+    _model,
     output_type=NativeOutput(SummaryDraft),
     instructions=INSTRUCTIONS,
     name="discharge_copilot",
     retries=2,
     defer_model_check=True,
-    # gpt-oss is a reasoning model: cap reasoning so it can't burn the whole token budget
-    model_settings=GroqModelSettings(max_tokens=6000, temperature=0.2, groq_reasoning_effort="low"),
+    model_settings=_settings,
 )
 LLM_ATTEMPTS = 2   # provider-side schema rejections (HTTP 400) are not retried by the agent itself
 
@@ -112,7 +127,7 @@ def generate_draft(enc: Encounter, use_cache_first: bool = False) -> DraftResult
                 error = f"{type(e).__name__}: {e}"[:300]
                 logfire.warn("LLM call failed, falling back", error=error)
         else:
-            error = "offline mode (no GROQ_API_KEY or COPILOT_OFFLINE=1)"
+            error = f"offline mode (no {config.PROVIDER} credentials or COPILOT_OFFLINE=1)"
         if cached := load_cache(enc.ip_no):
             return cached.model_copy(update={"error": error})
         return DraftResult(ip_no=enc.ip_no, draft=template_draft(enc), source="template", model="none", error=error)

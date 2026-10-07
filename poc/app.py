@@ -2,7 +2,9 @@
 
 Run: ./run.sh poc
 """
+import hmac
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -27,6 +29,17 @@ FEEDBACK_FILE = DATA / "feedback.jsonl"
 ICON = {"pass": "✅", "warn": "⚠️", "fail": "❌", "na": "➖"}
 
 st.set_page_config(page_title="Discharge Copilot POC", page_icon="🩺", layout="wide")
+
+# Cloud POC: simple shared-password gate (set POC_PASSWORD). Local runs have no gate.
+if (_pw := os.getenv("POC_PASSWORD")) and not st.session_state.get("authed"):
+    st.title("🩺 Discharge Copilot POC")
+    entered = st.text_input("Demo password", type="password")
+    if entered and hmac.compare_digest(entered, _pw):
+        st.session_state["authed"] = True
+        st.rerun()
+    elif entered:
+        st.error("Wrong password")
+    st.stop()
 
 
 @st.cache_resource
@@ -55,7 +68,7 @@ def inr(usd: float) -> str:
 # ------------------------------------------------------------------ sidebar
 with st.sidebar:
     st.header("🩺 Discharge Copilot")
-    st.caption("POC · Week 4 · CityCare Hospitals")
+    st.caption(f"POC · Week 4 · CityCare Hospitals · {os.getenv('POC_ENV_LABEL', 'local sandbox')}")
     st.markdown(f"**Model:** `{config.MODEL}`")
     st.markdown(f"**LLM mode:** {'🔴 offline (cache/template)' if config.OFFLINE else '🟢 live'}")
     st.markdown(f"**Logfire tracing:** {'🟢 on' if logfire_on else '⚪ off (no token)'}")
@@ -65,7 +78,7 @@ with st.sidebar:
     enc = encs[ip]
     st.caption(f"{enc.age}/{enc.sex} · {enc.consultant_speciality} · {enc.pay_mode}")
     st.divider()
-    st.caption("Data: 11 past discharges exported from MediTrack's reporting replica and de-identified. "
+    st.caption("Data: 11 past discharges exported through MediTrack's read-only MIS reporting login and de-identified. "
                "This POC is not connected to any hospital system.")
 
 st.title("Discharge Copilot: Proof of Concept")
