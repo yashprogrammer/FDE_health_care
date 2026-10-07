@@ -38,7 +38,7 @@ function Census() {
     <fieldset>
       <legend>IPD Census - Current In-Patients</legend>
       {err && <div className="err">{err}</div>}
-      <table className="grid">
+      <table className="grid compact">
         <thead>
           <tr><th>IP No</th><th>UHID</th><th>Patient Name</th><th>Age/Sex</th><th>Ward</th><th>Bed</th><th>Consultant</th><th>Pay Mode</th><th>TPA</th><th>Adm. Date</th><th>Status</th></tr>
         </thead>
@@ -46,8 +46,8 @@ function Census() {
           {data?.map((r) => (
             <tr key={r.IP_NO}>
               <td><a href={`#/ip/${r.IP_NO}`}>{r.IP_NO}</a></td>
-              <td>{r.UHID}</td><td>{r.PT_NM.toUpperCase()}</td><td>{r.PT_AGE}/{r.PT_SEX}</td>
-              <td>{r.WRD_CD}</td><td>{r.BED_NO}</td><td>{r.DR_NM}</td><td>{r.PAY_MODE}</td><td>{r.TPA_NM || '-'}</td>
+              <td>{r.UHID}</td><td className="wrap">{r.PT_NM.toUpperCase()}</td><td>{r.PT_AGE}/{r.PT_SEX}</td>
+              <td>{r.WRD_CD}</td><td>{r.BED_NO}</td><td className="wrap">{r.DR_NM}</td><td>{r.PAY_MODE}</td><td className="wrap">{r.TPA_NM || '-'}</td>
               <td>{r.ADM_DT}</td><td><Sts s={r.STS} /></td>
             </tr>
           ))}
@@ -64,13 +64,13 @@ function Discharged() {
   return (
     <fieldset>
       <legend>Discharged Patients (last 60)</legend>
-      <table className="grid">
+      <table className="grid compact">
         <thead><tr><th>IP No</th><th>UHID</th><th>Patient</th><th>Ward</th><th>Consultant</th><th>Pay Mode</th><th>Disch. Advised</th><th>Discharged</th><th>DS on file</th></tr></thead>
         <tbody>
           {data?.map((r) => (
             <tr key={r.IP_NO}>
-              <td><a href={`#/ip/${r.IP_NO}`}>{r.IP_NO}</a></td><td>{r.UHID}</td><td>{r.PT_NM.toUpperCase()}</td><td>{r.WRD_CD}</td>
-              <td>{r.DR_NM}</td><td>{r.PAY_MODE}</td><td>{r.DSCH_ADV_DT}</td><td>{r.DSCH_DT}</td><td>{r.HAS_SUMM ? 'Y' : 'N'}</td>
+              <td><a href={`#/ip/${r.IP_NO}`}>{r.IP_NO}</a></td><td>{r.UHID}</td><td className="wrap">{r.PT_NM.toUpperCase()}</td><td>{r.WRD_CD}</td>
+              <td className="wrap">{r.DR_NM}</td><td>{r.PAY_MODE}</td><td>{r.DSCH_ADV_DT}</td><td>{r.DSCH_DT}</td><td>{r.HAS_SUMM ? 'Y' : 'N'}</td>
             </tr>
           ))}
         </tbody>
@@ -112,8 +112,8 @@ function Patient({ ip }) {
           <span><b>Policy No:</b> {a.POL_NO || '-'}</span><span><b>Disch. Advised:</b> {a.DSCH_ADV_DT || '-'}</span>
         </div>
         <div><b>Reason for admission:</b> {a.ADM_RSN}</div>
-        <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
-          <button disabled={a.STS !== 'ADM'} onClick={() => act(`/int/ip/${ip}/discharge-advise`, 'Mark patient as DISCHARGE ADVISED?')}>Discharge Advised</button>
+        <div style={{ marginTop: 10, display: 'flex', gap: 8, alignItems: 'center' }}>
+          <button className="primary" disabled={a.STS !== 'ADM'} onClick={() => act(`/int/ip/${ip}/discharge-advise`, 'Mark patient as DISCHARGE ADVISED?')}>Discharge Advised</button>
           <button disabled={a.STS !== 'DA'} onClick={() => act(`/int/ip/${ip}/discharge`, 'Confirm FINAL DISCHARGE (bill settled)?')}>Final Discharge</button>
           <a className="btn" href={`/int/ip/${ip}/summary-template`}>Download DS Template (.doc)</a>
           <button onClick={() => window.print()}>Print</button>
@@ -122,7 +122,7 @@ function Patient({ ip }) {
         {linkItems.length > 0 && (
           <div className="links">
             <b>External Links:</b>{' '}
-            {linkItems.map((l) => <a key={l.LNK_ID} href={l.HREF} target="_blank" rel="noreferrer" style={{ marginRight: 12 }}>[{l.LNK_LBL}]</a>)}
+            {linkItems.map((l) => <a key={l.LNK_ID} href={l.HREF} target="_blank" rel="noreferrer" style={{ marginRight: 14 }}>{l.LNK_LBL} &#8599;</a>)}
           </div>
         )}
       </fieldset>
@@ -219,9 +219,11 @@ function Documents({ ip, docs, reload }) {
       </table>
       <fieldset style={{ marginTop: 8 }}>
         <legend>Upload Document</legend>
-        Type: <select value={typ} onChange={(e) => setTyp(e.target.value)}>{DOC_TYPES.map((t) => <option key={t}>{t}</option>)}</select>{' '}
-        <input type="file" accept="application/pdf" onChange={(e) => setFile(e.target.files[0])} />{' '}
-        <button onClick={upload}>Upload</button> <span className="err">{msg}</span>
+        <div className="formrow">
+          Type: <select value={typ} onChange={(e) => setTyp(e.target.value)}>{DOC_TYPES.map((t) => <option key={t}>{t}</option>)}</select>
+          <input type="file" accept="application/pdf" onChange={(e) => setFile(e.target.files[0])} />
+          <button className="primary" onClick={upload}>Upload</button> <span className="err">{msg}</span>
+        </div>
       </fieldset>
     </>
   )
@@ -246,7 +248,7 @@ function SummaryTab({ ip, summary, reload }) {
       </div>
       <textarea rows={16} value={text} onChange={(e) => setText(e.target.value)}
         placeholder={'Diagnosis:\nPresenting complaints:\nHospital course:\nProcedures:\nInvestigations:\nCondition at discharge:\nDischarge medications:\nFollow-up:'} />
-      <div><button onClick={save} disabled={!text.trim()}>Save Summary</button></div>
+      <div style={{ marginTop: 8 }}><button className="primary" onClick={save} disabled={!text.trim()}>Save Summary</button></div>
     </>
   )
 }
@@ -276,10 +278,12 @@ function ExtLinks() {
       </table>
       <fieldset style={{ marginTop: 8 }}>
         <legend>Add New Link</legend>
-        Label: <input type="text" size={24} value={label} onChange={(e) => setLabel(e.target.value)} />{' '}
-        URL: <input type="text" size={52} value={url} onChange={(e) => setUrl(e.target.value)} />{' '}
-        Display: <select value={mode} onChange={(e) => setMode(e.target.value)}><option value="LINK">New window</option><option value="TAB">Patient file tab</option></select>{' '}
-        <button disabled={!label || !url} onClick={add}>Add</button>
+        <div className="formrow">
+          Label: <input type="text" size={22} value={label} onChange={(e) => setLabel(e.target.value)} />
+          URL: <input type="text" size={48} value={url} onChange={(e) => setUrl(e.target.value)} />
+          Display: <select value={mode} onChange={(e) => setMode(e.target.value)}><option value="LINK">New window</option><option value="TAB">Patient file tab</option></select>
+          <button className="primary" disabled={!label || !url} onClick={add}>Add</button>
+        </div>
       </fieldset>
     </fieldset>
   )
@@ -292,7 +296,7 @@ function Mis() {
   return (
     <fieldset>
       <legend>MIS Report - Discharge Turnaround (Discharge Advised to Patient Out)</legend>
-      <div style={{ margin: '6px 0 10px' }}>
+      <div style={{ margin: '2px 0 4px' }}>
         {d.by_mode.map((m) => <span className="kpi" key={m.PAY_MODE}><b>{m.AVG_TAT_HRS} hrs</b>{m.PAY_MODE} ({m.N} pts)</span>)}
         <span className="kpi"><b>{d.claims.QUERY_PCT}%</b>TPA claims with query ({d.claims.QUERIES}/{d.claims.N})</span>
       </div>
@@ -318,11 +322,10 @@ export default function App() {
   return (
     <>
       <div className="banner">
-        <span className="logo">MediTrack HMS<small>v3.2.1 build 2011.08.17</small></span>
-        <span>CityCare Hospitals, Pune</span>
-        <span className="user">Logged in: rmo.karan | Ward: ALL | {new Date().toLocaleDateString('en-GB')} | <a href="#/census" style={{ color: '#fff' }}>Logout</a></span>
+        <span className="logo">MediTrack HMS<small>v3.2.4 &middot; CityCare Hospitals, Pune</small></span>
+        <span className="user">rmo.karan &middot; Ward: ALL &middot; {new Date().toLocaleDateString('en-GB')} &middot; <a href="#/census">Logout</a></span>
       </div>
-      <div className="ticker"><span>*** Scheduled server maintenance: Sunday 02:00-04:00 AM. Please save your work. *** Lab results interface (HL7) delayed by 15 min on weekends. *** Contact IT ext. 2204 (Suresh) for password reset. ***</span></div>
+      <div className="ticker">&#9888; Scheduled server maintenance: Sunday 02:00-04:00 AM. Please save your work. &middot; Lab results interface (HL7) delayed by 15 min on weekends. &middot; Contact IT ext. 2204 (Suresh) for password reset.</div>
       <div className="layout">
         <div className="nav">
           {nav.map(([g, items]) => (
@@ -341,7 +344,7 @@ export default function App() {
             : <Census />}
         </div>
       </div>
-      <div className="footer">(c) 2011 Medisoft Solutions Pvt. Ltd. All rights reserved. Best viewed in Internet Explorer 8 at 1024x768.</div>
+      <div className="footer">&copy; 2011-2018 Medisoft Solutions Pvt. Ltd. &middot; MediTrack HMS v3.2.4 (Clarity UI) &middot; Best viewed in Google Chrome at 1366x768.</div>
     </>
   )
 }
