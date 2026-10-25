@@ -6,6 +6,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY copilot_core copilot_core
 COPY poc poc
-EXPOSE 8501
-CMD ["streamlit", "run", "poc/app.py", "--server.port", "8501", "--server.address", "0.0.0.0", \
+# port 80 so the Container Apps placeholder image and the real image share one ingress port
+EXPOSE 80
+CMD ["streamlit", "run", "poc/app.py", "--server.port", "80", "--server.address", "0.0.0.0", \
      "--server.headless", "true", "--browser.gatherUsageStats", "false"]
