@@ -2,7 +2,7 @@
 //
 //   rg-<env>-hospital : the "hospital" - MediTrack + Discharge Copilot + gateway in ONE Container Apps environment,
 //                       PostgreSQL (MediTrack's database), Azure Files (documents + import hot-folder),
-//                       Azure AI Foundry (gpt-oss-20b), container registry
+//                       Azure AI Foundry (gpt-oss-120b), container registry
 //   rg-<env>-poc      : the POC sandbox - Streamlit app with de-identified data, its own environment, no DB access
 targetScope = 'subscription'
 
@@ -30,11 +30,12 @@ param clientIp string = ''
 
 @description('Region of the Azure AI Foundry account (empty = same as location)')
 param foundryLocation string = ''
-param foundryModelName string = 'gpt-oss-20b'
+param foundryModelName string = 'gpt-oss-120b'   // gpt-oss-20b has no pay-per-token deployment on Foundry (fine-tune only)
 param foundryModelFormat string = 'OpenAI-OSS'
 param foundryModelVersion string = '1'
 param foundrySkuName string = 'GlobalStandard'
 param foundryCapacity int = 50
+param foundryModelExists bool = false
 
 param meditrackExists bool = false
 param copilotExists bool = false
@@ -69,6 +70,7 @@ module hospital 'modules/hospital.bicep' = {
     clientIp: clientIp
     foundryLocation: empty(foundryLocation) ? location : foundryLocation
     foundryModelName: foundryModelName
+    foundryModelExists: foundryModelExists
     foundryModelFormat: foundryModelFormat
     foundryModelVersion: foundryModelVersion
     foundrySkuName: foundrySkuName
@@ -79,9 +81,26 @@ module hospital 'modules/hospital.bicep' = {
   }
 }
 
+// POC identity first, with AcrPull on the registry in the hospital RG, so the POC app can pull on creation
+module pocIdentity 'modules/identity.bicep' = {
+  name: 'poc-identity'
+  scope: pocRg
+  params: { name: 'id-poc-${token}', location: location, tags: tags }
+}
+
+module pocAcrPull 'modules/acr-pull.bicep' = {
+  name: 'poc-acr-pull'
+  scope: hospitalRg
+  params: {
+    registryName: hospital.outputs.registryName
+    principalId: pocIdentity.outputs.principalId
+  }
+}
+
 module poc 'modules/poc.bicep' = {
   name: 'poc'
   scope: pocRg
+  dependsOn: [pocAcrPull]
   params: {
     location: location
     tags: tags
@@ -94,16 +113,7 @@ module poc 'modules/poc.bicep' = {
     foundryEndpoint: hospital.outputs.foundryEndpoint
     foundryDeployment: hospital.outputs.foundryDeployment
     pocExists: pocExists
-  }
-}
-
-// POC's identity may pull images from the registry in the hospital RG
-module pocAcrPull 'modules/acr-pull.bicep' = {
-  name: 'poc-acr-pull'
-  scope: hospitalRg
-  params: {
-    registryName: hospital.outputs.registryName
-    principalId: poc.outputs.identityPrincipalId
+    identityId: pocIdentity.outputs.id
   }
 }
 

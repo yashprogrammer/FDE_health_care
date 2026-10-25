@@ -22,7 +22,8 @@ set -euo pipefail
 cd "$(dirname "$0")"
 PY=.venv/bin/python
 
-azd_env() { azd env get-value "$1" 2>/dev/null; }
+# (azd prints "ERROR: key not found" to stdout with exit 0, so parse get-values instead of get-value)
+azd_env() { azd env get-values 2>/dev/null | sed -n -E "s/^$1=//p" | head -n1 | sed -E 's/^"(.*)"$/\1/'; }
 
 case "${1:-}" in
   setup)
@@ -72,6 +73,11 @@ case "${1:-}" in
     # first time: create the azd environment in Central India (azd asks for the subscription)
     [ -f .azure/config.json ] || azd env new "${2:-citycare}" --location centralindia
     [ -n "$(azd_env AZURE_LOCATION)" ] || azd env set AZURE_LOCATION centralindia
+    # gpt-oss-20b has no pay-per-token deployment on Foundry; gpt-oss-120b does, but not in Central India: South India has it
+    [ -n "$(azd_env FOUNDRY_LOCATION)" ] || azd env set FOUNDRY_LOCATION southindia
+    # azd checks required parameters BEFORE the preprovision hook runs, so the secrets must exist already
+    [ -n "$(azd_env PG_ADMIN_PASSWORD)" ] || azd env set PG_ADMIN_PASSWORD "Pg$(openssl rand -hex 16)"
+    [ -n "$(azd_env DEMO_PASSWORD)" ] || azd env set DEMO_PASSWORD "citycare-$(openssl rand -hex 3)"
     azd up
     ;;
   cloud-reset)
@@ -83,6 +89,7 @@ case "${1:-}" in
     ;;
   cloud-down)
     azd down --purge --force
+    azd env set FOUNDRY_MODEL_EXISTS false >/dev/null   # the next cloud-up must create the model deployment again
     ;;
   *)
     sed -n '2,25p' "$0"; exit 1 ;;

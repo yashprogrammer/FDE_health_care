@@ -4,7 +4,7 @@
 #   reset.sh if-empty   only seed when MediTrack has no data yet (used after every deploy)
 #   IMAGE=<image> ...   also point the job at this image first
 set -e
-val() { azd env get-value "$1" 2>/dev/null || true; }
+val() { azd env get-values 2>/dev/null | sed -n -E "s/^$1=//p" | head -n1 | sed -E 's/^"(.*)"$/\1/'; }
 RG=$(val AZURE_RESOURCE_GROUP)
 JOB=$(val RESET_JOB_NAME)
 [ -n "$RG" ] && [ -n "$JOB" ] || { echo "No azd environment with a reset job - run ./run.sh cloud-up first"; exit 1; }

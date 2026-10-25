@@ -13,6 +13,7 @@ param foundryAccountName string
 param foundryEndpoint string
 param foundryDeployment string
 param pocExists bool
+param identityId string   // created (and granted AcrPull) by main.bicep before this module runs
 
 var placeholderImage = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -21,12 +22,6 @@ resource logs 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   location: location
   tags: tags
   properties: { sku: { name: 'PerGB2018' }, retentionInDays: 30 }
-}
-
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'id-poc-${token}'
-  location: location
-  tags: tags
 }
 
 resource foundry 'Microsoft.CognitiveServices/accounts@2024-10-01' existing = {
@@ -55,12 +50,12 @@ resource poc 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-poc-${token}'
   location: location
   tags: union(tags, { 'azd-service-name': 'poc' })
-  identity: { type: 'UserAssigned', userAssignedIdentities: { '${identity.id}': {} } }
+  identity: { type: 'UserAssigned', userAssignedIdentities: { '${identityId}': {} } }
   properties: {
     environmentId: env.id
     configuration: {
-      ingress: { external: true, targetPort: 8501, transport: 'auto', allowInsecure: false }
-      registries: [{ server: registryLoginServer, identity: identity.id }]
+      ingress: { external: true, targetPort: 80, transport: 'auto', allowInsecure: false }
+      registries: [{ server: registryLoginServer, identity: identityId }]
       secrets: concat([
         { name: 'poc-password', value: demoPassword }
         { name: 'foundry-key', value: foundry.listKeys().key1 }
@@ -88,5 +83,4 @@ resource poc 'Microsoft.App/containerApps@2024-03-01' = {
   }
 }
 
-output identityPrincipalId string = identity.properties.principalId
 output pocUrl string = 'https://${poc.properties.configuration.ingress.fqdn}'

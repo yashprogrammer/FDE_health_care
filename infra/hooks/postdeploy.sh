@@ -2,7 +2,9 @@
 # azd postdeploy hook: point the reset job at the image just deployed, seed the database if it is empty,
 # and print the URLs.
 set -e
-val() { azd env get-value "$1" 2>/dev/null || true; }
+val() { azd env get-values 2>/dev/null | sed -n -E "s/^$1=//p" | head -n1 | sed -E 's/^"(.*)"$/\1/'; }
+# the model deployment now exists: later `azd up` runs must not re-PUT it (Foundry throttles repeats: 715-123420)
+azd env set FOUNDRY_MODEL_EXISTS true >/dev/null
 IMAGE=$(val SERVICE_MEDITRACK_IMAGE_NAME)
 if [ -n "$IMAGE" ]; then
   IMAGE="$IMAGE" sh "$(dirname "$0")/reset.sh" if-empty

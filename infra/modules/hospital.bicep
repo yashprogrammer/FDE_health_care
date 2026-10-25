@@ -12,6 +12,7 @@ param logfireToken string
 param clientIp string
 param foundryLocation string
 param foundryModelName string
+param foundryModelExists bool = false   // true once the model deployment exists: skip re-PUTting it (Foundry throttles repeated deployments with 715-123420)
 param foundryModelFormat string
 param foundryModelVersion string
 param foundrySkuName string
@@ -119,7 +120,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
 }
 
-// ------------------------------------------------------------------ Azure AI Foundry: gpt-oss-20b
+// ------------------------------------------------------------------ Azure AI Foundry: gpt-oss-120b
 resource foundry 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   name: 'ai-citycare-${token}'
   location: foundryLocation
@@ -133,7 +134,7 @@ resource foundry 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   }
 }
 
-resource model 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
+resource model 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = if (!foundryModelExists) {
   parent: foundry
   name: foundryModelName
   sku: { name: foundrySkuName, capacity: foundryCapacity }
@@ -266,7 +267,7 @@ resource copilot 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'COPILOT_DB_URL', secretRef: 'db-url' }
             { name: 'COPILOT_PROVIDER', value: 'foundry' }
             { name: 'FOUNDRY_ENDPOINT', value: foundryEndpoint }
-            { name: 'FOUNDRY_DEPLOYMENT', value: model.name }
+            { name: 'FOUNDRY_DEPLOYMENT', value: foundryModelName }
             { name: 'FOUNDRY_API_KEY', secretRef: 'foundry-key' }
           ], logfireEnv)
           resources: { cpu: json('0.5'), memory: '1Gi' }
@@ -370,4 +371,4 @@ output resetJobName string = resetJob.name
 output postgresHost string = pgHost
 output foundryAccountName string = foundry.name
 output foundryEndpoint string = foundryEndpoint
-output foundryDeployment string = model.name
+output foundryDeployment string = foundryModelName

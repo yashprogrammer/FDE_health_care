@@ -8,13 +8,13 @@ load_dotenv(ROOT / ".env")
 os.environ.setdefault("PYDANTIC_AI_NO_BANNER", "1")
 os.environ.setdefault("LOGFIRE_IGNORE_NO_CONFIG", "1")
 
-# Same model (gpt-oss-20b) everywhere; only the endpoint differs:
+# Same model family (gpt-oss) everywhere; only the endpoint differs (Groq: 20b, Foundry: 120b - 20b is not deployable pay-per-token on Foundry):
 #   groq    - local runs (GROQ_API_KEY)
 #   foundry - Azure deployments: Azure AI Foundry deployment, OpenAI-compatible v1 endpoint
 PROVIDER = os.getenv("COPILOT_PROVIDER", "groq")
 FOUNDRY_ENDPOINT = os.getenv("FOUNDRY_ENDPOINT", "")          # e.g. https://<resource>.openai.azure.com/openai/v1/
 FOUNDRY_API_KEY = os.getenv("FOUNDRY_API_KEY", "")
-FOUNDRY_DEPLOYMENT = os.getenv("FOUNDRY_DEPLOYMENT", "gpt-oss-20b")
+FOUNDRY_DEPLOYMENT = os.getenv("FOUNDRY_DEPLOYMENT", "gpt-oss-120b")
 if PROVIDER == "foundry":
     MODEL = f"foundry:{FOUNDRY_DEPLOYMENT}"
     _has_key = bool(FOUNDRY_ENDPOINT and FOUNDRY_API_KEY)
