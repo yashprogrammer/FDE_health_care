@@ -350,7 +350,7 @@ Azure, Central India (Pune)
 │                                       · copilot (drafts, audit)                            │
 │   MediTrack ◄─ Azure Files: documents (MediTrack only), import-hotfolder (both) ─► Copilot  │
 │   reset job (Container Apps Job): IT's DB setup + reseed + clear drafts                    │
-│   Azure AI Foundry: gpt-oss-20b deployment ◄── Copilot                                     │
+│   Azure AI Foundry (South India): gpt-oss-120b deployment ◄── Copilot                      │
 └────────────────────────────────────────────────────────────────────────────────────────────┘
 ┌──────────── rg-<env>-poc ("the POC sandbox") ────────────┐
 │  own Container Apps environment                           │
@@ -367,10 +367,24 @@ Azure, Central India (Pune)
 | SMB file shares (scanner, documents) | bind-mounted folders | Azure Files shares, mounted into the containers |
 | Reverse proxy / hospital intranet entry | Caddy on `localhost:8001` | Caddy Container App, the only public URL, demo password |
 | Discharge Copilot server | `copilot` container | Container App in the **same** environment, internal only |
-| LLM endpoint | Groq (`gpt-oss-20b`) | Azure AI Foundry (`gpt-oss-20b`): data stays in the customer's Azure tenant |
+| LLM endpoint | Groq (`gpt-oss-20b`) | Azure AI Foundry (`gpt-oss-120b`, South India): data stays in the customer's Azure tenant |
 | POC laptop / sandbox | `./run.sh poc` | separate resource group and environment, no path to the hospital data |
 
 **Two POCs, one codebase.** The local POC (`./run.sh poc`, Groq) is the AI engineer's sandbox. The cloud POC is the *same* Streamlit image in its own resource group, calling Foundry. It's what you'd show the hospital's doctors before integrating: shareable link, password, de-identified data only. Moving the model from Groq to Foundry is a configuration change (`COPILOT_PROVIDER=foundry`), but the eval must be re-run (`./run.sh eval-foundry`) before trusting it: lesson 1 of §4.5 (the provider matters, not just the model) applies again.
+
+**What the Foundry re-run actually showed** (11 encounters, live, measured on the first Azure deployment):
+
+| | Groq `gpt-oss-20b` | Foundry `gpt-oss-120b` |
+|---|---|---|
+| hallucinated | 0 | 0 |
+| unverified numbers | 0 | 2 |
+| faithfulness | 100% | 99% |
+| key-fact recall / completeness | 75% / 88% | 76% / 95% |
+| median latency | 0.8 s | 2.8 s |
+
+Two lessons. (1) **`gpt-oss-20b` can't be deployed pay-per-token on Foundry**: the catalog lists it as a fine-tune SKU only, so the cloud runs `gpt-oss-120b` (same family; the 20b needs a managed-compute GPU VM). "Same model everywhere" became "same model family everywhere", and the eval is what tells you whether that's safe. (2) The bigger model is more eager: in one encounter it wrote "SpO2 > 92% on room air", a threshold not in the record. The number guardrail flagged it as **unverified** (yellow) for the doctor, which is exactly its job. Nothing was invented about drugs, labs or dates.
+
+**Deployment facts worth knowing:** model region and app region can differ (apps in Central India, `gpt-oss-120b` in South India: both in-country). Clean `azd up` ≈ 8 min. The Copilot logs DB auth errors for ~90 s after deploy until the reset job creates its login, then recovers by itself.
 
 **Why one shared environment for MediTrack and the Copilot?** It mirrors the hospital: the Copilot runs *inside* the hospital's network, next to MediTrack, reached only through the hospital's own entry point. Only the gateway is public; MediTrack and the Copilot have internal-only ingress.
 
@@ -385,4 +399,4 @@ Azure, Central India (Pune)
 - **POC in one line:** Pydantic AI + gpt-oss-20b drafts the narrative. Diagnoses and meds are pulled, never generated. A guardrail and evals prove it: 0 hallucinations, 100% faithful, ₹0.02 per summary.
 - **Integrated in one line:** same MediTrack UI plus one new tab. Click "Discharge Advised" as usual → a draft appears in the AI Discharge Draft tab within seconds → doctor signs → PDF lands in the Documents tab. Added by configuration.
 - **FDE vs AI engineer in one line:** the AI engineer built `copilot_core`. The FDE found the real problem, the three doors, the "tab not app" adoption decision and the business case, and made it all work in the hospital.
-- **Deployment in one line:** same containers locally and in Azure. MediTrack + Copilot share one Container Apps environment and one Postgres (Copilot = read-only login); the cloud POC lives in its own sandbox resource group. Groq locally, Azure AI Foundry in the cloud, same gpt-oss-20b.
+- **Deployment in one line:** same containers locally and in Azure. MediTrack + Copilot share one Container Apps environment and one Postgres (Copilot = read-only login); the cloud POC lives in its own sandbox resource group. Groq (`gpt-oss-20b`) locally, Azure AI Foundry (`gpt-oss-120b`) in the cloud: same model family, eval re-run per provider.

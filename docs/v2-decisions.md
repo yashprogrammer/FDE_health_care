@@ -55,3 +55,9 @@ Decisions from the second `/grill-me` session (2026-10-07). Everything here is *
 - Check that **gpt-oss-20b is available on Foundry in Central India**. If it isn't, the model deployment can live in another region while the apps stay in Pune; say so on stage.
 - The Copilot's access is now a **DB login on the primary**, so the "never write to MediTrack" rule is enforced by Postgres grants, not by a copy.
 - The `azd up` deployment can't be run from Claude's sandbox (no Azure credentials). Bicep is validated with `az bicep build` / `azd provision --preview`; you run the real `azd up`.
+
+## Update after the first Azure deployment (2026-10-25)
+
+- **#9 / #20 LLM on Azure:** `gpt-oss-20b` is not deployable pay-per-token on Foundry for this subscription (only a fine-tune SKU; `InvalidResourceProperties ... SKU not supported`, reproduced with the CLI outside Bicep). The cloud uses **`gpt-oss-120b`** (format `OpenAI-OSS`, GlobalStandard) in **South India** (`FOUNDRY_LOCATION`); Groq locally stays `gpt-oss-20b`. Approved by the presenter. Eval on Foundry: 0 hallucinations, 99% faithfulness (one unverified clinical threshold), see DEMO_RUNBOOK.md.
+- **Bicep fixes found by the first real deploy:** the POC identity is created and granted AcrPull *before* the POC app (it was a dependency cycle); the POC listens on port 80 like the gateway (the placeholder image must share the ingress port); `FOUNDRY_MODEL_EXISTS` skips re-PUTting the model deployment (Foundry throttles repeats).
+- **Tooling fixes:** `azd env get-value` prints "key not found" to stdout with exit 0, so hooks and `run.sh` parse `azd env get-values`; azd validates required secrets before the preprovision hook, so `run.sh cloud-up` generates them.

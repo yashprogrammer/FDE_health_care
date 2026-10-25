@@ -5,7 +5,7 @@ The demo runs either **locally** (docker compose) or in **Azure** (azd). The cli
 | | Local | Azure |
 |---|---|---|
 | MediTrack (+ AI tab) | http://localhost:8001 | `./run.sh cloud-urls` → `MEDITRACK_URL` (user `citycare`, password `DEMO_PASSWORD`) |
-| POC | http://localhost:8501 (local sandbox, Groq) | `POC_URL` (cloud sandbox, Foundry, password `DEMO_PASSWORD`) |
+| POC | http://localhost:8501 (local sandbox, Groq `gpt-oss-20b`) | `POC_URL` (cloud sandbox, Foundry `gpt-oss-120b`, password `DEMO_PASSWORD`) |
 | AI tab link URL | `/copilot/#/embed/review/{IP_NO}` | the same |
 
 ## Before the webinar: local (T-30 min)
@@ -21,13 +21,22 @@ The demo runs either **locally** (docker compose) or in **Azure** (azd). The cli
 
 ## Before the webinar: Azure (T-60 min)
 
-1. `azd auth login` and `az login` (same account).
-2. `./run.sh cloud-up`. The first run asks for the subscription. It takes ~15 min (Postgres is the slow part). The preprovision hook:
-   - generates `DEMO_PASSWORD` and the Postgres admin password,
-   - checks that **gpt-oss-20b** is offered in Central India. If not, it stops and tells you to run `azd env set FOUNDRY_LOCATION <region>` (e.g. `eastus2`, `swedencentral`; the apps stay in Pune), then `./run.sh cloud-up` again.
+1. `azd auth login` and `az login` (same account). If the account has several subscriptions, pick one up front: `az account set --subscription <id>` and `azd env new citycare --location centralindia --subscription <id>` (otherwise `cloud-up` asks).
+2. `./run.sh cloud-up`. Measured on a clean run: **~8 min provisioning + deploy** (Postgres ~1-5 min, image builds in ACR ~4 min). `cloud-up` first generates `DEMO_PASSWORD` and the Postgres admin password (azd needs them before its hooks run), and sets `FOUNDRY_LOCATION=southindia`.
+   - **Model:** `gpt-oss-20b` is *not* deployable pay-per-token on Foundry (the catalog lists it as a fine-tune SKU only, in every region). The cloud uses **`gpt-oss-120b`** (GlobalStandard, South India; the apps stay in Central India). Same family, so the story is "same open model family, Groq locally, Azure Foundry in the customer's tenant".
+   - After deploy, the reset job seeds the database and the URLs are printed. The Copilot logs `password authentication failed for copilot_svc` for ~90 s until the reset job has created that login. It retries and recovers on its own.
+3. `./run.sh eval-foundry`: re-run the eval on the Foundry deployment. Measured (11 encounters, live):
 
-   After deploy, the reset job seeds the database and the URLs are printed.
-3. `./run.sh eval-foundry`: re-run the eval on the Foundry deployment. Expect 0 hallucinations and 100% faithfulness, like on Groq. If drafts come back as `template` with an error, see "If something breaks".
+   | | Groq `gpt-oss-20b` | Foundry `gpt-oss-120b` |
+   |---|---|---|
+   | hallucinated | 0 | 0 |
+   | unverified numbers | 0 | 2 (ENC-05, see below) |
+   | faithfulness | 100% | 99% |
+   | key-fact recall | 75% | 76% |
+   | completeness | 88% | 95% |
+   | median latency | 0.8 s | 2.8 s |
+
+   The 120b model adds clinical colour more readily: in ENC-05 it writes "SpO2 > 92% on room air", a threshold that is not in the record. The guardrail marks it **unverified** (yellow, for the doctor to check), not hallucinated. It repeats on re-runs (1-2 unverified numbers). Say so on stage: it's the guardrail doing its job, and the reason the eval is re-run per provider. If drafts come back as `template` with an error, see "If something breaks".
 4. Open `MEDITRACK_URL` and `POC_URL` once (login), and the Logfire project.
 5. `./run.sh cloud-reset` just before going live.
 
@@ -54,7 +63,7 @@ To spend almost nothing between webinars, run `./run.sh cloud-down` (deletes eve
 | **Source trace** → add `Warfarin 5 mg OD` to the text | "Guardrail: that drug isn't in this patient's record. Red." |
 | **Eval** → Run eval | "Completeness, hallucinations, faithfulness, recall vs the doctor's summary, latency, cost in rupees." |
 | **Clinician feedback** | "Business verification: doctors and the TPA desk score it." |
-| *(Azure)* open the **cloud POC** → sidebar says "Azure sandbox (rg-…-poc)" | "Same app, now a link the hospital's doctors can open. Its own sandbox: no database login, no file shares. Same gpt-oss-20b, but served from Azure AI Foundry, in the customer's tenant. We re-ran the eval before trusting it." |
+| *(Azure)* open the **cloud POC** → sidebar says "Azure sandbox (rg-…-poc)" | "Same app, now a link the hospital's doctors can open. Its own sandbox: no database login, no file shares. Same open model family (gpt-oss), but served from Azure AI Foundry, in the customer's tenant. We re-ran the eval before trusting it." |
 | Logfire | "Every agent run is traced: prompt, tokens, latency, structured output." |
 
 ## Part 3: integration (Story Ch. 6)
@@ -77,6 +86,8 @@ To spend almost nothing between webinars, run `./run.sh cloud-down` (deletes eve
 
 - **LLM or network down**: nothing to do. Drafts fall back to cached (after `./run.sh warm`), then to a template. The "Prepared By" field shows which one was used.
 - **Messed-up state**: `./run.sh reset` (local) or `./run.sh cloud-reset` (Azure, ~1 min), then re-advise the patient.
-- **Port busy (local)**: `MEDITRACK_PORT=8011 ./run.sh integrated`, or free it: `lsof -ti :8001 -ti :5432 -ti :8501 | xargs kill`.
+- **Port busy (local)**: another compose stack often holds 8001 and 5432 (check `docker ps`). Run on other ports: `PG_PORT=5433 MEDITRACK_PORT=8011 ./run.sh integrated` (use the same variables for `reset`). Don't just `curl localhost:8001`: it can answer from the *other* stack.
 - **Azure, AI tab shows template drafts**: the Foundry call failed. Check the Copilot's logs: `az containerapp logs show -n <ca-copilot-…> -g rg-<env>-hospital --tail 50`. If the endpoint path is the problem, set the Copilot's `FOUNDRY_ENDPOINT` to `https://<foundry-account>.services.ai.azure.com/openai/v1/` (Portal → Container App → Containers → Environment variables).
+- **Azure, `cloud-up` fails with `715-123420 ... unusual activity`** on the model deployment: Foundry throttles repeated PUTs of the same deployment. The postdeploy hook sets `FOUNDRY_MODEL_EXISTS=true` so later runs skip it (`cloud-down` resets it). If you hit it before that is set: `azd env set FOUNDRY_MODEL_EXISTS true` if the deployment exists (`az cognitiveservices account deployment show ...`), then `./run.sh cloud-up`.
+- **Azure, `Failed to provision revision ... Operation expired` for the POC**: placeholder and real image must share an ingress port (both listen on 80). Don't change the POC port without the Bicep.
 - **Azure, MediTrack shows errors right after `cloud-up`**: the reset job may still be seeding. Wait a minute, or run `./run.sh cloud-reset`.
